@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory name="sessionFactory">
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.datasource">java:/comp/env/jdbc/datasource</property>
+        <property name="hibernate.default_schema">public</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <!--Consegue retornar erros do lado do banco, identificando dentro do projeto pelo hibernate-->
+        <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>  
+        <!--Não deixa finalizar um processo da Web sem finalizar tudo que está fazendo, para não dar uma mensagem.. salvo com sucesso e ainda está executando coisas em backgroud-->
+        <property name="hibernate.jdbc.factory_class">org.hibernate.jdbc.NonBatchingBatcherFactory</property>  
+        <!--Caso ativar o recurso de SQL em lote, quantidade permitida por lote-->
+        <property name="hibernate.jdbc.batch_size">100</property>
+        <!--Melhorar performance com cache de segundo nível-->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <!--Fechar automaticamente a session, gerenciando isso automaticamente-->
+        <property name="hibernate.transaction.auto_close_session">true</property>
+        <!--Caso queira crar as tabelas automaticamente de acordo com as classes java mapeadas-->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> --> 
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <!--Caso true, faz com que o hibernate colha informações do sistema, verificando quais sqls estão demorando mais e tal.. levantamento para melhorias de performance-->
+        <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.use_sql_comments">true</property>
+        <property name="hibernate.connection.autocommit">false</property>  
+        <property name="hibernate.connection.pool_size">50</property>          
+
+        <!--Mapear as configurações dos VOs envolvidos com o hibernate-->
+        <!--        <mapping class="br.com.project.model.classes.Filial" />
+        <mapping class="br.com.project.model.classes.Pais" />
+        <mapping class="br.com.project.model.classes.Estado" />
+        <mapping class="br.com.project.model.classes.Cidade" />
+        <mapping class="br.com.project.model.classes.Bairro" />
+        <mapping class="br.com.project.model.classes.Entidade" />
+        <mapping class="br.com.project.model.classes.Mensagem" />
+        <mapping class="br.com.project.model.classes.Produto" />
+        <mapping class="br.com.project.model.classes.Serie" />
+        <mapping class="br.com.project.model.classes.Empreendimento" />
+        <mapping class="br.com.project.model.classes.EntidadeEntidade" />
+        <mapping class="br.com.project.model.classes.Titulo" />
+        <mapping class="br.com.project.model.classes.ComissaoFuncionarioFilial" />
+        <mapping class="br.com.project.model.classes.ValorComissaoFuncionarioFilial" /> 
+        <mapping class="br.com.project.model.classes.InformacaoRevisao" />
+        <mapping class="br.com.project.model.classes.SendEmail" />-->
+
+        <!--hibernate.envers >> Opções de auditoria para as tabelas, deixando uma tabela de log para quando ocorre insert, delete, update.. sabendo tudo que foi modificado!-->
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-insert" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-update" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-delete" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-collection-recreate" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="pre-collection-update" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="pre-collection-remove" />
+    </session-factory>
+</hibernate-configuration>
