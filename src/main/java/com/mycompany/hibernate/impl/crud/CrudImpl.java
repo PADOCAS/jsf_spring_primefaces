@@ -47,7 +47,8 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
     /**
      * Retornar o sessionFactory caso precisar utilizar
-     * @return 
+     *
+     * @return
      */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -97,84 +98,237 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
         }
     }
 
+    /**
+     * Roda instantaneamente a instrução no banco de dados Ele roda as
+     * instruções mas não comita ainda.. seria tipo um caso de gravar Pessoa e
+     * depois Telefones da Pessoa Ele salva a pessoa executa o flush depois
+     * insere os telefones..
+     */
+    private void executeFlushSession() {
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null) {
+            getSessionFactory().getCurrentSession().flush();
+        }
+    }
+
     @Override
     public void save(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().save(objeto);
+            executeFlushSession();
+        }
     }
 
     @Override
     public void persist(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().persist(objeto);
+            executeFlushSession();
+        }
     }
 
     @Override
     public void saveOrUpdate(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().saveOrUpdate(objeto);
+            executeFlushSession();
+        }
     }
 
     @Override
     public void update(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().update(objeto);
+            executeFlushSession();
+        }
     }
 
     @Override
     public void delete(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().delete(objeto);
+            executeFlushSession();
+        }
     }
 
     @Override
     public T merge(T objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            validaSessionFactory();
+            objeto = (T) getSessionFactory().getCurrentSession().merge(objeto);
+            executeFlushSession();
+
+            return objeto;
+        }
+
+        return null;
     }
 
     @Override
     public List<T> findList(Class<T> entidade) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && entidade != null) {
+            validaSessionFactory();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append(" select distinct(entity) from ");
+            sql.append(entidade.getSimpleName()).append(" entity ");
+
+            List<T> list = getSessionFactory().getCurrentSession().createQuery(sql.toString()).list();
+
+            return list;
+        }
+
+        return null;
     }
 
     @Override
     public Object findById(Class<T> entidade, Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && entidade != null
+                && id != null) {
+            validaSessionFactory();
+
+            Object obj = getSessionFactory().getCurrentSession().load(entidade, id);
+
+            return obj;
+        }
+
+        return null;
     }
 
     @Override
     public T findByPorId(Class<T> entidade, Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && entidade != null
+                && id != null) {
+            validaSessionFactory();
+
+            T obj = (T) getSessionFactory().getCurrentSession().load(entidade, id);
+
+            return obj;
+        }
+
+        return null;
     }
 
     @Override
     public List<T> findListByQueryDinamica(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+
+            List<T> list = getSessionFactory().getCurrentSession().createQuery(query).list();
+
+            return list;
+        }
+
+        return null;
     }
 
     @Override
     public void executeUpdateQueryDinamica(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Essa é por HQL do hibernate ou JPA (usa o createQuery)
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().createQuery(query).executeUpdate();
+            executeFlushSession();
+        }
     }
 
     @Override
     public void executeUpdateSqlDinamica(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Essa é por SQL puro (usa o createSQLQuery)
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+            getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();
+            executeFlushSession();
+        }
     }
 
     @Override
     public void clearSession() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null) {
+            getSessionFactory().getCurrentSession().clear();
+        }
     }
 
     @Override
     public void evict(Object objeto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Limpa o objeto da sessão
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && objeto != null) {
+            getSessionFactory().getCurrentSession().evict(objeto);
+        }
     }
 
     @Override
     public Session getSession() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (getSessionFactory() != null) {
+            validaSessionFactory();
+            return getSessionFactory().getCurrentSession();
+        }
+
+        return null;
     }
 
     @Override
     public List<T> getListSqlDinamica(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Retorna uma lista através de um SQL puro
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+
+            List<T> list = getSessionFactory().getCurrentSession().createSQLQuery(query).list();
+
+            return list;
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Object[]> getListSqlDinamicaArray(String query) throws Exception {
+        //Retorna uma lista de Objeto Array através de um SQL puro
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+
+            List<Object[]> list = (List<Object[]>) getSessionFactory().getCurrentSession().createSQLQuery(query).list();
+
+            return list;
+        }
+
+        return null;
     }
 
     @Override
@@ -198,18 +352,61 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
     }
 
     @Override
-    public Long qtdeTotalRegistro(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Long qtdeTotalRegistro(String table) throws Exception {
+        //Retorna a qtde de registros de uma tabela usando jdbc
+        if (getJdbcTemplate() != null
+                && table != null) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" select count(1) from ").append(table);
+
+            return getJdbcTemplate().queryForLong(sql.toString());
+        }
+
+        return 0L;
     }
 
     @Override
     public Query<T> obterQuery(String query) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //Retorna uma Query preparada para uso posterior se necessário
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+
+            Query queryReturn = getSessionFactory().getCurrentSession().createQuery(query.toString());
+
+            return queryReturn;
+        }
+
+        return null;
     }
 
+    /**
+     * Usado para selecionar por demanda, paginado do initResult até o maxResult
+     *
+     * @param query
+     * @param initResult
+     * @param maxResult
+     * @return
+     * @throws Exception
+     */
     @Override
-    public List<T> findListByQueryDinamica(String query, int iniResult, int maxResult) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<T> findListByQueryDinamica(String query, int initResult, int maxResult) throws Exception {
+        //Retorna uma lista de Objeto Array através de um SQL puro
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+
+            List<T> list = (List<T>) getSessionFactory().getCurrentSession().createQuery(query)
+                    .setFirstResult(initResult)
+                    .setMaxResults(maxResult)
+                    .list();
+
+            return list;
+        }
+
+        return null;
     }
 
 }

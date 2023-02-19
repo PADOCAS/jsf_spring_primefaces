@@ -128,6 +128,8 @@ public interface IInterfaceCrud<T> extends Serializable {
     public Session getSession() throws Exception;
 
     public List<T> getListSqlDinamica(String query) throws Exception;
+    
+    public List<Object[]> getListSqlDinamicaArray(String query) throws Exception;
 
     public JdbcTemplate getJdbcTemplate() throws Exception;
 
@@ -137,19 +139,25 @@ public interface IInterfaceCrud<T> extends Serializable {
     
     public SimpleJdbcCall getSimpleJdbcCall() throws Exception;
 
-    public Long qtdeTotalRegistro(String query) throws Exception;
+    public Long qtdeTotalRegistro(String table) throws Exception;
 
+    /**
+     * //Retorna uma Query preparada para uso posterior se necessário
+     * @param query
+     * @return
+     * @throws Exception 
+     */
     public Query<T> obterQuery(String query) throws Exception;
 
     /**
-     * Usado para selecionar por demanda, paginado
+     * Usado para selecionar por demanda, paginado do initResult até o maxResult
      *
      * @param query
-     * @param iniResult
+     * @param initResult
      * @param maxResult
      * @return
      * @throws Exception
      */
-    public List<T> findListByQueryDinamica(String query, int iniResult, int maxResult) throws Exception;
+    public List<T> findListByQueryDinamica(String query, int initResult, int maxResult) throws Exception;
 
 }
