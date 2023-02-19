@@ -112,8 +112,6 @@
             <artifactId>spring-jdbc</artifactId>
             <version>3.2.18.RELEASE</version>
         </dependency>
-
-
     </dependencies>
     
     <build>
