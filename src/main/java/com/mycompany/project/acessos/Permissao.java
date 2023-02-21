@@ -62,7 +62,14 @@ public enum Permissao {
             Collections.sort(listPermissoes, new Comparator<Permissao>() {
                 @Override
                 public int compare(Permissao o1, Permissao o2) {
-                    return o1.getDescricao().compareTo(o2.getDescricao());
+                    if (o1 != null
+                            && o1.getDescricao() != null
+                            && o2 != null
+                            && o2.getDescricao() != null) {
+                        return o1.getDescricao().compareTo(o2.getDescricao());
+                    }
+
+                    return 0;
                 }
             });
         }
