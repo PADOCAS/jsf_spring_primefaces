@@ -19,11 +19,11 @@ public class DateUtil implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Formata data atual para colocar no nome do relatorio (ddMMyyyy)
+     * Formata data atual para colocar no nome do relatorio (ddMMyyyyHHmmss)
      * @return 
      */
     public static String getDateAtualReportName() {
-        DateFormat df = new SimpleDateFormat("ddMMyyyy");
+        DateFormat df = new SimpleDateFormat("ddMMyyyy_HHmmss");
         return df.format(Calendar.getInstance().getTime());
     }
 
