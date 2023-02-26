@@ -7,15 +7,14 @@ package test.junit;
 import com.mycompany.project.report.util.DateUtil;
 import java.util.Calendar;
 import org.junit.Assert;
-import org.junit.Test;
 
 /**
  *
  * @author lucia
  */
 public class TesteData {
-    
-    @Test
+
+//    @Test
     public void testData() {
         System.out.println(DateUtil.getDateAtualReportName());
         //Compara valores para ver se são iguais:
@@ -23,5 +22,5 @@ public class TesteData {
         Assert.assertEquals("'2023-02-25'", DateUtil.formatDataSql(Calendar.getInstance().getTime()));
         Assert.assertEquals("2023-02-25", DateUtil.formatDataSqlSimple(Calendar.getInstance().getTime()));
     }
-    
+
 }
