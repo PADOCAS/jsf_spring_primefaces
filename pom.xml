@@ -136,6 +136,12 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>10.1.6</version>
         </dependency>
+        
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.5</version>
+        </dependency>
     </dependencies>
     
     <build>
