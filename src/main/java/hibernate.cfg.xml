@@ -30,8 +30,8 @@
         <property name="hibernate.connection.pool_size">50</property>          
 
         <!--Mapear as configurações dos VOs envolvidos com o hibernate-->
-        <!--        <mapping class="br.com.project.model.classes.Filial" />
-        <mapping class="br.com.project.model.classes.Pais" />
+        <mapping class="com.mycompany.project.model.Entidade" />
+<!--        <mapping class="br.com.project.model.classes.Pais" />
         <mapping class="br.com.project.model.classes.Estado" />
         <mapping class="br.com.project.model.classes.Cidade" />
         <mapping class="br.com.project.model.classes.Bairro" />
