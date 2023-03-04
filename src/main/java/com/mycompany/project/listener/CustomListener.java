@@ -25,6 +25,7 @@ public class CustomListener implements RevisionListener, Serializable {
         if (o != null
                 && FrameworkUtil.getThreadLocal() != null) {
             RevInfo revInfo = (RevInfo) o;
+            //Pega o código do Usuário que vai ser sempre setado na ThreadLocal pelo FilterOpenSessionInView:
             Long codUser = FrameworkUtil.getThreadLocal().get();
 
             Entidade entidade = new Entidade();
