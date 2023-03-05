@@ -103,9 +103,10 @@
     </context-param>
     
     <!--Tema para o primefaces trabalhar (padrao cinza smoothness), vamos colocar o flick-->
+    <!--Lembrando que para pegar o THEME corretamente, precisa fazer o download do JAR dos themas e colocar em Web Pages/WEB-INF/lib/  caso contrário não pegará os themas-->
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>flick</param-value>
+        <param-value>cupertino</param-value>
     </context-param>
     
     <!--Filtro-->

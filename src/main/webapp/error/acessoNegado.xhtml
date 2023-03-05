@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title><ui:insert name="titulo">Projeto JSF/Spring/Primefaces</ui:insert></title>
+        <meta http-equiv="Content-Type" content="text/html/ charset=UTF-8" />        
+    </h:head>
+
+    <h:body>
+        <h:form id="formAcessoNegado">
+            <p:panel id="pnlAcessoNegado" header="Erro">
+                <h:graphicImage library="img" name="acesso_negado.png" style="width: 30px; height: 30px;" >
+                    <h:outputLabel value="O Acesso a está parte do sistema não é autorizado para seu usuário." />
+                </h:graphicImage>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
