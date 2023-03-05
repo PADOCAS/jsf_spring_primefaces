@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" 
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xi="http://www.w3.org/2001/XInclude" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+    <application>	
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>		
+        
+        <!--Configurações para definir que vamos trabalhar com a classe ViewScopeCallBackRegister que criamos para gerenciar tudo pelo Spring pra gente-->
+        
+        <!--Declarando nosso ViewScope criado para trabalhar com Spring no evento postConstruct:-->
+        <system-event-listener>
+            <!--declarando nossa classe de ViewScopeCallBackRegister:-->
+            <system-event-listener-class>com.mycompany.project.bean.geral.ViewScopeCallBackRegister</system-event-listener-class>
+            <system-event-class>javax.faces.event.PostConstructViewMapEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class>	
+        </system-event-listener>
+
+        <!--Declarando nosso ViewScope criado para trabalhar com Spring no evento preDestroy>-->
+        <system-event-listener>
+            <!--declarando nossa classe de ViewScopeCallBackRegister:-->
+            <system-event-listener-class>com.mycompany.project.bean.geral.ViewScopeCallBackRegister</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreDestroyViewMapEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class> 
+        </system-event-listener>
+        
+        <!--Declarando Listener do Primefaces para usar os Dialogs e gerenciar tudo isso legal pra gente, caso utilizemos p:dialog em nosso sistema-->
+        <!--Tem essa especificação no manual do primefaces mesmo (versao 12), mostrando que deve ser implementado aqui:-->
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>
+
+    <factory>
+        <!--Declarar tambem nossa classe para tratamentos de erros que criamos (CustomExceptionHandlerFactory)-->
+        <exception-handler-factory>com.mycompany.project.exception.CustomExceptionHandlerFactory</exception-handler-factory>
+    </factory>	
+</faces-config>
