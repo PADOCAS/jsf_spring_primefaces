@@ -58,6 +58,12 @@
     </error-page>
     
     <error-page>
+        <!--Exceção de erro 404 - Página não encontrada >> joga para pagina 404.jsf -->
+        <error-code>404</error-code>
+        <location>/error/404.jsf</location>
+    </error-page>
+    
+    <error-page>
         <!--Exceção de erro 500 erro interno do servidor >> joga para pagina error.jsf -->
         <error-code>500</error-code>
         <location>/error/error.jsf</location>
