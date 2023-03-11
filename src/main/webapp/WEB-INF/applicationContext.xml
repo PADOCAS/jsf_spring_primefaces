@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx = "http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+       default-lazy-init="true">
+    <!--Ativa as anotações dos nossos Beans (controller, daos, etc) required, postConstruct, transaction, etc.. todas as anotações do Spring vão ser lidas automaticamente-->
+    <context:annotation-config />
+    <!--Configura o controlador do SpringMVC baseado em anotações.. identifica anotações e processa automaticamente-->
+    <mvc:annotation-driven />
+    <!--Configura a parte de mapeamento do servlet do framework-->
+    <mvc:default-servlet-handler />
+	
+    <!--Declara o local de resources da nossa imagem e o geral do resouce para trabalhar em cache quando utilizar (não tem alteração dessas coisas, não precisa carregar o tempo todo)-->
+    <mvc:resources location="/resources/img" mapping="/resources/**" cache-period="5000" />
+
+    <!-- Pacotes do sistema em que serão utilizados -->
+    <context:component-scan base-package="com.mycompany.project.geral.controller" />
+    <context:component-scan base-package="com.mycompany.srv.interfaces" />
+    <context:component-scan base-package="com.mycompany.srv.implementacao" />
+    <context:component-scan base-package="com.mycompany.repository.interfaces" />
+    <context:component-scan base-package="com.mycompany.dao.implementacao" />
+    <context:component-scan base-package="com.mycompany.project.bean.view" />
+    <context:component-scan base-package="com.mycompany.project.bean.geral" />
+    <context:component-scan base-package="com.mycompany.project.report.util" />
+    <context:component-scan base-package="com.mycompany.project.util.all" />
+    <context:component-scan base-package="com.mycompany.project.bean.view.grafico"/>
+    <context:component-scan base-package="com.mycompany.framework.controller.crud"/>
+    <context:component-scan base-package="com.mycompany.framework.interfac.crud"/>
+
+    <!-- Data Source -->
+    <!--LazyInit false, para criar assim que subir a aplicação, não deixar preguiçoso-->
+    <bean id="springDataSource" name="springDataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="false">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/datasource</value> 
+        </property>
+    </bean>
+	
+    <!--Integrar flyway ferramenta de migração de banco de dados-->
+    <!--carrega classe e inicia o metodo 'migrate' assim que inicia a aplicação-->
+    <!--Pom deve ter o flyway-core-->
+    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" lazy-init="false"> 
+        <property name="dataSource" ref="springDataSource"/> 
+        <property name="baselineOnMigrate" value="true"/>  
+        <property name="table" value="version"/> 
+        <property name="sqlMigrationPrefix" value="v"/> 
+        <property name="sqlMigrationSeparator" value="_"/>
+        <property name="encoding" value="ISO-8859-1"/>
+        <property name="validateOnMigrate" value="false"/>
+    </bean>
+	
+    <!--transactionManager do Spring - iniciar nosso dataSource - iniciar junto com a aplicação-->	
+    <bean id="transactionManager" name="transactionManager"   
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="false">
+        <property name="dataSource" ref="springDataSource"/>
+    </bean>  
+     
+    <!--Declara as classes que vamos receber o dataSource para executar instruções SQL direto no banco de dados: -->
+    <bean id="jdbcTemplate" name="jdbcTemplate" class="br.com.framework.implementacao.crud.JdbcTemplateImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
+        <constructor-arg name="dataSource" ref="springDataSource"/>
+    </bean>
+     
+    <bean id="simpleJdbcTemplate" name="simpleJdbcTemplate" class="br.com.framework.implementacao.crud.SimpleJdbcTemplateImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
+        <constructor-arg name="dataSource" ref="springDataSource"/>
+    </bean>
+     
+    <bean id="simpleJdbcInsert" name="simpleJdbcInsert" class="br.com.framework.implementacao.crud.SimpleJdbcInsertImplents" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
+        <constructor-arg name="dataSource" ref="springDataSource"/>
+    </bean>
+     
+    <bean id="simpleJdbcClassImpl" name="simpleJdbcClassImpl" class="br.com.framework.implementacao.crud.SimpleJdbcClassImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
+        <constructor-arg name="dataSource" ref="springDataSource"/>
+    </bean>
+	
+    <!-- Mapeamento caso venha utilizar jsp -->
+    <!--Mapeando nossa pagina inicia que foi feita em JSP - Spring tem um padrão para a pagina inicial (indexController) temos que colocar exatamente assim-->
+    <!--Esse arquivo indexController não precisa ser criado no sistema-->
+    <!--Carregar quando inicia a aplicação-->
+    <bean id="urlMapping"
+          class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" lazy-init="false">
+        <property name="mappings">
+            <props>
+                <prop key="/index.jsp">indexController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Mapeamento caso venha utilizar jsp (quais extenções de páginas para trabalhar com o Spring) -->
+    <!--Carregar quando inicia a aplicação-->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver" lazy-init="false">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WebContent/" />
+        <property name="suffix" value="*.jsf, *.xhtml, *.html, *.jsp, *.js" />
+    </bean>
+
+    <!-- Mapeamento caso venha utilizar jsp -->
+    <!--Como não vamos criar uma classe indexController, vamos instanciar aqui a classe nativa para ele-->
+    <!--Carregar quando inicia a aplicação-->
+    <bean name="indexController" class="org.springframework.web.servlet.mvc.ParameterizableViewController" lazy-init="false"/>
+
+    <!--Declarar a classe ViewScope que o Spring vai utilizar-->
+    <!--ViewScope - A instância permanece ativa até que o usuário navegue para uma próxima página.-->
+    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer" lazy-init="false">
+        <property name="scopes">
+            <map>
+                <entry key="view">
+                    <bean class="com.mycompany.project.bean.geral.ViewScope" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+	
+    <!--Classe para Controller os relatórios-->
+    <bean id="reportUtil" class="com.mycompany.project.report.util.ReportUtil"/>
+
+    <!--Uma Instancia desse Objeto por sessão, classe que controla os logs de auditoria tal.. -->
+    <bean id="utilFramework" class="com.mycompany.framework.util.FrameworkUtil" scope="session"/>
+</beans>
+
