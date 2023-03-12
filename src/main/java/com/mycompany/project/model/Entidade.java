@@ -26,6 +26,8 @@ public class Entidade implements Serializable {
 
     private String ent_senha;
 
+    private Boolean ent_inativo;
+
     public Long getEnt_codigo() {
         return ent_codigo;
     }
@@ -48,6 +50,14 @@ public class Entidade implements Serializable {
 
     public void setEnt_senha(String ent_senha) {
         this.ent_senha = ent_senha;
+    }
+
+    public Boolean getEnt_inativo() {
+        return ent_inativo;
+    }
+
+    public void setEnt_inativo(Boolean ent_inativo) {
+        this.ent_inativo = ent_inativo;
     }
 
 }

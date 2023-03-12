@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+ http://www.springframework.org/schema/security 
+ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+    <!--Para fazer segurança do lado do servidor, também podemos querer fazer-->
+    <global-method-security secured-annotations="enabled" />
+
+    <!--Se cair em acesso negado para o usuário, já vai jogar para nossa pagina criada (acessoNegado.jsf)-->
+    <http auto-config="true" 
+          access-denied-page="/error/acessoNegado.jsf"
+          use-expressions="true">
+        <!--Definir as URLs que ele vai interceptar e validar pra gente:-->
+        <!--Página para definir permissões a determinados usuários >> só permitida para usuários ADMIN-->
+        <intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('ADMIN')" method="POST"/>
+        <!--Todas as páginas que tiver dentro de resoucers/components precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <!--Todas as páginas que tiver dentro de resoucers/ precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <!--Todas as páginas que tiver dentro de restrito/ precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <!--Todas as páginas que tiver dentro de error/ pode estar logado ou não >> pode estar tentando logar no sistema e cai em erro -->
+        <intercept-url pattern="/error/**" access="isAnonymous() or isAuthenticated() or !isAuthenticated()"/>
+        <!--Todas as páginas que tiver dentro de templates/ precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <!--Todas as páginas que tiver dentro de cadastro/ precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <!--Todas as páginas que tiver dentro de publico/ permite geral-->
+        <intercept-url pattern="/publico/**" access="permitAll" /> 
+        <!--Todas as páginas que tiver dentro de teste/ permite geral-->
+        <intercept-url pattern="/teste/**" access="permitAll" /> 
+		
+        <!--Vamos dizer para ele qual nossa página de login e pra onde ele vai redirecionar, caso falhar login_error-->
+        <form-login login-page="/publico/login.jsf"
+                    always-use-default-target="true" default-target-url="/restrito/principal.jsf"
+                    authentication-failure-url="/publico/login.jsf?login_error=1" />
+
+        <!--Logout foi feito com sucesso redireciona para página de login novamente-->
+        <!--Spring encerra sessão do usuário após o logout, apagando também os cookies-->
+        <logout invalidate-session="true" logout-success-url="/publico/login.jsf"
+                logout-url="/j_spring_security_logout" delete-cookies="JSESSIONID"/>
+		
+        <!--Faixa de segundos para o Spring relembrar o login/senha do usuário-->
+        <remember-me token-validity-seconds="1209600" />
+
+        <!--Não permitir logar mais de 1 sessão para o usuário, não deixando acessar 2 navegadores diferentes com mesmo usuário e tal..-->	
+        <!--Migra sessão em caso tentar usar outra sessão-->
+        <session-management invalid-session-url="/publico/login.jsf"
+                            session-fixation-protection="migrateSession"> 
+            <!--Numero maximo de sessao (1) e joga para página de login e o SPRING da uma erro para gente saber que o limite foi atingido-->
+            <concurrency-control 
+                max-sessions="1"
+                expired-url="/publico/login.jsf"
+                error-if-maximum-exceeded="true" /> 
+        </session-management>		
+    </http>
+
+    <!--autenticações para o usuário no banco de dados-->
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder hash="plaintext" />
+            <!--Precisa de jdbc para fazer a conexão com o banco de dados-->
+            <!--DataSource springDataSource declarado no applicationContext.xml-->
+            <!--Select para carregar usuários e senha que estão ativos (respeitando o alias do spring (username, password, enable)-->
+            <!--Select para carregar autorização dos usuarios que estão ativos (respeitando o alias do spring (username, authority)-->
+            <!--Parametro que o Spring vai setar '?'-->
+            <jdbc-user-service data-source-ref="springDataSource"
+                               users-by-username-query="SELECT ent_login as username,
+                                                               ent_senha as password,
+							       'true' as enable
+							  FROM entidade 
+							 WHERE ent_inativo = false 
+							   and upper(ent_login) = upper(?)"
+                               authorities-by-username-query="SELECT u.ent_login as username,
+								     p.esa_codigo as authority 
+							        FROM entidade u 
+								join entidadeacesso p 
+                                                                  on u.ent_codigo = p.ent_codigo 
+							       WHERE u.ent_inativo = false
+								 AND upper(u.ent_login) = upper(?)" />
+        </authentication-provider>
+    </authentication-manager>
+</b:beans>
