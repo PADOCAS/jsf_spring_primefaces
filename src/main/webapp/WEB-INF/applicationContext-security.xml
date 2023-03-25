@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://www.springframework.org/schema/beans 
  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
  http://www.springframework.org/schema/security 
- http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+ http://www.springframework.org/schema/security/spring-security-5.3.xsd">
     <!--Para fazer segurança do lado do servidor, também podemos querer fazer-->
     <global-method-security secured-annotations="enabled" />
 
     <!--Se cair em acesso negado para o usuário, já vai jogar para nossa pagina criada (acessoNegado.jsf)-->
-    <http auto-config="true" 
-          access-denied-page="/error/acessoNegado.jsf"
+    <http auto-config="true"       
           use-expressions="true">
+        <access-denied-handler error-page="/error/acessoNegado.jsf" />
         <!--Definir as URLs que ele vai interceptar e validar pra gente:-->
         <!--Página para definir permissões a determinados usuários >> só permitida para usuários ADMIN-->
         <intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('ADMIN')" method="POST"/>
@@ -60,7 +60,7 @@
     <!--autenticações para o usuário no banco de dados-->
     <authentication-manager>
         <authentication-provider>
-            <password-encoder hash="plaintext" />
+            <password-encoder hash="bcrypt"/>
             <!--Precisa de jdbc para fazer a conexão com o banco de dados-->
             <!--DataSource springDataSource declarado no applicationContext.xml-->
             <!--Select para carregar usuários e senha que estão ativos (respeitando o alias do spring (username, password, enable)-->

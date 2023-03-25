@@ -17,7 +17,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -52,13 +52,17 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //JDBC do Spring: (Vai pegar das configurações dos arquivos)
         //Vai ser resposável por comitar ou dar roolback:
-        BasicDataSource springBasicDataSource = (BasicDataSource) ContextLoaderListenerUtil.getBean("springDataSource");
+//        BasicDataSource springBasicDataSource = (BasicDataSource) ContextLoaderListenerUtil.getBean("springDataSource");  //Caso For TomCat
+        DataSource springBasicDataSource = (DataSource) ContextLoaderListenerUtil.getBean("springDataSource");  //Usando DataSource direto, glassfish/payara
         DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
         PlatformTransactionManager transactionManager = new DataSourceTransactionManager(springBasicDataSource);
         TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
 
         try {
             request.setCharacterEncoding("UTF-8"); //Define codificação para acentuação não ser atrapalhada nada..
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html; charset=UTF-8");
+
             //Captura o usuário que faz a operação:
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             HttpSession httpSession = httpServletRequest.getSession();
@@ -79,6 +83,9 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
             filterChain.doFilter(request, response); //Executa nossa ação no servidor
             //Após executar a ação (resposta):
 
+            //Insert do Banco apenas para teste, verificando se está se conectando no banco certinho!! Muito bom tudo ok com a conexão com o banco direto do dataSource do payara!!
+            //sessionFactory.getCurrentSession().createNativeQuery("INSERT INTO PUBLIC.PAIS VALUES (3, 'ARROZ', 'BOUS1', 2);").executeUpdate();  
+            //
             //Se tudo ok depois do doFilter, faz o commit, caso deu erro vai dar Rollback:
             transactionManager.commit(transactionStatus);
 
@@ -94,9 +101,6 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
                     sessionFactory.getCurrentSession().close();
                 }
             }
-
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html; charset=UTF-8");
         } catch (Exception ex) {
             ex.printStackTrace();
             transactionManager.rollback(transactionStatus);
@@ -116,8 +120,7 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
             if (sessionFactory != null
                     && sessionFactory.getCurrentSession() != null
                     && sessionFactory.getCurrentSession().isOpen()) {
-                if (sessionFactory.getCurrentSession().beginTransaction() != null
-                        && sessionFactory.getCurrentSession().beginTransaction().isActive()) {
+                if (sessionFactory.getCurrentSession().getTransaction().isActive()) {
                     sessionFactory.getCurrentSession().flush();
                     sessionFactory.getCurrentSession().clear();
                 }

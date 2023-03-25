@@ -14,6 +14,7 @@
     <display-name>Projeto JSF + Spring + PrimeFaces</display-name>
     
     <welcome-file-list>
+        <!--Dando pal para redirecionar se abrir pelo JSP e redirecionar para o public/login.xhtml (testar melhor o que ta pegando)-->
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list> 
     
@@ -69,6 +70,14 @@
         <location>/error/error.jsf</location>
     </error-page>
     
+    <!--Deixar nosso projeto compativel com JSP para não ter nenhum problema com JSP quando utilizar-->
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>/**</url-pattern>
+            <el-ignored>false</el-ignored>  
+        </jsp-property-group>
+    </jsp-config>
+    
     <!--Parametros para a aplicação: -->
     <!--Para os comentários nas páginas jsf não sair no navegador versão para o usuário -->
     <context-param>
@@ -86,6 +95,16 @@
     <context-param>
         <param-name>con.sun.faces.expressionFactory</param-name>
         <param-value>con.sun.el.ExpressionFactoryImpl</param-value>
+    </context-param>
+    
+    <!--Declarar os 3 arquivos de configuração que criamos para subir, caso contrário não vai ler eles (o faces-config.xml não precisa já é lido automatico)-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml 
+            /WEB-INF/spring-servlet-servlet.xml
+            /WEB-INF/applicationContext-security.xml
+        </param-value>
     </context-param>
     
     <!--Tempo que uma mudança da pagina jsf demora para ser atualizada no desenvolvimento após salvar a mudança na IDe e ja automaticamente ver no navegador (tirando o cache de tempo padrão)-->
@@ -114,48 +133,96 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>cupertino</param-value>
     </context-param>
-    
+       
     <!--Filtro-->
+    <!--Declarar nosso FilterOpenSessionInView (que criamos para trabalhar como Filtro-->
+    <filter>
+        <filter-name>conexaoFilter</filter-name>
+        <filter-class>com.mycompany.project.filter.FilterOpenSessionInView</filter-class>
+    </filter>
+    
+    <!--SpringSecurityFilterChain apenas declara a classe do Spring-->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    
+    <!--Codificação para o Spring-->
+    <filter>
+        <filter-name>encoding-filter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>ISO-8859-1</param-value>
+        </init-param>
+    </filter>
+    
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
     </filter>
     
     <!--Filter Mapping-->
+    <!--Mapeando todas as nossas declarações de filtros acima para todas as URLS-->
+    <filter-mapping>
+        <filter-name>encoding-filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>conexaoFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlets</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </filter-mapping>
     
-    <!--Configurações DataSource pool criado direto no context.xml (Funcionando OK) (arquivo context.xml) -->
+    <!--Configurações DataSource pool criado direto no context.xml (Funcionando OK para TOMCAT) (arquivo context.xml) -->
+    <!--Payara não utilizamos o context.xml.. vamos ver o comportamento sem essa parte...-->
     <!--Vamos tentar usar assim tambem ver como vai se comportar assim que começar a trabalhar com banco de dados-->
+    <!--Testar sem esse resource-ref > não é no TomCat que vamos usar-->
 <!--    <resource-ref>
         <description>DataSource datasource</description>
+        TomCAt
         <res-ref-name>jdbc/datasource</res-ref-name>
+        Payara
+        <res-ref-name>jdbc/__caixaki_ds</res-ref-name> 
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>-->
     
-    <!--Tentando usar o dataSource direto do glassfish (payara):-->
-    <!--Vamos ver quando começar a utilizar banco como vamos trabalhar assim.. pesquisar depois-->
-    <data-source>
-        <name>java:global/caixaki_ds</name>
-        <class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
-        <server-name>localhost</server-name>
-        <port-number>5432</port-number>
-        <database-name>jsf_spring_primefaces</database-name>
-        <user>caixaki</user>
-        <!-- Example of using a Payara password alias in the datasource definition -->
-        <password>admin</password>
-        <!-- Example of how to use a Payara specific custom connection pool setting -->
-        <property>
-            <name>fish.payara.slow-query-threshold-in-seconds</name>
-            <value>5</value>
-        </property>
-        <property>
-            <name>fish.payara.log-jdbc-calls</name>
-            <value>true</value>
-        </property>
-    </data-source>
+    <!--Responsavel para ter acesso a todos os dados do Spring de qualquer lugar-->
+    <listener>
+        <listener-class>com.mycompany.project.listener.ContextLoaderListenerUtil</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    
+    <listener>
+        <listener-class>com.mycompany.project.listener.CustomListener</listener-class>
+    </listener>
+    
+    <!--Caso quiser interceptar sessoes que foram logadas para pegar informações-->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    
+    <!--Dispatcher-->
+    <servlet>
+        <servlet-name>spring-servlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <!--Mapeando todo spring-servlet-->
+    <servlet-mapping>
+        <servlet-name>spring-servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 </web-app>

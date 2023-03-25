@@ -6,7 +6,8 @@
 <hibernate-configuration>
     <session-factory name="sessionFactory">
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.datasource">java:/comp/env/jdbc/datasource</property>
+        <!--Para TomCat passar no padrão deles o dataSource: java:/comp/env/jdbc/datasource-->
+        <property name="hibernate.connection.datasource">jdbc/__caixaki_ds</property>
         <property name="hibernate.default_schema">public</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <!--Consegue retornar erros do lado do banco, identificando dentro do projeto pelo hibernate-->
@@ -17,6 +18,9 @@
         <property name="hibernate.jdbc.batch_size">100</property>
         <!--Melhorar performance com cache de segundo nível-->
         <property name="hibernate.cache.use_second_level_cache">true</property>
+        <!--Atributo para região... erro ao subir projeto se não tiver informado-->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory</property>
+
         <!--Fechar automaticamente a session, gerenciando isso automaticamente-->
         <property name="hibernate.transaction.auto_close_session">true</property>
         <!--Caso queira crar as tabelas automaticamente de acordo com as classes java mapeadas-->
@@ -48,11 +52,12 @@
         <mapping class="br.com.project.model.classes.SendEmail" />-->
 
         <!--hibernate.envers >> Opções de auditoria para as tabelas, deixando uma tabela de log para quando ocorre insert, delete, update.. sabendo tudo que foi modificado!-->
-        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-insert" />
+        <!--Parece que nas versões mais recentes do Hibernate, não é necessário declarar essas auditorias.. ele faz isso direto pela anotação, já sabendo o que fazer sozinho (@Audited)-->
+<!--        <listener class="org.hibernate.envers.event.AuditEventListener" type="post-insert" />
         <listener class="org.hibernate.envers.event.AuditEventListener" type="post-update" />
         <listener class="org.hibernate.envers.event.AuditEventListener" type="post-delete" />
         <listener class="org.hibernate.envers.event.AuditEventListener" type="post-collection-recreate" />
         <listener class="org.hibernate.envers.event.AuditEventListener" type="pre-collection-update" />
-        <listener class="org.hibernate.envers.event.AuditEventListener" type="pre-collection-remove" />
+        <listener class="org.hibernate.envers.event.AuditEventListener" type="pre-collection-remove" />-->
     </session-factory>
 </hibernate-configuration>
