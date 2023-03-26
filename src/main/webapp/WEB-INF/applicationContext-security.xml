@@ -27,19 +27,19 @@
         <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
         <!--Todas as páginas que tiver dentro de cadastro/ precisa estar autenticado e ser role 'USER'-->
         <intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-        <!--Todas as páginas que tiver dentro de publico/ permite geral-->
-        <intercept-url pattern="/publico/**" access="permitAll" /> 
+        <!--Todas as páginas que tiver dentro de public/ permite geral-->
+        <intercept-url pattern="/public/**" access="permitAll" /> 
         <!--Todas as páginas que tiver dentro de teste/ permite geral-->
         <intercept-url pattern="/teste/**" access="permitAll" /> 
 		
         <!--Vamos dizer para ele qual nossa página de login e pra onde ele vai redirecionar, caso falhar login_error-->
-        <form-login login-page="/publico/login.jsf"
+        <form-login login-page="/public/login.jsf"
                     always-use-default-target="true" default-target-url="/restrito/principal.jsf"
-                    authentication-failure-url="/publico/login.jsf?login_error=1" />
+                    authentication-failure-url="/public/login.jsf?login_error=1" />
 
         <!--Logout foi feito com sucesso redireciona para página de login novamente-->
         <!--Spring encerra sessão do usuário após o logout, apagando também os cookies-->
-        <logout invalidate-session="true" logout-success-url="/publico/login.jsf"
+        <logout invalidate-session="true" logout-success-url="/public/login.jsf"
                 logout-url="/j_spring_security_logout" delete-cookies="JSESSIONID"/>
 		
         <!--Faixa de segundos para o Spring relembrar o login/senha do usuário-->
@@ -47,12 +47,12 @@
 
         <!--Não permitir logar mais de 1 sessão para o usuário, não deixando acessar 2 navegadores diferentes com mesmo usuário e tal..-->	
         <!--Migra sessão em caso tentar usar outra sessão-->
-        <session-management invalid-session-url="/publico/login.jsf"
+        <session-management invalid-session-url="/public/login.jsf"
                             session-fixation-protection="migrateSession"> 
             <!--Numero maximo de sessao (1) e joga para página de login e o SPRING da uma erro para gente saber que o limite foi atingido-->
             <concurrency-control 
                 max-sessions="1"
-                expired-url="/publico/login.jsf"
+                expired-url="/public/login.jsf"
                 error-if-maximum-exceeded="true" /> 
         </session-management>		
     </http>
