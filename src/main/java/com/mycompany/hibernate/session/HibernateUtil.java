@@ -42,7 +42,7 @@ public class HibernateUtil implements Serializable {
     private static SessionFactory buildSessionFactory() {
         try {
             if (sessionFactory == null) {
-                //Deve passar o caminho do arquivo hibernate.cfg.xml no configure(..) ou se estiver na pasta raiz não precisa!
+                //Deve passar o caminho do arquivo hibernate.cfg.xml no configure(..) ou se estiver na pasta raiz não precisa (src/main/resources)!
                 sessionFactory = new Configuration().configure().buildSessionFactory();
             }
 
