@@ -10,33 +10,48 @@
 
     <!--Se cair em acesso negado para o usuário, já vai jogar para nossa pagina criada (acessoNegado.jsf)-->
     <http auto-config="true"       
-          use-expressions="true">
+          use-expressions="true"           
+          disable-url-rewriting="false">
+        <csrf disabled="true"/>
         <access-denied-handler error-page="/error/acessoNegado.jsf" />
-        <!--Definir as URLs que ele vai interceptar e validar pra gente:-->
+        <!--Definir as URLs que ele vai interceptar e validar pra gente:-->        
         <!--Página para definir permissões a determinados usuários >> só permitida para usuários ADMIN-->
-        <intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAnyRole('ADMIN')" method="POST"/>
-        <!--Todas as páginas que tiver dentro de resoucers/components precisa estar autenticado e ser role 'USER'-->
-        <intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-        <!--Todas as páginas que tiver dentro de resoucers/ precisa estar autenticado e ser role 'USER'-->
-        <intercept-url pattern="/resources/**" access="isAuthenticated() and hasAnyRole('USER')"/>
-        <!--Todas as páginas que tiver dentro de restrito/ precisa estar autenticado e ser role 'USER'-->
-        <intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <intercept-url pattern="/cadastro/cad_permissao.jsf" access="hasAuthority('ADMIN')" method="POST"/>
+        <!--Todas as páginas que tiver dentro de resoucers/components precisa estar autenticado e ser authority 'USER'-->
+        <intercept-url pattern="/resources/components/**" access="isAuthenticated() and hasAuthority('USER')"/>
+        <!--Todas as páginas que tiver dentro de resoucers/ precisa estar autenticado e ser authority 'USER'-->
+        <intercept-url pattern="/resources/**" access="isAuthenticated() and hasAuthority('USER')"/>
+        <!--Todas as páginas que tiver dentro de restrito/ precisa estar autenticado e ter authority 'USER'-->
+        <intercept-url pattern="/restrito/**" access="isAuthenticated() and hasAuthority('USER')"/>
         <!--Todas as páginas que tiver dentro de error/ pode estar logado ou não >> pode estar tentando logar no sistema e cai em erro -->
         <intercept-url pattern="/error/**" access="isAnonymous() or isAuthenticated() or !isAuthenticated()"/>
         <!--Todas as páginas que tiver dentro de templates/ precisa estar autenticado e ser role 'USER'-->
-        <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAuthority('USER')"/>
         <!--Todas as páginas que tiver dentro de cadastro/ precisa estar autenticado e ser role 'USER'-->
-        <intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAnyRole('USER')"/>
+        <intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAuthority('USER')"/>
         <!--Todas as páginas que tiver dentro de public/ permite geral-->
         <intercept-url pattern="/public/**" access="permitAll" /> 
         <!--Todas as páginas que tiver dentro de teste/ permite geral-->
-        <intercept-url pattern="/teste/**" access="permitAll" /> 
-		
-        <!--Vamos dizer para ele qual nossa página de login e pra onde ele vai redirecionar, caso falhar login_error-->
-        <form-login login-page="/public/login.jsf"
-                    always-use-default-target="true" default-target-url="/restrito/principal.jsf"
-                    authentication-failure-url="/public/login.jsf?login_error=1" />
+        <intercept-url pattern="/teste/**" access="permitAll" />        
+        <!--Check do SpringSecurity - permitAll sempre que tentar logar vai chamar essa URL, permitir para todos-->
+        <intercept-url pattern="/j_spring_security_check" access="permitAll"/>    
 
+        <!--Configuração para Login, precisa passar os dados abaixo:-->
+        <!--username-parameter: para indicar o que vem da tela de login (default do spring é username direto, mandamos diferente tem que passar aqui!-->
+        <!--password-parameter: para indicar o que vem da tela de login (default do spring é password direto, mandamos diferente tem que passar aqui!-->
+        <!--login-page: Página de Login do Sistema: /public/login.jsf -->
+        <!--login-processing-url: URL de processo do spring security: /j_spring_security_check  (acredito que não precisa passar, ja deve ser default) -->
+        <!--authentication-failure-url: Caso der falha na autenticação vai mandar um parametro para tela (login_error) indicando que deu exception-->
+        <!--default-target-url=: Caso logar corretamente, e for autorizado para ir a página vai jogar para página principal do sistema-->
+        <form-login 
+            always-use-default-target="true"
+            login-page="/public/login.jsf"            
+            login-processing-url="/j_spring_security_check" 
+            default-target-url="/restrito/principal.jsf"
+            authentication-failure-url="/public/login.jsf?login_error=true"
+            username-parameter="j_username"
+            password-parameter="j_password" />
+       
         <!--Logout foi feito com sucesso redireciona para página de login novamente-->
         <!--Spring encerra sessão do usuário após o logout, apagando também os cookies-->
         <logout invalidate-session="true" logout-success-url="/public/login.jsf"
@@ -60,26 +75,38 @@
     <!--autenticações para o usuário no banco de dados-->
     <authentication-manager>
         <authentication-provider>
-            <password-encoder hash="bcrypt"/>
+            <!--Encoder para o password, vai pegar o digitado, converter para Bcrypt e testar a senha que está gravada no banco!-->
+            <password-encoder ref="encoder" />
             <!--Precisa de jdbc para fazer a conexão com o banco de dados-->
             <!--DataSource springDataSource declarado no applicationContext.xml-->
             <!--Select para carregar usuários e senha que estão ativos (respeitando o alias do spring (username, password, enable)-->
             <!--Select para carregar autorização dos usuarios que estão ativos (respeitando o alias do spring (username, authority)-->
-            <!--Parametro que o Spring vai setar '?'-->
+            <!--Parametro que o Spring vai setar '?'-->  
+            
+            <!--Teste para fazer diretamente sem passar pelo banco, ele descriptografa o 123 para o usuario padoca e fica essa senha gigante... deixando logar-->  
+<!--            <user-service>
+                <user name="padoca" password="$2a$04$hFtf/a4qq0Lx52VbMKHbquHZG6CN6tpQd5vVR/l2EM44mnfhMizqW" authorities="USER" />
+            </user-service>-->
+                          
             <jdbc-user-service data-source-ref="springDataSource"
-                               users-by-username-query="SELECT ent_login as username,
-                                                               ent_senha as password,
-							       'true' as enable
-							  FROM entidade 
-							 WHERE ent_inativo = false 
-							   and upper(ent_login) = upper(?)"
-                               authorities-by-username-query="SELECT u.ent_login as username,
-								     p.esa_codigo as authority 
-							        FROM entidade u 
-								join entidadeacesso p 
-                                                                  on u.ent_codigo = p.ent_codigo 
-							       WHERE u.ent_inativo = false
-								 AND upper(u.ent_login) = upper(?)" />
+                                           users-by-username-query="SELECT ent_login as username,
+                                                                           ent_senha as password,
+                                                                           'true' as enable
+                                                                      FROM entidade 
+                                                                     WHERE ent_inativo = false 
+                                                                       AND upper(ent_login) = upper(?) "
+                                           authorities-by-username-query="SELECT u.ent_login as username,
+                                                                                 p.esa_codigo as authority 
+                                                                            FROM entidade u 
+                                                                            JOIN entidadeacesso p 
+                                                                              ON u.ent_codigo = p.ent_codigo 
+                                                                           WHERE u.ent_inativo = false
+                                                                             AND upper(u.ent_login) = upper(?)" />
         </authentication-provider>
     </authentication-manager>
+    
+    <!--Tratamento para fazer a criptografia da senha e testar com o banco de dados.. chamado pelo password-encoder acima-->
+    <b:bean id="encoder" 
+            class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" >
+    </b:bean>
 </b:beans>

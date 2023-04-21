@@ -11,10 +11,91 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
-        <title>Login Projeto JSF + Spring + PrimeFaces</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Login Projeto JSF + Spring + PrimeFaces</title>
+
+        <!--Declarando o javascript jquery > direto da biblioteca do próprio primefaces-->
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <!--<h:outputScript name="jquery.js" library="primefaces/jquery" />-->
+        <h:outputScript name="scripty.js" library="js" />
+        <!--Declarando o CSS - pasta resources é reconhecida automaticamente pelo JSF não precisa passar a pasta resources-->
+        <!--Declarar CSS sempre sem a library.. não precisa se não buga.. a pasta resource já é reconhecida é so passa as pastas a frente direto no name!-->
+        <h:outputStylesheet name="css/estilo.css" />
     </h:head>
+
     <h:body>
-        <div>Bem vindo ao Sistema!</div>
+        <!--Arquivo CSS está tratando esses componentes abaixo:-->
+        <div id="imagemlogin">
+            <h:graphicImage name="cadeado.png"  library="img" class="bordaImagem ImgLogin" />
+        </div>
+
+        <div id="keyslogin">
+            <h:graphicImage name="keys.png" library="img" class="bordaImagem ImgLogin" />
+        </div>
+
+        <div id="formlogin">
+            <br/>
+
+            <!--SpringSecurity trata o param.login_error nessa página, retornando um erro pra gente.. (applicationContext-security.xml)-->
+            <!--Caso der erro, vai cair em uma das opções abaixo, caso passar o login, vai redirecionar para a páagina principal do sistema (applicationContext-security.xml)-->
+            <h:panelGroup rendered="#{!empty param.login_error}">   
+                <!--SpringSecurity vai retornar essas mensagens de erros, caso ocorra:-->
+                <h:outputLabel rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Bad credentials'}" >
+                    <span class="estiloSpan">
+                        Permissão negada, login ou senha incorretos.
+                    </span>
+                </h:outputLabel>
+
+                <!--SpringSecurity vai retornar essas mensagens de erros, caso ocorra:-->
+                <h:outputLabel rendered="#{SPRING_SECURITY_LAST_EXCEPTION.message == 'Maximum sessions of 1 for this principal exceeded'}">
+                    <span class="estiloSpan">
+                        Você está logado em outra sessão.
+                    </span>
+
+                    <!--Botão para encerrar a sessão - redirecionamento para página própria de encerrar sessão:-->
+                    <h:commandButton value="Encerrar Sessão" 
+                                     style="height:40px; width:100px; background:#CDCDC1; border: 1px;"
+                                     onclick="invalidarSession('#{request.contextPath}', '/public/invalidateSession');" />
+                </h:outputLabel>
+            </h:panelGroup>
+
+            <br/>
+
+            <!--Valida Usuário e Senha informado para enviar o formulário:-->
+            <!--SpringSecurity trata os 2 campos para usuario e senha tem que ser enviado como (j_username, j_password) caso contrário não vai validar!-->
+            <form id="formulario" 
+                  method="post"
+                  onsubmit="return validarSenhaLogin();"
+                  action="#{request.contextPath}/j_spring_security_check">
+                <span style="display: block; padding-top: 2px; text-align: right;">
+                    <span style="display: inline-block; width: 50px; text-align: right; font-weight: bold;">
+                        Login
+                    </span>
+                    <input type="text" name="j_username" class="inputTypeLogin" id="j_username"/>
+                </span>
+
+                <span style="display: block; padding-top: 2px; text-align: right;">
+                    <span style="display: inline-block; width: 50px; text-align: right; font-weight: bold;">
+                        Senha
+                    </span>
+                    <input type="text" name="j_password" class="inputTypeLogin" id="j_password"/>
+                </span>
+
+                <span style="display: block; padding-top: 2px; text-align: right;">
+                    <span id="enviando"></span>
+                    <button type="submit" class="blue buttonLogin" style="height:40px; width:100px; background:#CDCDC1; border: 1px;"
+                            id="buttonLogin">
+                        Entrar
+                    </button>
+                </span>
+            </form>
+
+        </div>
+
+        <script type="text/javascript">
+            //Ao carregar a página ele joga o foco para o campo usuário pelo jquery:
+            $('#j_username').focus();
+        </script>
     </h:body>
 </html>
