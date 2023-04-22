@@ -4,12 +4,89 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>Sessão Inválida!</div>
-    </body>
+        <title>Sessão inválida</title>
+        
+        <!--Deixar apenas a última versão do jQuery e utilizar como referência (jQuery.... para chamar métodos)-->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" />
+
+        <!--Declarando o javascript jquery > direto da biblioteca do próprio primefaces (Não está funcionando corretamente)-->
+        <!--<h:outputScript library="primefaces" name="jquery/jquery.js" />-->
+        <!--<h:outputScript library="primefaces" name="jquery/jquery-plugins.js" />-->
+        <!--<h:outputScript name="jquery-plugins.js" library="primefaces/jquery" />-->
+        <!--Declarando CSS do primefaces-->
+        <!--Não estão funcionando.. caso for usar verificar para baixar corretamente-->
+        <!--<h:outputStylesheet name="jquery-ui.css" library="primefaces/jquery/ui" />-->
+        <!--<h:outputStylesheet name="primefaces.css" library="primefaces" />-->
+        <!--Declarando JavaScripts-->
+        <h:outputScript name="jquery.cookie.js" library="js" />
+        <h:outputScript name="jquery.maskMoney.min.js" library="js" />
+        <h:outputScript name="jquery.maskedinput.js" library="js" />
+        <h:outputScript name="scripty.js" library="js" />
+        <!--Declarando o CSS - pasta resources é reconhecida automaticamente pelo JSF não precisa passar a pasta resources-->
+        <!--Declarar CSS sempre sem a library.. não precisa se não buga.. a pasta resource já é reconhecida é so passa as pastas a frente direto no name!-->
+        <h:outputStylesheet name="css/estilo.css"/> 
+    </h:head>
+
+    <script type="text/javascript" charset="UTF-8" >
+        //Evita conflito entre bibliotecas:
+        jQuery.noConflict();
+
+        //Abrir o Dialog direto quando chamar a página:
+        jQuery(function () {
+            PF('dlgEncerraSessao').show();
+        });
+
+        function handleLoginRequest(xhr, status, args) {
+            if (!args.loggedIn) {
+                //Caso negar o encerramento de sessão executar um efeito em tela e não deixar encerrar:
+                PF('dlgEncerraSessao').jq.effect("shake"), {times: 5}, 100;
+            } else {
+                //Caso encerramento for permitido, fecha o dialog e faz o logout:
+                PF('dlgEncerraSessao').hide();
+                logout('#{request.contextPath}');
+            }
+        }
+    </script>
+
+    <!--PrependId (Para facilitar o jQuery a localizar objetos dentro do formulário.. caso não passar false o javaScript vai ficar com form:taltal:taltal.. dificultando localizar o objeto por jQuery diretamente-->
+    <h:form id="formInvalidate" prependId="false" >
+        <h:body>
+            <div id="msgError" class="espacoMensagem" >
+                <p:growl id="messageInvalidate" showDetail="false" sticky="true" redisplay="true" showSummary="false"/>
+            </div>
+        </h:body>
+
+        <p:dialog id="dlgEncerraSessao" 
+                  widgetVar="dlgEncerraSessao"
+                  header="Encerrar Sessão"
+                  resizable="false"
+                  modal="true"
+                  closable="false">
+            <h:panelGrid columns="2" cellpadding="5" >
+                <h:outputLabel id="lblUsername" value="Login" for="txtLogin" />
+                <p:inputText id="txtLogin" value="" required="true" label="Login" requiredMessage="Informe o Login!" />
+
+                <h:outputLabel id="lblSenha" value="Senha" for="txtSenha" />
+                <p:password id="txtSenha" value="" required="true" label="Senha" requiredMessage="Informe a Senha!" />
+
+                <h:outputLabel value="" />
+                <p:commandButton id="cmdEncerrar" 
+                                 value="Encerrar" 
+                                 style="height:40px; width:100px; background:#CDCDC1; border: 1px solid #FFFFFF;"
+                                 update="formInvalidate:messageInvalidate"
+                                 ajax="true"
+                                 oncomplete="handleLoginRequest(xhr, status, args);"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
 </html>

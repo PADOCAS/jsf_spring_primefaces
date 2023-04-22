@@ -16,8 +16,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <title>Login Projeto JSF + Spring + PrimeFaces</title>
 
         <!--Declarando o javascript jquery > direto da biblioteca do próprio primefaces-->
-        <h:outputScript library="primefaces" name="jquery/jquery.js" />
-        <!--<h:outputScript name="jquery.js" library="primefaces/jquery" />-->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" />
+
         <h:outputScript name="scripty.js" library="js" />
         <!--Declarando o CSS - pasta resources é reconhecida automaticamente pelo JSF não precisa passar a pasta resources-->
         <!--Declarar CSS sempre sem a library.. não precisa se não buga.. a pasta resource já é reconhecida é so passa as pastas a frente direto no name!-->
@@ -94,8 +94,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </div>
 
         <script type="text/javascript">
+            //Evita conflito entre bibliotecas:
+            jQuery.noConflict();
+
             //Ao carregar a página ele joga o foco para o campo usuário pelo jquery:
-            $('#j_username').focus();
+            jQuery('#j_username').focus();
         </script>
     </h:body>
 </html>
