@@ -15,7 +15,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Sessão inválida</title>
-        
+
         <!--Deixar apenas a última versão do jQuery e utilizar como referência (jQuery.... para chamar métodos)-->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" />
 
@@ -46,6 +46,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             PF('dlgEncerraSessao').show();
         });
 
+        /**
+         * Método para Validar encerramento de Sessão, caso confirmar fará logout!
+         * 
+         * @param {type} xhr
+         * @param {type} status
+         * @param {type} args
+         * @returns {undefined}
+         */
         function handleLoginRequest(xhr, status, args) {
             if (!args.loggedIn) {
                 //Caso negar o encerramento de sessão executar um efeito em tela e não deixar encerrar:

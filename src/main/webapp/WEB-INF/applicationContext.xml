@@ -137,5 +137,8 @@
 
     <!--Uma Instancia desse Objeto por sessão, classe que controla os logs de auditoria tal.. -->
     <bean id="utilFramework" class="com.mycompany.framework.util.FrameworkUtil" scope="session"/>
+    
+    <!--Declarando nosso SessionController (singleton - apenas 1 para a aplicação)-->
+    <bean id="sessionController" class="com.mycompany.project.geral.controller.SessionControllerImpl" scope="singleton" />
 </beans>
 
