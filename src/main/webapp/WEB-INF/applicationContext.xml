@@ -137,8 +137,21 @@
 
     <!--Uma Instancia desse Objeto por sessão, classe que controla os logs de auditoria tal.. -->
     <bean id="utilFramework" class="com.mycompany.framework.util.FrameworkUtil" scope="session"/>
-    
+
+    <!--Controllers:-->  
     <!--Declarando nosso SessionController (singleton - apenas 1 para a aplicação)-->
+    <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
     <bean id="sessionController" class="com.mycompany.project.geral.controller.SessionControllerImpl" scope="singleton" />
+    
+    <!--DAOs:-->
+    <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
+    <!--(singleton - apenas 1 para a aplicação)-->
+    <bean id="repositoryLogin" class="com.mycompany.dao.implementacao.DAOLogin" scope="singleton" />
+    
+    <!--Services:-->
+    <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
+    <!--(singleton - apenas 1 para a aplicação)-->
+    <bean id="srvLogin" class="com.mycompany.srv.implementacao.SrvLoginImpl" scope="singleton" />
+       
 </beans>
 
