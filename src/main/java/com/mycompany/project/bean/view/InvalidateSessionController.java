@@ -52,7 +52,6 @@ public class InvalidateSessionController extends BeanManagedViewAbstract {
                     && sessionController != null) {
                 sessionController.invalidateSession(login);
                 loggedIn = true;
-                FacesContext.getCurrentInstance().addMessage("messageInvalidate", new FacesMessage(FacesMessage.SEVERITY_INFO, "OK!", "Encerramento de sessão realizado com sucesso!"));
             } else {
                 loggedIn = false;
                 FacesContext.getCurrentInstance().addMessage("messageInvalidate", new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção", "Login/Senha incorreto(s)."));
