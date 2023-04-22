@@ -11,7 +11,6 @@ import org.hibernate.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,24 +127,25 @@ public interface IInterfaceCrud<T> extends Serializable {
     public Session getSession() throws Exception;
 
     public List<T> getListSqlDinamica(String query) throws Exception;
-    
+
     public List<Object[]> getListSqlDinamicaArray(String query) throws Exception;
 
     public JdbcTemplate getJdbcTemplate() throws Exception;
 
-    public SimpleJdbcTemplate getSimpleJdbcTemplate() throws Exception;
-
+    //Não tem mais o simpleJdbcTemplate nas versões recentes do Spring-jdbc - retiramos ele entao.. so ficou o JdbcTemplate
+//    public JdbcTemplate getSimpleJdbcTemplate() throws Exception;
     public SimpleJdbcInsert getSimpleJdbcInsert() throws Exception;
-    
+
     public SimpleJdbcCall getSimpleJdbcCall() throws Exception;
 
     public Long qtdeTotalRegistro(String table) throws Exception;
 
     /**
      * //Retorna uma Query preparada para uso posterior se necessário
+     *
      * @param query
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public Query<T> obterQuery(String query) throws Exception;
 

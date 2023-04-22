@@ -32,6 +32,7 @@
     <context:component-scan base-package="com.mycompany.project.bean.geral" />
     <context:component-scan base-package="com.mycompany.project.report.util" />
     <context:component-scan base-package="com.mycompany.project.util.all" />
+    <context:component-scan base-package="com.mycompany.project.bean.view"/>
     <context:component-scan base-package="com.mycompany.project.bean.view.grafico"/>
     <context:component-scan base-package="com.mycompany.framework.controller.crud"/>
     <context:component-scan base-package="com.mycompany.framework.interfac.crud"/>
@@ -68,29 +69,29 @@
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="false">
         <property name="dataSource" ref="springDataSource"/>
     </bean>  
-     
-     <!--TODOOOOOOOOOOOOOOOO::: SERAO CRIADAS DEPOIS ESSAS CLASSES E DEVEM SER DECLARADAS AQUI ELAS (jdbcTemplates....)!!!!-->
-     <!--Por enquanto vão ficar comentadas-->
+    
     <!--Declara as classes que vamos receber o dataSource para executar instruções SQL direto no banco de dados: -->
-<!--    <bean id="jdbcTemplate" name="jdbcTemplate" class="br.com.framework.implementacao.crud.JdbcTemplateImpl" lazy-init="false">
-        Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)
+    <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
+    <bean id="jdbcTemplate" name="jdbcTemplate" class="com.mycompany.hibernate.impl.crud.JdbcTemplateImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
         <constructor-arg name="dataSource" ref="springDataSource"/>
     </bean>
      
-    <bean id="simpleJdbcTemplate" name="simpleJdbcTemplate" class="br.com.framework.implementacao.crud.SimpleJdbcTemplateImpl" lazy-init="false">
+    <!--Não existe mais o SimpleJdbcTemplate nas versões recentes do Spring-Jdbc! Retiramos ele-->
+    <!--    <bean id="simpleJdbcTemplate" name="simpleJdbcTemplate" class="com.mycompany.hibernate.impl.crud.SimpleJdbcTemplateImpl" lazy-init="false">
         Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)
         <constructor-arg name="dataSource" ref="springDataSource"/>
-    </bean>    
+    </bean>    -->
      
-    <bean id="simpleJdbcInsert" name="simpleJdbcInsert" class="br.com.framework.implementacao.crud.SimpleJdbcInsertImplents" lazy-init="false">
-        Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)
+    <bean id="simpleJdbcInsert" name="simpleJdbcInsert" class="com.mycompany.hibernate.impl.crud.SimpleJdbcInsertImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
         <constructor-arg name="dataSource" ref="springDataSource"/>
     </bean>
      
-    <bean id="simpleJdbcClassImpl" name="simpleJdbcClassImpl" class="br.com.framework.implementacao.crud.SimpleJdbcClassImpl" lazy-init="false">
-        Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)
+    <bean id="simpleJdbcCall" name="simpleJdbcCall" class="com.mycompany.hibernate.impl.crud.SimpleJdbcClassImpl" lazy-init="false">
+        <!--Passa a referencia do datasource no construtor (na classe ja tem esse construtor preparado para receber o datasource)-->
         <constructor-arg name="dataSource" ref="springDataSource"/>
-    </bean>-->
+    </bean>
 	
     <!-- Mapeamento caso venha utilizar jsp -->
     <!--Mapeando nossa pagina inicia que foi feita em JSP - Spring tem um padrão para a pagina inicial (indexController) temos que colocar exatamente assim-->

@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             } else {
                 //Caso encerramento for permitido, fecha o dialog e faz o logout:
                 PF('dlgEncerraSessao').hide();
-                logout('#{request.contextPath}');
+                document.location = "#{request.contextPath}" + "/j_spring_security_logout";
             }
         }
     </script>
@@ -70,7 +70,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <h:form id="formInvalidate" prependId="false" >
         <h:body>
             <div id="msgError" class="espacoMensagem" >
-                <p:growl id="messageInvalidate" showDetail="false" sticky="true" redisplay="true" showSummary="false"/>
+                <p:growl id="messageInvalidate" showDetail="true" sticky="true" redisplay="true" showSummary="false"/>
             </div>
         </h:body>
 
@@ -82,10 +82,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                   closable="false">
             <h:panelGrid columns="2" cellpadding="5" >
                 <h:outputLabel id="lblUsername" value="Login" for="txtLogin" />
-                <p:inputText id="txtLogin" value="" required="true" label="Login" requiredMessage="Informe o Login!" />
+                <p:inputText id="txtLogin" value="#{invalidateSessionController.login}" required="true" label="Login" requiredMessage="Informe o Login!" />
 
                 <h:outputLabel id="lblSenha" value="Senha" for="txtSenha" />
-                <p:password id="txtSenha" value="" required="true" label="Senha" requiredMessage="Informe a Senha!" />
+                <p:password id="txtSenha" value="#{invalidateSessionController.senha}" required="true" label="Senha" requiredMessage="Informe a Senha!" />
 
                 <h:outputLabel value="" />
                 <p:commandButton id="cmdEncerrar" 
@@ -93,6 +93,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  style="height:40px; width:100px; background:#CDCDC1; border: 1px solid #FFFFFF;"
                                  update="formInvalidate:messageInvalidate"
                                  ajax="true"
+                                 actionListener="#{invalidateSessionController.encerrarSessaoUsuario()}"
                                  oncomplete="handleLoginRequest(xhr, status, args);"/>
             </h:panelGrid>
         </p:dialog>

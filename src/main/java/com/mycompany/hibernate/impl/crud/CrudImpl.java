@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +36,9 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
     @Autowired //Utilizado para injeção de dependência
     private JdbcTemplateImpl jdbcTemplateImpl;
 
-    @Autowired //Utilizado para injeção de dependência
-    private SimpleJdbcTemplateImpl simpleJdbcTemplateImpl;
-
+//    Não existe mais o SimpleJdbcTemplate para as versões recentes do Spring-jdbc retiramos ele
+//    @Autowired //Utilizado para injeção de dependência
+//    private SimpleJdbcTemplateImpl simpleJdbcTemplateImpl;
     @Autowired //Utilizado para injeção de dependência
     private SimpleJdbcInsertImpl simpleJdbcInsertImpl;
 
@@ -337,11 +337,6 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
     }
 
     @Override
-    public SimpleJdbcTemplate getSimpleJdbcTemplate() throws Exception {
-        return simpleJdbcTemplateImpl;
-    }
-
-    @Override
     public SimpleJdbcInsert getSimpleJdbcInsert() throws Exception {
         return simpleJdbcInsertImpl;
     }
@@ -357,9 +352,13 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
         if (getJdbcTemplate() != null
                 && table != null) {
             StringBuilder sql = new StringBuilder();
-            sql.append(" select count(1) from ").append(table);
+            sql.append(" select count(1) as qtde from ").append(table);
 
-            return getJdbcTemplate().queryForLong(sql.toString());
+            SqlRowSet sqlRowSet = getJdbcTemplate().queryForRowSet(sql.toString());
+
+            return sqlRowSet.next() ? sqlRowSet.getLong("qtde") : 0L;
+            //Versão mais atual do Spring, retirou esse tipo de query:
+//            return getJdbcTemplate().queryForLong(sql.toString());
         }
 
         return 0L;
