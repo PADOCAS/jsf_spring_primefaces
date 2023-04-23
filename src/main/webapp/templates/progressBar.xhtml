@@ -32,8 +32,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Fazendo dessa forma, ao incluir o template na página, toda chamada ajax vai fazer a abertura e fechamento do dialog automaticamente após o processamento-->
         <!--Com isso, não é necessário fazer a chamada manual para todos os eventos ajax-->
         <!--Ajax para executar a abertura e fechamento do dialog assim que acabar o processamento-->
-        <!--Nesse caso com ajax chamando fica automatico, será criado um para fazer isso manualmente também-->
-        <p:ajaxStatus id="ajasStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+        <!--Nesse caso com ajax chamando fica automatico, faz o show e hide automaticamente após acabar o processamento da chamada ajax-->
+        <p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
 
         <!--Header para aparecer Processando escrito-->
         <!--Footer para aparecer aguarde...-->

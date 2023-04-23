@@ -109,6 +109,12 @@
         </param-value>
     </context-param>
     
+    <!--Declarar a taglib do arquivo xml para o springsecurity poder ser chamados nas paginas jsf-->
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
+    </context-param>
+    
     <!--Tempo que uma mudança da pagina jsf demora para ser atualizada no desenvolvimento após salvar a mudança na IDe e ja automaticamente ver no navegador (tirando o cache de tempo padrão)-->
     <context-param>
         <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>

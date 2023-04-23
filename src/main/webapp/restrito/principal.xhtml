@@ -9,6 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Login Projeto JSF + Spring + PrimeFaces</title>
@@ -17,11 +18,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
     <h:form>
         <h:body>
-            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar:-->
+            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar através do dialog (statusDialog) está definido automático o show e hide no template:-->
             <ui:include src="../templates/progressBar.xhtml" />
             <div>Tela Principal do Sistema..</div>
-            
-            <p:commandButton id="cmdExecute" ajax="true" value="Teste Ajax Progress Bar" />
+
+            <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
+            <sec:authorize access="isAuthenticated() and hasAuthority('ADMIN')">
+                <p:commandButton id="cmdExecute" 
+                                 ajax="true" 
+                                 value="Teste Ajax Progress Bar" />
+            </sec:authorize>
         </h:body>
     </h:form>
 </html>
