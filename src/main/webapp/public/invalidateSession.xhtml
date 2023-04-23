@@ -69,6 +69,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <!--PrependId (Para facilitar o jQuery a localizar objetos dentro do formulário.. caso não passar false o javaScript vai ficar com form:taltal:taltal.. dificultando localizar o objeto por jQuery diretamente-->
     <h:form id="formInvalidate" prependId="false" >
         <h:body>
+            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar:-->
+            <ui:include src="../templates/progressBar.xhtml" />
+            
             <div id="msgError" class="espacoMensagem" >
                 <p:growl id="messageInvalidate" showDetail="true" sticky="true" redisplay="true" showSummary="false"/>
             </div>

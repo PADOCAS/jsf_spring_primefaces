@@ -14,7 +14,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <title>Login Projeto JSF + Spring + PrimeFaces</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <h:body>
-        <div>Tela Principal do Sistema..</div>
-    </h:body>
+
+    <h:form>
+        <h:body>
+            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar:-->
+            <ui:include src="../templates/progressBar.xhtml" />
+            <div>Tela Principal do Sistema..</div>
+            
+            <p:commandButton id="cmdExecute" ajax="true" value="Teste Ajax Progress Bar" />
+        </h:body>
+    </h:form>
 </html>
