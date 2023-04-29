@@ -23,5 +23,4 @@ public enum StatusPersistencia {
     public String toString() {
         return this.name;
     }
-
 }
