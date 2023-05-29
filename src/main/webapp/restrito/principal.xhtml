@@ -4,36 +4,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:sec="http://www.springframework.org/security/tags"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h:head>
+<ui:decorate template="../templates/templatePrincipal.xhtml"
+             xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:sec="http://www.springframework.org/security/tags"
+             xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="head">
         <title>Tela Principal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </h:head>
+    </ui:define>
 
-    <h:form class="form">
-        <h:body>
-            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar através do dialog (statusDialog) está definido automático o show e hide no template:-->
-            <ui:include src="../templates/progressBar.xhtml" />
-            <!--JavaScript para atalhos-->
-            <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>
-            
-            <div>Tela Principal do Sistema..</div>
+    <ui:define name="form">
+        <div>Tela Principal do Sistema..</div>
 
-            <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
-            <sec:authorize access="isAuthenticated() and hasAuthority('ADMIN')">
-                <p:commandButton id="cmdExecute" 
-                                 ajax="true" 
-                                 onstart="PF('statusDialog').show();" 
-                                 onsuccess="PF('statusDialog').hide();"
-                                 update="@form"
-                                 value="Teste Ajax Progress Bar (F2)" />
-            </sec:authorize>
-        </h:body>
-    </h:form>
-</html>
+        <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
+        <sec:authorize access="isAuthenticated() and hasAuthority('ADMIN')">
+            <p:commandButton id="cmdExecute" 
+                             ajax="true" 
+                             onstart="PF('statusDialog').show();" 
+                             onsuccess="PF('statusDialog').hide();"
+                             update="@form"
+                             value="Teste Ajax Progress Bar (F2)" />
+        </sec:authorize>
+    </ui:define>
+</ui:decorate>

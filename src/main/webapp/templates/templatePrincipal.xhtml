@@ -12,4 +12,80 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:c="http://java.sun.com/jsp/jstl/core">    
+
+    <h:head>        
+        <ui:insert name="head"/>
+    </h:head>
+
+    <style type="text/css">
+        /*Configuraçõe para centralizar os textos dos dialogs (título e footer)*/
+        .ui-dialog-title {
+            float:none !important;
+        }
+
+        .ui-dialog-titlebar {
+            text-align: center !important;
+        }
+
+        .ui-dialog-footer {
+            text-align: center !important;
+        }
+    </style>
+
+    <h:body>
+        <f:view>
+            <!--JavaScript para atalhos-->
+            <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>
+
+            <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
+                <ui:insert name="form"/>
+
+                <!--Fazendo dessa forma, ao incluir o template na página, toda chamada ajax vai fazer a abertura e fechamento do dialog automaticamente após o processamento-->
+                <!--Com isso, não é necessário fazer a chamada manual para todos os eventos ajax-->
+                <!--Ajax para executar a abertura e fechamento do dialog assim que acabar o processamento-->
+                <!--Nesse caso com ajax chamando fica automatico, faz o show e hide automaticamente após acabar o processamento da chamada ajax-->
+                <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
+
+                <!--Header para aparecer Processando escrito-->
+                <!--Footer para aparecer aguarde...-->
+                <!--Modal e não deixar mudar ele de lugar pelo usuário-->
+                <!--closable = false Não deixar fechar ele pelo usuário-->
+                <!--appendTo para aparecer sempre a frente de todo conteudo que estiver utilizando nas páginas-->
+                <!--Dentro dele vai ter o gif do progress bar-->
+                <p:dialog id="dlgAjaxStatusProgressBar"
+                          widgetVar="statusDialog"
+                          modal="true"
+                          resizable="false"
+                          height="200px;"
+                          width="200px;"
+                          header="Aguarde Processando"
+                          draggable="false"
+                          appendTo="@(body)"
+                          dynamic="false"
+                          closable="false">
+                    <h:graphicImage id="imgAjaxStatusLoader" library="img" name="ajax-loader.gif" styleClass="bordaImagem" />
+                </p:dialog>
+
+                <!--Criado um dialog para fazer manualmente:-->
+                <!--Esse pode ser fechado, pois pode ter dado erro e o usuário fecha ele manualmente-->
+                <p:dialog id="dlgAjaxStatusError"
+                          widgetVar="statusDialogError"
+                          modal="true"
+                          resizable="false"
+                          height="200px;"
+                          width="200px;"
+                          header="Erro ao processar"
+                          draggable="false"
+                          appendTo="@(body)"
+                          dynamic="false"
+                          closable="true">
+                    <h:graphicImage id="imgAjaxStatusError" library="img" name="error.png" styleClass="bordaImagem" />
+                </p:dialog>
+
+                <p:growl id="message" widgetVar="message" showSummary="true" showDetail="true" globalOnly="true"
+                         escape="false" sticky="true" />
+            </h:form>
+        </f:view>
+    </h:body>
 </html>
+
