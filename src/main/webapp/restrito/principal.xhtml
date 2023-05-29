@@ -12,7 +12,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
-        <title>Login Projeto JSF + Spring + PrimeFaces</title>
+        <title>Tela Principal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
@@ -26,6 +26,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <sec:authorize access="isAuthenticated() and hasAuthority('ADMIN')">
                 <p:commandButton id="cmdExecute" 
                                  ajax="true" 
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  value="Teste Ajax Progress Bar" />
             </sec:authorize>
         </h:body>

@@ -20,11 +20,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             .ui-dialog-title {
                 float:none !important;
             }
-            
+
             .ui-dialog-titlebar {
                 text-align: center !important;
             }
-            
+
             .ui-dialog-footer {
                 text-align: center !important;
             }
@@ -33,7 +33,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Com isso, não é necessário fazer a chamada manual para todos os eventos ajax-->
         <!--Ajax para executar a abertura e fechamento do dialog assim que acabar o processamento-->
         <!--Nesse caso com ajax chamando fica automatico, faz o show e hide automaticamente após acabar o processamento da chamada ajax-->
-        <p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+        <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
 
         <!--Header para aparecer Processando escrito-->
         <!--Footer para aparecer aguarde...-->
@@ -47,8 +47,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                   resizable="false"
                   height="200px;"
                   width="200px;"
-                  header="Processando"
-                  footer="Aguarde..."
+                  header="Aguarde Processando"
                   draggable="false"
                   appendTo="@(body)"
                   dynamic="false"
@@ -65,7 +64,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                   height="200px;"
                   width="200px;"
                   header="Erro ao processar"
-                  footer="Erro"
                   draggable="false"
                   appendTo="@(body)"
                   dynamic="false"
