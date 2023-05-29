@@ -7,7 +7,7 @@
     <session-factory name="sessionFactory">
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <!--Para TomCat passar no padrão deles o dataSource: java:/comp/env/jdbc/datasource-->
-        <property name="hibernate.connection.datasource">jdbc/__caixaki_ds</property>
+        <property name="hibernate.connection.datasource">jdbc/__jsfspring_ds</property>
         <property name="hibernate.default_schema">public</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <!--Consegue retornar erros do lado do banco, identificando dentro do projeto pelo hibernate-->

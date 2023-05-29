@@ -39,10 +39,10 @@
 
     <!-- Data Source -->
     <!--LazyInit false, para criar assim que subir a aplicação, não deixar preguiçoso-->
-    <!--Payara jndi name: jdbc/__caixaki_ds-->
+    <!--Payara jndi name: jdbc/__jsfspring_ds-->
     <bean id="springDataSource" name="springDataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="false">
         <property name="jndiName">
-            <value>jdbc/__caixaki_ds</value> 
+            <value>jdbc/__jsfspring_ds</value> 
         </property>
     </bean>
     

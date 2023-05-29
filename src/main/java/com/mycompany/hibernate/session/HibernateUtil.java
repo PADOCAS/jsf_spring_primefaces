@@ -29,8 +29,8 @@ public class HibernateUtil implements Serializable {
 
     //Caso for usar por lookup o datasource (exemplo do curso):
     //No TomCat o padrão deve ficar assim: java:comp/env/ + nome do jndi (java:comp/env/jdbc/datasource)
-    //No Payara vamos passar direto o nome criado no servidor (JNDI NAME ficou: jdbc/__caixaki_ds)
-    private static String JAVA_COMP_ENV_JDBC_DATA_SOURCE = "jdbc/__caixaki_ds";
+    //No Payara vamos passar direto o nome criado no servidor (JNDI NAME ficou: jdbc/__jsfspring_ds)
+    private static String JAVA_COMP_ENV_JDBC_DATA_SOURCE = "jdbc/__jsfspring_ds";
 
     private static SessionFactory sessionFactory = buildSessionFactory();
 
@@ -114,9 +114,9 @@ public class HibernateUtil implements Serializable {
 
     /**
      * Obtem a Connection do provedor de conexões configurado direto no
-     * dataSource (initialContext - jdbc/__caixaki_ds)
+     * dataSource (initialContext - jdbc/__jsfspring_ds)
      *
-     * @return Connection no InitialContext jdbc/__caixaki_ds
+     * @return Connection no InitialContext jdbc/__jsfspring_ds
      * @throws Exception
      */
     public static Connection getConnection() throws Exception {
@@ -128,7 +128,7 @@ public class HibernateUtil implements Serializable {
 
     /**
      * Obtem o DataSource configurado pelo initialContext -
-     * jdbc/__caixaki_ds
+     * jdbc/__jsfspring_ds
      *
      * @return DataSource
      * @throws NamingException
