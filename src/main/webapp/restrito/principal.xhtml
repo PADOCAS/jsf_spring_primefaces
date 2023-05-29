@@ -16,10 +16,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
-    <h:form>
+    <h:form class="form">
         <h:body>
             <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar através do dialog (statusDialog) está definido automático o show e hide no template:-->
             <ui:include src="../templates/progressBar.xhtml" />
+            <!--JavaScript para atalhos-->
+            <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>
+            
             <div>Tela Principal do Sistema..</div>
 
             <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
@@ -28,7 +31,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  ajax="true" 
                                  onstart="PF('statusDialog').show();" 
                                  onsuccess="PF('statusDialog').hide();"
-                                 value="Teste Ajax Progress Bar" />
+                                 update="@form"
+                                 value="Teste Ajax Progress Bar (F2)" />
             </sec:authorize>
         </h:body>
     </h:form>
