@@ -22,7 +22,8 @@ public abstract class BeanReportView extends BeanViewAbstract {
 
     private static final long serialVersionUID = 1L;
 
-    protected StreamedContent arquivoReport;
+    //Não vou utilizar, caso precisar implemento:
+//    protected StreamedContent arquivoReport;
 
     protected int tipoRelatorio;
 

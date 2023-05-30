@@ -52,7 +52,7 @@ public class ReportUtil implements Serializable {
 
     private static final String EXTENSION_PDF = "pdf";
 
-    private static String SEPARATOR = File.separator;
+    private String SEPARATOR = File.separator;
 
     private static final int RELATORIO_PDF = 1;
 

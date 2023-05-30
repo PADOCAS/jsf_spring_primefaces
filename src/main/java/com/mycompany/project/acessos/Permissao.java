@@ -39,16 +39,8 @@ public enum Permissao {
         return valor;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
-
     public String getDescricao() {
         return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public static List<Permissao> getListPermissao() {

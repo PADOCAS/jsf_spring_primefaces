@@ -24,11 +24,9 @@ public class ViewScopeCallBackRegister implements ViewMapListener {
         if (event != null) {
             if (event instanceof PostConstructViewMapEvent) {
                 PostConstructViewMapEvent viewMapEvent = (PostConstructViewMapEvent) event;
-                if (viewMapEvent != null) {
-                    //Arvore de componentes (uiViewRoot)
-                    UIViewRoot uiViewRoot = (UIViewRoot) viewMapEvent.getComponent();
-                    uiViewRoot.getViewMap().put(ViewScope.VIEW_SCOPE_CALLBACKS, new HashMap<String, Runnable>());
-                }
+                //Arvore de componentes (uiViewRoot)
+                UIViewRoot uiViewRoot = (UIViewRoot) viewMapEvent.getComponent();
+                uiViewRoot.getViewMap().put(ViewScope.VIEW_SCOPE_CALLBACKS, new HashMap<String, Runnable>());
             } else if (event instanceof PreDestroyViewMapEvent) {
                 PreDestroyViewMapEvent viewMapEvent = (PreDestroyViewMapEvent) event;
 
