@@ -21,6 +21,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <ui:insert name="titulo">Projeto JSF/Spring</ui:insert>
             </title>
 
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
             <!--Declarando o javascript jquery > direto da biblioteca do próprio primefaces-->        
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
 
@@ -37,74 +39,80 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <h:outputScript name="googlechart.js" library="js"/> 
             <h:outputScript name="deployJava.js"  library="js" />
             <!--JavaScript para atalhos-->
-            <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>
+            <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>            
             <ui:insert name="head"/>
         </h:head>
-
-        <style type="text/css">
-            /*Configuraçõe para centralizar os textos dos dialogs (título e footer)*/
-            .ui-dialog-title {
-                float:none !important;
-            }
-
-            .ui-dialog-titlebar {
-                text-align: center !important;
-            }
-
-            .ui-dialog-footer {
-                text-align: center !important;
-            }
-        </style>
 
         <h:body>
             <f:view>
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
-                    <ui:insert name="form"/>
+                    <script type="text/javascript" charset="UTF-8">
+                        jQuery.noConflict();
 
-                    <!--Fazendo dessa forma, ao incluir o template na página, toda chamada ajax vai fazer a abertura e fechamento do dialog automaticamente após o processamento-->
-                    <!--Com isso, não é necessário fazer a chamada manual para todos os eventos ajax-->
-                    <!--Ajax para executar a abertura e fechamento do dialog assim que acabar o processamento-->
-                    <!--Nesse caso com ajax chamando fica automatico, faz o show e hide automaticamente após acabar o processamento da chamada ajax-->
-                    <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
+                        //Caso quiser bloquear a tecla F5 para todas as páginas.. não vou fazer isso!
+//                        $(document).keydown(function (e) {
+//                            if (e.which == 116) {
+//                                return false;
+//                            }
+//                        });
 
-                    <!--Header para aparecer Processando escrito-->
-                    <!--Footer para aparecer aguarde...-->
-                    <!--Modal e não deixar mudar ele de lugar pelo usuário-->
-                    <!--closable = false Não deixar fechar ele pelo usuário-->
-                    <!--appendTo para aparecer sempre a frente de todo conteudo que estiver utilizando nas páginas-->
-                    <!--Dentro dele vai ter o gif do progress bar-->
-                    <p:dialog id="dlgAjaxStatusProgressBar"
-                              widgetVar="statusDialog"
-                              modal="true"
-                              resizable="false"
-                              height="200px;"
-                              width="200px;"
-                              header="Aguarde Processando"
-                              draggable="false"
-                              appendTo="@(body)"
-                              dynamic="false"
-                              closable="false">
-                        <h:graphicImage id="imgAjaxStatusLoader" library="img" name="ajax-loader.gif" styleClass="bordaImagem" />
-                    </p:dialog>
+                        /*$(window).bind('beforeunload', function(e){// peder confirmação para atualizar ou sair da pagina
+                         e = e || window.event;
+                         var message = "Deseja realmente sair do sistema?";
+                         
+                         if(e) e.returnValue = message;
+                         return message;	
+                         });*/
+                    </script>
 
-                    <!--Criado um dialog para fazer manualmente:-->
-                    <!--Esse pode ser fechado, pois pode ter dado erro e o usuário fecha ele manualmente-->
-                    <p:dialog id="dlgAjaxStatusError"
-                              widgetVar="statusDialogError"
-                              modal="true"
-                              resizable="false"
-                              height="200px;"
-                              width="200px;"
-                              header="Erro ao processar"
-                              draggable="false"
-                              appendTo="@(body)"
-                              dynamic="false"
-                              closable="true">
-                        <h:graphicImage id="imgAjaxStatusError" library="img" name="error.png" styleClass="bordaImagem" />
-                    </p:dialog>
+                    <!--Declarar CSS sempre sem a library.. não precisa se não buga.. a pasta resource já é reconhecida é so passa as pastas a frente direto no name!-->
+                    <!--Deixado esse CSS por último dentro do Form, para sobrescrever qualquer coisa que já tenha sido declarado por CSS la do head!-->
+                    <h:outputStylesheet name="css/estilo.css" />
 
-                    <p:growl id="message" widgetVar="message" showSummary="true" showDetail="true" globalOnly="true"
-                             escape="false" sticky="true" />
+                    <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar:-->
+                    <ui:include src="../templates/progressBar.xhtml" />
+
+                    <!--Colocando o p:growl padrão para tratar mensagens sticky true para não sumir a mensagem com o tempo-->
+                    <div id="divMessage" class="espacoMensagem">
+                        <p:growl id="message" widgetVar="message" showSummary="true" showDetail="true" globalOnly="true" redisplay="true" sticky="true"/>  
+                        <!--Deixando toolTip de forma genérica para o focus (usando jQuery do globalSelector) quando ganha o foco da o tootip e quando perde o foco some-->
+                        <!--Para isso é so escrever os title dentro dos componentes que quer dar toolTip-->
+                        <p:tooltip id="toolTipFocus" globalSelector="a,:input,:button" showEvent="focus" hideEvent="blur" />
+                    </div>
+
+                    <div id="container" >
+                        <!--Cabeçalho do sistema:-->
+                        <div id="topo">
+                            <span style="position: absolute; left: 20px; top: 5px" id="spanLogo">
+                                <h:graphicImage library="img" name="spring-boot-logo.png" width="187px" height="75px;" id="logoImg" styleClass="bordaImagem" />
+                            </span>
+
+                            <span id="dadoslogin"> 
+                                Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
+                                <br/> 
+                                Último login: 
+                                <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" id="saidaUltimoAcesso">
+                                    <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+                                                       dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
+                                </h:outputLabel>
+                                <br/> 
+                                <a href="#" id="logoutSuperior" style="color: ghostwhite !important;" onclick="javascript:logout('#{request.contextPath}');">Sair</a>
+                            </span>
+
+                            <span id="menuSistema" style="position: absolute; right: 25px; top: 45px; width: 20px">
+                                <a href="#" onclick="abrirMenupop()">
+                                    <h:graphicImage library="img" name="seta_baixo.png"
+                                                    height="14px"
+                                                    width="19px"
+                                                    styleClass="bordaImagem" id="imaSetaBaixo"/>
+                                </a>
+                            </span> 
+                        </div>
+                    </div>
+
+                    <div id="corpo" class="corpo">
+                        <ui:insert name="corpo" />
+                    </div>
                 </h:form>
             </f:view>
         </h:body>

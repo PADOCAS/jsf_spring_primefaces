@@ -55,7 +55,7 @@ a:focus {
     left: 0px;
     right: 0px;
     height: 80px;
-    background-color: #F7F6F5;
+    background-color: ghostwhite;
 }
 
 #menu {
@@ -257,6 +257,8 @@ a:focus {
 }
 
 #dadoslogin {
+    color: ghostwhite;
+    font-weight: bold !important;
     background: #61cded;
     background-image: -moz-linear-gradient(rgba(255, 255, 255, .3),
         rgba(255, 255, 255, 0) );
@@ -273,7 +275,7 @@ a:focus {
     top: 14px;
     width: 200px;
     padding: 4px;
-    background-color: #61c0e0;
+    background-color: #6db33f;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;

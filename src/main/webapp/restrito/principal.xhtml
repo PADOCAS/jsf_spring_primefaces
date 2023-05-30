@@ -12,7 +12,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:sec="http://www.springframework.org/security/tags"
              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:define name="form">
+    <ui:define name="corpo">
         <div>Tela Principal do Sistema..</div>
 
         <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
@@ -21,7 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              ajax="true" 
                              onstart="PF('statusDialog').show();" 
                              onsuccess="PF('statusDialog').hide();"
-                             update="@form"
+                             update="@form, @(message)"
                              value="Teste Ajax Progress Bar (F2)" />
         </sec:authorize>
     </ui:define>
