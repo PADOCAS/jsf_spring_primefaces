@@ -88,10 +88,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             </span>
 
                             <span id="dadoslogin"> 
-                                Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
+                                Usuário: #{entidadeBeanViewController.usuarioLogadoSecurity}
                                 <br/> 
                                 Último login: 
-                                <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" id="saidaUltimoAcesso">
+                                <h:outputLabel value="#{entidadeBeanViewController.ultimoAcesso}" id="saidaUltimoAcesso">
                                     <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
                                                        dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
                                 </h:outputLabel>
