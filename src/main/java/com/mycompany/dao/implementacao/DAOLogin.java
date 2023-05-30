@@ -5,14 +5,17 @@
 package com.mycompany.dao.implementacao;
 
 import com.mycompany.hibernate.impl.crud.CrudImpl;
-import com.mycompany.repository.interfaces.RepositoryLogin;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Repository;
+import com.mycompany.repository.interfaces.RepositoryLogin;
 
 /**
  *
  * @author lucia
  */
+//@Repository é uma anotação do Spring que entende que é uma conexão com banco de dados:
+@Repository
 public class DAOLogin extends CrudImpl<Object> implements RepositoryLogin {
 
     private static final long serialVersionUID = 1L;

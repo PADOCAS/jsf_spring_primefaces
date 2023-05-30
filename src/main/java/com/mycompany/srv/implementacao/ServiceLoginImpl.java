@@ -4,15 +4,17 @@
  */
 package com.mycompany.srv.implementacao;
 
-import com.mycompany.repository.interfaces.RepositoryLogin;
-import com.mycompany.srv.interfaces.SrvLogin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.mycompany.srv.interfaces.ServiceLogin;
+import com.mycompany.repository.interfaces.RepositoryLogin;
 
 /**
  *
  * @author lucia
  */
-public class SrvLoginImpl implements SrvLogin {
+@Service
+public class ServiceLoginImpl implements ServiceLogin {
 
     private static final long serialVersionUID = 1L;
 

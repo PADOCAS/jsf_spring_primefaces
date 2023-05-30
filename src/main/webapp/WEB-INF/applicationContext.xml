@@ -144,7 +144,7 @@
     <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
     <bean id="sessionController" class="com.mycompany.project.geral.controller.SessionControllerImpl" scope="singleton" />
     
-    <!--DAOs:-->
+    <!--Repositories:-->
     <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
     <!--(singleton - apenas 1 para a aplicação)-->
     <bean id="repositoryLogin" class="com.mycompany.dao.implementacao.DAOLogin" scope="singleton" />
@@ -152,7 +152,7 @@
     <!--Services:-->
     <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
     <!--(singleton - apenas 1 para a aplicação)-->
-    <bean id="srvLogin" class="com.mycompany.srv.implementacao.SrvLoginImpl" scope="singleton" />
+    <bean id="serviceLogin" class="com.mycompany.srv.implementacao.ServiceLoginImpl" scope="singleton" />
        
 </beans>
 

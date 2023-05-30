@@ -4,7 +4,6 @@
  */
 package com.mycompany.hibernate.impl.crud;
 
-import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.hibernate.session.HibernateUtil;
 import java.util.List;
 import org.hibernate.Query;
@@ -17,6 +16,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 
 /**
  *
@@ -403,6 +403,46 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
                     .list();
 
             return list;
+        }
+
+        return null;
+    }
+
+    @Override
+    public T findUniqueByQueryDinamica(String query) throws Exception {
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null) {
+            validaSessionFactory();
+            T object = (T) getSessionFactory().getCurrentSession().createQuery(query).uniqueResult();
+
+            return object;
+        }
+
+        return null;
+    }
+
+    @Override
+    public T findUniqueByProperty(Class<T> classe, Object value, String atributo, String condicao) throws Exception {
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && classe != null
+                && value != null
+                && atributo != null) {
+            validaSessionFactory();
+
+            //SQL dinâmico:
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT entity from ").append(classe.getSimpleName());
+            sql.append(" entity where entity.").append(atributo);
+            sql.append(" = '").append(value).append("' ");
+            if (condicao != null) {
+                sql.append(condicao);
+            }
+
+            T object = (T) findUniqueByQueryDinamica(sql.toString());
+
+            return object;
         }
 
         return null;

@@ -5,16 +5,13 @@
 package com.mycompany.srv.interfaces;
 
 import java.io.Serializable;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author lucia
  */
-//@Service do Spring para indicar que é um serviço:
-@Service
-public interface SrvLogin extends Serializable {
-    
+public interface ServiceLogin extends Serializable {
+
     public Boolean autenticaUsuario(String login, String senha) throws Exception;
 
 }

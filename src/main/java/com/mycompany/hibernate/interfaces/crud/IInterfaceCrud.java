@@ -160,4 +160,7 @@ public interface IInterfaceCrud<T> extends Serializable {
      */
     public List<T> findListByQueryDinamica(String query, int initResult, int maxResult) throws Exception;
 
+    public T findUniqueByQueryDinamica(String query) throws Exception ;
+    
+    public T findUniqueByProperty(Class<T> classe, Object value, String atributo, String condicao) throws Exception;
 }

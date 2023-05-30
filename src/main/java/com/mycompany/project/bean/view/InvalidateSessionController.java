@@ -5,8 +5,6 @@
 package com.mycompany.project.bean.view;
 
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
-import com.mycompany.project.geral.controller.SessionController;
-import com.mycompany.srv.interfaces.SrvLogin;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -16,6 +14,8 @@ import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import com.mycompany.srv.interfaces.ServiceLogin;
+import com.mycompany.project.geral.controller.SessionController;
 
 /**
  *
@@ -39,7 +39,7 @@ public class InvalidateSessionController extends BeanManagedViewAbstract {
 
     //Injeção dependência do Service SrvLogin:
     @Autowired
-    private SrvLogin srvLogin;
+    private ServiceLogin serviceLogin;
 
     public void encerrarSessaoUsuario() {
         //RequestContext do primefaces 12 (PrimeRequestContext):
@@ -47,8 +47,8 @@ public class InvalidateSessionController extends BeanManagedViewAbstract {
         Boolean loggedIn = false;
 
         try {
-            if (srvLogin != null
-                    && srvLogin.autenticaUsuario(login, senha)
+            if (serviceLogin != null
+                    && serviceLogin.autenticaUsuario(login, senha)
                     && sessionController != null) {
                 sessionController.invalidateSession(login);
                 loggedIn = true;

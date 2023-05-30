@@ -5,13 +5,17 @@
 package com.mycompany.repository.interfaces;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author lucia
  */
-public interface RepositoryLogin extends Serializable {
+public interface RepositoryEntidade extends Serializable {
 
-    public Boolean autenticaUsuario(String login, String senha) throws Exception;
+    public Date getUltimoAcessoEntidadeLogada(String name);
 
+    public void updateUltimoAcessoUsuario(String name);
+
+    public Boolean existeUsuario(String name);
 }
