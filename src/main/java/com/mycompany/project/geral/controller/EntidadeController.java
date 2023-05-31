@@ -28,11 +28,11 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
         return super.findUniqueByProperty(Entidade.class, name, "ent_login", " and entity.ent_inativo is false");
     }
 
-    public Date getUltimoAcessoEntidadeLogada(String name) {
+    public Date getUltimoAcessoEntidadeLogada(String name) throws Exception {
         return serviceEntidade.getUltimoAcessoEntidadeLogada(name);
     }
 
-    public void updateUltimoAcessoUsuario(String name) {
+    public void updateUltimoAcessoUsuario(String name) throws Exception {
         serviceEntidade.updateUltimoAcessoUsuario(name);
     }
 }

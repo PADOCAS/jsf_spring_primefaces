@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public interface ServiceEntidade extends Serializable {
 
-    public Date getUltimoAcessoEntidadeLogada(String name);
+    public Date getUltimoAcessoEntidadeLogada(String name) throws Exception;
 
-    public void updateUltimoAcessoUsuario(String name);
+    public void updateUltimoAcessoUsuario(String name) throws Exception;
 
-    public Boolean existeUsuario(String name);
+    public Boolean existeUsuario(String name) throws Exception;
 }

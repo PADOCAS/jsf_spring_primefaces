@@ -9,6 +9,7 @@ import java.util.Date;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.mycompany.repository.interfaces.RepositoryEntidade;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  *
@@ -22,18 +23,34 @@ public class DAOEntidade extends CrudImpl<Object> implements RepositoryEntidade 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Date getUltimoAcessoEntidadeLogada(String name) {
-        return null;
+    public Date getUltimoAcessoEntidadeLogada(String name) throws Exception {
+        //Spring JDBC para buscar o último acesso com o SqlRowSet (retorna uma linha):
+        SqlRowSet sqlRowSet = super.getJdbcTemplate()
+                .queryForRowSet("SELECT ent.ent_ultimoacesso FROM public.entidade ent WHERE ent.ent_inativo is false and ent.ent_login = ?", new Object[]{name});
+
+        return sqlRowSet.next() ? sqlRowSet.getDate("ent_ultimoacesso") : null;
     }
 
     @Override
-    public void updateUltimoAcessoUsuario(String name) {
+    public void updateUltimoAcessoUsuario(String name) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE public.entidade ");
+        sql.append("   SET ent_ultimoacesso = current_timestamp ");
+        sql.append(" WHERE ent_inativo is false and ent_login = ?  ");
+
+        super.getJdbcTemplate().update(sql.toString(), new Object[]{name});
 
     }
 
     @Override
-    public Boolean existeUsuario(String name) {
-        return false;
+    public Boolean existeUsuario(String name) throws Exception {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT count(1) FROM public.entidade ent WHERE ent.ent_inativo is false and ent.ent_login = ?");
+
+        Long countUser = super.getJdbcTemplate().queryForObject(sql.toString(), Long.class, new Object[]{name});
+
+        return countUser != null
+                && countUser > 0;
     }
 
 }

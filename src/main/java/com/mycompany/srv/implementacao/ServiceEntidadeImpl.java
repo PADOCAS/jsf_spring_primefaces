@@ -24,17 +24,17 @@ public class ServiceEntidadeImpl implements ServiceEntidade {
     private RepositoryEntidade repositoryEntidade;
 
     @Override
-    public Date getUltimoAcessoEntidadeLogada(String name) {
+    public Date getUltimoAcessoEntidadeLogada(String name) throws Exception {
         return repositoryEntidade.getUltimoAcessoEntidadeLogada(name);
     }
 
     @Override
-    public void updateUltimoAcessoUsuario(String name) {
+    public void updateUltimoAcessoUsuario(String name) throws Exception {
         repositoryEntidade.updateUltimoAcessoUsuario(name);
     }
 
     @Override
-    public Boolean existeUsuario(String name) {
+    public Boolean existeUsuario(String name) throws Exception {
         return repositoryEntidade.existeUsuario(name);
     }
 }

@@ -5,6 +5,7 @@
 package com.mycompany.project.bean.view;
 
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
+import com.mycompany.project.model.Entidade;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,14 @@ public class EntidadeBeanViewController extends BeanManagedViewAbstract {
     }
 
     public Date getUltimoAcesso() throws Exception {
-        if (contextoBeanController != null
-                && contextoBeanController.getAuthentication() != null) {
+        if (contextoBeanController != null) {
+            Entidade entidade = contextoBeanController.getEntidadeLogada();
 
+            if (entidade != null) {
+                return entidade.getEnt_ultimoacesso();
+            }
         }
 
-        return new Date(2023, 5, 5);
+        return null;
     }
 }
