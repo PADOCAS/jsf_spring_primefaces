@@ -258,7 +258,6 @@ a:focus {
 
 #dadoslogin {
     color: ghostwhite;
-    font-weight: bold !important;
     background: #61cded;
     background-image: -moz-linear-gradient(rgba(255, 255, 255, .3),
         rgba(255, 255, 255, 0) );
@@ -418,7 +417,8 @@ input[type=submit] {
 }
 
 a.ui-menuitem-link.ui-corner-all.ui-state-hover {
-    background: none repeat scroll 0% 0% transparent;
+    color: ghostwhite;
+    background: none repeat scroll 0% 0% #6db33f;
     -webkit-border-top-right-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
     -moz-border-radius-topright: 5px;
@@ -598,7 +598,7 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
     #formlogin {
         right: 10px !important;
     }
-    
+
     #keyslogin {
         right: 150px !important;
     }
@@ -614,7 +614,7 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
     .buttonLogin {
         width: 70px !important;
     }
-    
+
     .estiloSpan {
         font-size: 12px;
         margin-left: 4px;

@@ -48,6 +48,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
                         jQuery.noConflict();
+                        localeData_pt_br();
+                        initTamplate();
+                        ocultarMenu();
 
                         //Caso quiser bloquear a tecla F5 para todas as páginas.. não vou fazer isso!
 //                        $(document).keydown(function (e) {
@@ -133,7 +136,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                            actionListener="#{mensagemBeanViewController.initComponentes()}"
                                            value="Enviar Mensagem"
                                            immediate="true"
-                                           ajax="true"
                                            onstart="PF('statusDialog').show();"
                                            onsuccess="PF('statusDialog').hide(); PF('enviarMensagemDialog').show();"
                                            process="@this"
@@ -147,6 +149,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                            style="display: block;">
                             <span style="display: block;" id="spanAlterarSenha">Alterar Senha</span>
                         </a>
+                    </div>
+
+                    <div id="barramenu" >
+                        <p:tieredMenu id="menuEsquerdo" style="width: 185px; border: none; background: none; color: #000;" >
+                            <p:menuitem id="menuInicio"
+                                        onclick="redirecionarPagina('#{request.contextPath}', '/restrito/principal');"
+                                        onstart="PF('statusDialog').show();"
+                                        onsuccess="PF('statusDialog').hide();"
+                                        value="Início" />
+
+                            <p:menuitem id="menuSair"
+                                        value="Sair"
+                                        onclick="javascript:logout('#{request.contextPath}');"
+                                        onstart="PF('statusDialog').show();"
+                                        onsuccess="PF('statusDialog').hide();" />
+                        </p:tieredMenu>
                     </div>
 
                     <p:dialog id="alterarSenhaDialog"
@@ -174,7 +192,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             </f:view>
         </h:body>
         <script type="text/javascript" charset="UTF-8">
-            jQuery("#menupop").hide();
+            //Carregar os Ids dos elementos em array para tratamento mais prático com o jQuery:
+            carregarIdElementosPagina();
         </script>
     </sec:authorize>
 </html>
