@@ -13,6 +13,21 @@ function logout(contextPath) {
     });
 }
 
+//Função logout - seta para sair -> sair do sistema vai abrir um menu:
+function abrirMenupop() {
+    $("#menupop").show("slow").mouseleave(function() {
+        fecharMenupop();
+    });
+}
+
+//Função logout - seta para sair (fechar menu):
+function fecharMenupop() {
+    if($("#menupop").is(":visible")) {
+        //Fechar menu com efeito slow:
+        $("#menupop").hide("slow");
+    }
+}
+
 //Invalidar Sessão - redirecionar para outra página:
 function invalidarSession(context, pagina) {
     document.location = (context + pagina + ".jsf");

@@ -110,12 +110,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         </div>
                     </div>
 
+                    <!--Menu do Sistema:-->
+                    <div id="menu">
+                        <span id="iniciarmenu">
+                            <h:graphicImage library="img" name="iconemenu.png"
+                                            styleClass="bordaImagem" id="iconemenu">
+                                Menu
+                            </h:graphicImage>
+                        </span>
+                    </div>
+
+                    <!--Corpo do sistema (Cada página que utilizar o templatePrincipal implementará o corpo):-->
                     <div id="corpo" class="corpo">
                         <ui:insert name="corpo" />
+                    </div>
+
+                    <!--MenuPop ao utilizar o logout e sair do sistema:-->
+                    <div id="menupop">
+                        Usuário Xxxxy.. logado!
                     </div>
                 </h:form>
             </f:view>
         </h:body>
+        <script type="text/javascript" charset="UTF-8">
+            jQuery("#menupop").hide();
+        </script>
     </sec:authorize>
 </html>
 
