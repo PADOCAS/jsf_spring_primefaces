@@ -16,6 +16,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import com.mycompany.srv.interfaces.ServiceLogin;
 import com.mycompany.project.geral.controller.SessionController;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
@@ -40,6 +43,34 @@ public class InvalidateSessionController extends BeanManagedViewAbstract {
     //Injeção dependência do Service SrvLogin:
     @Autowired
     private ServiceLogin serviceLogin;
+
+    /**
+     * Spring RestFull - Post para invalidar sessão assim que o usuário deslogar (Chamada no javascript (scripty.js))
+     * do sistema
+     *
+     * @param httpServletRequest
+     * @throws Exception
+     */
+    @RequestMapping(value = "**/invalidar_sessao", method = RequestMethod.POST)
+    public void invalidarSessaoUsuarioLogout(HttpServletRequest httpServletRequest) throws Exception {
+        String userLogadoSessao = null;
+
+        if (httpServletRequest != null) {
+            if (httpServletRequest.getUserPrincipal() != null) {
+                userLogadoSessao = httpServletRequest.getUserPrincipal().getName();
+            }
+
+            if (userLogadoSessao == null
+                    || userLogadoSessao.trim().isEmpty()) {
+                userLogadoSessao = httpServletRequest.getRemoteUser();
+            }
+
+            if (userLogadoSessao != null
+                    && !userLogadoSessao.isEmpty()) {
+                sessionController.invalidateSession(userLogadoSessao);
+            }
+        }
+    }
 
     public void encerrarSessaoUsuario() {
         //RequestContext do primefaces 12 (PrimeRequestContext):

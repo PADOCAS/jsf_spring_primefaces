@@ -1,3 +1,18 @@
+//Função logout - template principal:
+function logout(contextPath) {
+    //Executar essa ação com um post usando spring para invalidar sessão do usuário ao fazer logout:
+    var urlPost = 'invalidar_sessao';
+
+    $.ajax({
+        type: 'POST',
+        url: urlPost
+    }).always(function resposta() {
+        //Executar isso sempre depois que a função ajax post for executada!!! 
+        //Chamando o Spring Security para encerrar a sessão de controle do usuário e voltar para tela de login:
+        document.location = contextPath + '/j_spring_security_logout';
+    });
+}
+
 //Invalidar Sessão - redirecionar para outra página:
 function invalidarSession(context, pagina) {
     document.location = (context + pagina + ".jsf");
