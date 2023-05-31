@@ -21,11 +21,16 @@ public enum Permissao {
     CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
     //Especificos:
     FINANCEIRO("FINANCEIRO", "Financeiro - Acessar"),
-    MENSAGEM("MENSAGEM", "Mensagem Recebida - Acessar"),
     BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
     BAIRRO_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
     BAIRRO_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
-    BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir");
+    BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
+    //Mensagens:
+    MENSAGEM_ACESSAR("MENSAGEM_ACESSAR", "Mensagem Recebida - Acessar"),
+    MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),
+    MENSAGENS_ENVIAR_NOVO("MENSAGENS_ENVIAR_NOVO", "Enviar mensagem - Novo"),
+    MENSAGENS_ENVIAR_EDITAR("MENSAGENS_ENVIAR_EDITAR", "Enviar mensagem - Editar"),
+    MENSAGENS_ENVIAR_EXCLUIR("MENSAGENS_ENVIAR_EXCLUIR", "Enviar mensagem - Excluir");
 
     private String valor;
     private String descricao;

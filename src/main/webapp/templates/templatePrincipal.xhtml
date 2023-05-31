@@ -127,8 +127,49 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                     <!--MenuPop ao utilizar o logout e sair do sistema:-->
                     <div id="menupop">
-                        Usuário Xxxxy.. logado!
+                        <sec:authorize access="isAuthenticated() 
+                                       and (hasAuthority('MENSAGENS_ENVIAR_ACESSAR') or hasAuthority('ADMIN'))">
+                            <p:commandLink id="cmdEnviarMensagem"
+                                           actionListener="#{mensagemBeanViewController.initComponentes()}"
+                                           value="Enviar Mensagem"
+                                           immediate="true"
+                                           ajax="true"
+                                           onstart="PF('statusDialog').show();"
+                                           onsuccess="PF('statusDialog').hide(); PF('enviarMensagemDialog').show();"
+                                           process="@this"
+                                           style="display: block;">                                
+                            </p:commandLink>
+                        </sec:authorize>
+
+                        <a id="linkAlterarSenha" 
+                           href="#" 
+                           onclick="PF('alterarSenhaDialog').show();" 
+                           style="display: block;">
+                            <span style="display: block;" id="spanAlterarSenha">Alterar Senha</span>
+                        </a>
                     </div>
+
+                    <p:dialog id="alterarSenhaDialog"
+                              widgetVar="alterarSenhaDialog"
+                              width="240"
+                              modal="true" 
+                              resizable="false" 
+                              height="170"
+                              header="Alterar senha" 
+                              dynamic="true">
+                        Dialog Alterar Senha
+                    </p:dialog>
+
+                    <p:dialog id="enviarMensagemDialog" 
+                              widgetVar="enviarMensagemDialog" 
+                              width="500"
+                              modal="true" 
+                              resizable="false" 
+                              height="360"
+                              header="Enviar menssagem" 
+                              dynamic="true">
+                        Dialog Enviar Mensagem
+                    </p:dialog>
                 </h:form>
             </f:view>
         </h:body>
