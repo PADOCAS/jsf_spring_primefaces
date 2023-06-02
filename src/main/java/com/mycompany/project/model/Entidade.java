@@ -6,10 +6,13 @@ package com.mycompany.project.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 import org.hibernate.envers.Audited;
 
 /**
@@ -33,6 +36,14 @@ public class Entidade implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date ent_ultimoacesso;
+
+    //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)
+    @Version
+    @Column(name = "versionnum")
+    private Integer versionnum;
+
+    public Entidade() {
+    }
 
     public Long getEnt_codigo() {
         return ent_codigo;
@@ -72,6 +83,36 @@ public class Entidade implements Serializable {
 
     public void setEnt_ultimoacesso(Date ent_ultimoacesso) {
         this.ent_ultimoacesso = ent_ultimoacesso;
+    }
+
+    public Integer getVersionnum() {
+        return versionnum;
+    }
+
+    public void setVersionnum(Integer versionnum) {
+        this.versionnum = versionnum;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.ent_codigo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Entidade other = (Entidade) obj;
+        return Objects.equals(this.ent_codigo, other.ent_codigo);
     }
 
 }

@@ -24,7 +24,7 @@
         <!--Fechar automaticamente a session, gerenciando isso automaticamente-->
         <property name="hibernate.transaction.auto_close_session">true</property>
         <!--Caso queira crar as tabelas automaticamente de acordo com as classes java mapeadas-->
-        <!-- <property name="hibernate.hbm2ddl.auto">update</property> --> 
+         <property name="hibernate.hbm2ddl.auto">update</property>  
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">true</property>
         <!--Caso true, faz com que o hibernate colha informações do sistema, verificando quais sqls estão demorando mais e tal.. levantamento para melhorias de performance-->
@@ -35,6 +35,9 @@
 
         <!--Mapear as configurações dos VOs envolvidos com o hibernate-->
         <mapping class="com.mycompany.project.model.Entidade" />
+        <mapping class="com.mycompany.project.model.Pais" />
+        <mapping class="com.mycompany.project.model.Estado" />
+        <mapping class="com.mycompany.project.model.Cidade" />
 <!--        <mapping class="br.com.project.model.classes.Pais" />
         <mapping class="br.com.project.model.classes.Estado" />
         <mapping class="br.com.project.model.classes.Cidade" />
