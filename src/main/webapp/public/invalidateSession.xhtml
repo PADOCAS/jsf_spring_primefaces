@@ -85,10 +85,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                   closable="false">
             <h:panelGrid columns="2" cellpadding="5" >
                 <h:outputLabel id="lblUsername" value="Login" for="txtLogin" />
-                <p:inputText id="txtLogin" value="#{invalidateSessionController.login}" required="true" label="Login" requiredMessage="Informe o Login!" />
+                <p:inputText id="txtLogin" value="#{loginBeanView.login}" required="true" label="Login" requiredMessage="Informe o Login!" />
 
                 <h:outputLabel id="lblSenha" value="Senha" for="txtSenha" />
-                <p:password id="txtSenha" value="#{invalidateSessionController.senha}" required="true" label="Senha" requiredMessage="Informe a Senha!" />
+                <p:password id="txtSenha" value="#{loginBeanView.senha}" required="true" label="Senha" requiredMessage="Informe a Senha!" />
 
                 <h:outputLabel value="" />
                 <p:commandButton id="cmdEncerrar" 
@@ -96,7 +96,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  style="height:40px; width:100px; background:#CDCDC1; border: 1px solid #FFFFFF;"
                                  update="formInvalidate:messageInvalidate"
                                  ajax="true"
-                                 actionListener="#{invalidateSessionController.encerrarSessaoUsuario()}"
+                                 actionListener="#{loginBeanView.encerrarSessaoUsuario()}"
                                  oncomplete="handleLoginRequest(xhr, status, args);"/>
             </h:panelGrid>
         </p:dialog>

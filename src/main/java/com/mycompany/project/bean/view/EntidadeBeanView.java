@@ -18,27 +18,27 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @Scope(value = "session")
-@ManagedBean(name = "entidadeBeanViewController")
-public class EntidadeBeanViewController extends BeanManagedViewAbstract {
+@ManagedBean(name = "entidadeBeanView")
+public class EntidadeBeanView extends BeanManagedViewAbstract {
 
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    private ContextoBeanController contextoBeanController;
+    private ContextoBean contextoBean;
 
     public String getUsuarioLogadoSecurity() {
-        if (contextoBeanController != null
-                && contextoBeanController.getAuthentication() != null
-                && contextoBeanController.getAuthentication().getName() != null) {
-            return contextoBeanController.getAuthentication().getName();
+        if (contextoBean != null
+                && contextoBean.getAuthentication() != null
+                && contextoBean.getAuthentication().getName() != null) {
+            return contextoBean.getAuthentication().getName();
         }
 
         return "";
     }
 
     public Date getUltimoAcesso() throws Exception {
-        if (contextoBeanController != null) {
-            Entidade entidade = contextoBeanController.getEntidadeLogada();
+        if (contextoBean != null) {
+            Entidade entidade = contextoBean.getEntidadeLogada();
 
             if (entidade != null) {
                 return entidade.getEnt_ultimoacesso();

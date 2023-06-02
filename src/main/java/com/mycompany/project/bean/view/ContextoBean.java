@@ -23,8 +23,8 @@ import com.mycompany.project.geral.controller.SessionController;
  */
 @Scope(value = "session")
 //Component - Anotação genérica para utilizar em qualquer lugar do sistema
-@Component(value = "contextoBeanController")
-public class ContextoBeanController implements Serializable {
+@Component(value = "contextoBean")
+public class ContextoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -91,10 +91,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             </span>
 
                             <span id="dadoslogin"> 
-                                Usuário: #{entidadeBeanViewController.usuarioLogadoSecurity}
+                                Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
                                 <br/> 
                                 Último login: 
-                                <h:outputLabel value="#{entidadeBeanViewController.ultimoAcesso}" id="saidaUltimoAcesso">
+                                <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" id="saidaUltimoAcesso">
                                     <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
                                                        dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
                                 </h:outputLabel>
@@ -133,7 +133,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <sec:authorize access="isAuthenticated() 
                                        and (hasAuthority('MENSAGENS_ENVIAR_ACESSAR') or hasAuthority('ADMIN'))">
                             <p:commandLink id="cmdEnviarMensagem"
-                                           actionListener="#{mensagemBeanViewController.initComponentes()}"
+                                           actionListener="#{mensagemBeanView.initComponentes()}"
                                            value="Enviar Mensagem"
                                            immediate="true"
                                            onstart="PF('statusDialog').show();"

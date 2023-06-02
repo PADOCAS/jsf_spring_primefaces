@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 //@Controller - ManagedBean tem que ser anotado com @Controller do Spring para o gerenciamento:
 @Controller
 @Scope(value = "request")
-@ManagedBean(name = "invalidateSessionController")
-public class InvalidateSessionController extends BeanManagedViewAbstract {
+@ManagedBean(name = "loginBeanView")
+public class LoginBeanView extends BeanManagedViewAbstract {
 
     private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,7 @@ public class InvalidateSessionController extends BeanManagedViewAbstract {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            Logger.getLogger(InvalidateSessionController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginBeanView.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext.getCurrentInstance().addMessage("messageInvalidate", new FacesMessage(FacesMessage.SEVERITY_WARN, "ERRO", ex.getMessage()));
         }
 
