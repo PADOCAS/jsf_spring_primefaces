@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<ui:decorate template="../templates/templatePrincipal.xhtml"
+             xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:sec="http://www.springframework.org/security/tags"
+             xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="corpo">
+        <h:form id="formCadastro" prependId="false" >
+            <!--Variável para saber se está cadastrando, consultando, etc..-->
+            <c:set var="isCadastro" value="true" scope="view" />
+
+            <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
+                <h:panelGrid id="pnlGridCadastro" columns="3" >
+                    <h:outputLabel id="lblCodigo" value="* Código" for="txtCodigo" />
+                    <p:inputText id="txtCodigo" class="estiloIdCadastro" disabled="true" value="#{cidadeBeanView.objetoSelecionado.codigo}" />
+                    <p:message for="txtCodigo"/>
+
+                    <h:outputLabel id="lblNome" value="* Nome" for="txtNome" />
+                    <p:inputText id="txtNome" class="estyleInputName" value="#{cidadeBeanView.objetoSelecionado.nome}" required="true" maxlength="100" requiredMessage="Informe o Nome da Cidade."/>
+                    <p:message for="txtNome" />
+                </h:panelGrid>               
+            </p:panel>
+
+            <p:commandButton id="btnSalvar" 
+                             value="Salvar (F2)" 
+                             ajax="false" 
+                             onstart="PF('statusDialog').show();"
+                             onsuccess="PF('statusDialog').hide();"
+                             actionListener="#{cidadeBeanView.save()}" 
+                             style="margin-top: 3px;"/>
+        </h:form>
+    </ui:define>
+</ui:decorate>

@@ -21,7 +21,10 @@ public enum Permissao {
     CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
     //Especificos:
     FINANCEIRO("FINANCEIRO", "Financeiro - Acessar"),
+    PAIS_ACESSAR("PAIS_ACESSAR", "País - Acessar"),
     BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
+    CIDADE_ACESSAR("CIDADE_ACESSAR", "Cidade - Acessar"),
+    //Especificos - Funções:
     BAIRRO_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
     BAIRRO_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
     BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),

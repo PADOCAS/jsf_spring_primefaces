@@ -408,7 +408,7 @@ input[type=submit] {
     width: 400px;
 }
 
-.estiloIdCastro {
+.estiloIdCadastro {
     width: 115px;
 }
 
@@ -558,6 +558,11 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
 .ui-button-icon-only .ui-button-text {
     padding: inherit;
     text-indent: -9999999px;
+}
+
+.ui-widget-content .ui-menu-list {
+    background: ghostwhite !important;
+    border: none;
 }
 
 .ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield

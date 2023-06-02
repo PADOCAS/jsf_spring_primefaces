@@ -159,6 +159,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                         onsuccess="PF('statusDialog').hide();"
                                         value="Início" />
 
+                            <sec:authorize access="isAuthenticated() 
+                                           and (hasAuthority('CADASTRO_ACESSAR') or hasAuthority('ADMIN'))">
+                                <p:submenu id="subMenuCadastros" 
+                                           label="Cadastros" >
+                                    <sec:authorize access="(hasAuthority('PAIS_ACESSAR') or hasAuthority('ADMIN'))">
+                                        <p:menuitem id="menuCadPais" value="País"/>
+                                    </sec:authorize>
+                                    <sec:authorize access="(hasAuthority('ESTADO_ACESSAR') or hasAuthority('ADMIN'))">
+                                        <p:menuitem id="menuCadEstado" value="Estado" />
+                                    </sec:authorize>                                   
+                                    <sec:authorize access="(hasAuthority('CIDADE_ACESSAR') or hasAuthority('ADMIN'))">
+                                        <p:menuitem id="menuCadCidade" 
+                                                    value="Cidade" 
+                                                    action="/cadastro/cad_cidade.jsf?faces-redirect=true"
+                                                    onstart="PF('statusDialog').show();"
+                                                    onsuccess="PF('statusDialog').hide();"/>
+                                    </sec:authorize>
+                                </p:submenu>
+                            </sec:authorize>
+
                             <p:menuitem id="menuSair"
                                         value="Sair"
                                         onclick="javascript:logout('#{request.contextPath}');"
