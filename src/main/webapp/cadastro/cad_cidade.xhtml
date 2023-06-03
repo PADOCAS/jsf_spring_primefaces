@@ -20,16 +20,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
             <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
                 <h:panelGrid id="pnlGridCadastro" columns="3" >
-                    <h:outputLabel id="lblCodigo" value="* Código" for="txtCodigo" />
+                    <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
                     <p:inputText id="txtCodigo" class="estiloIdCadastro" disabled="true" value="#{cidadeBeanView.objetoSelecionado.codigo}" />
                     <p:message for="txtCodigo"/>
 
-                    <h:outputLabel id="lblNome" value="* Nome" for="txtNome" />
-                    <p:inputText id="txtNome" class="estyleInputName ui-text-uppercase" value="#{cidadeBeanView.objetoSelecionado.nome}" required="true" maxlength="100" requiredMessage="Informe o Nome da Cidade."/>
+                    <h:outputLabel id="lblNome" class="styleOutputLabel" value="* Nome" for="txtNome" />
+                    <p:inputText id="txtNome" 
+                                 class="styleInputTextGrande ui-text-uppercase" 
+                                 value="#{cidadeBeanView.objetoSelecionado.nome}" 
+                                 required="true" 
+                                 maxlength="50" 
+                                 requiredMessage="Informe o Nome da Cidade."/>
                     <p:message for="txtNome" />
 
-                    <h:outputLabel id="lblEstado" value="* Estado" for="selOneMenuEstado" />
-                    <p:selectOneMenu id="selOneMenuEstado"  >
+                    <h:outputLabel id="lblEstado" class="styleOutputLabel" value="* Estado" for="selOneMenuEstado" />
+                    <p:selectOneMenu id="selOneMenuEstado" 
+                                     required="true"
+                                     value="#{cidadeBeanView.objetoSelecionado.estado}"
+                                     style="width: 220px;"
+                                     requiredMessage="Informe o Estado."  >
                         <f:selectItems value="#{cidadeBeanView.listSelectItemEstado}" />
                     </p:selectOneMenu>
                     <p:message for="selOneMenuEstado" />
@@ -42,6 +51,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              onstart="PF('statusDialog').show();"
                              onsuccess="PF('statusDialog').hide();"
                              actionListener="#{cidadeBeanView.save()}" 
+                             style="margin-top: 3px;"/>
+            
+            <p:commandButton id="btnNovo" 
+                             value="Novo (F8)"                              
+                             ajax="false" 
+                             onstart="PF('statusDialog').show();"
+                             onsuccess="PF('statusDialog').hide();"
+                             actionListener="#{cidadeBeanView.novo()}" 
                              style="margin-top: 3px;"/>
         </h:form>
     </ui:define>

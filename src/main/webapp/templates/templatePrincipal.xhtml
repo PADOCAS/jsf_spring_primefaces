@@ -172,7 +172,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                     <sec:authorize access="(hasAuthority('CIDADE_ACESSAR') or hasAuthority('ADMIN'))">
                                         <p:menuitem id="menuCadCidade" 
                                                     value="Cidade" 
-                                                    action="/cadastro/cad_cidade.jsf?faces-redirect=true"
+                                                    onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');"
                                                     onstart="PF('statusDialog').show();"
                                                     onsuccess="PF('statusDialog').hide();"/>
                                     </sec:authorize>

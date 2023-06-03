@@ -43,7 +43,7 @@ public class Cidade implements Serializable {
 
     @NotNull
     @IdentificaCampoPesquisa(campoBancoDeDados = "nome", descricaoCampoEmTela = "Nome", ordemCampoEmTela = 1)
-    @Size(max = 100)
+    @Size(max = 50)
     @Column(name = "nome")
     private String nome;
 

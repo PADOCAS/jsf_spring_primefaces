@@ -413,8 +413,14 @@ input[type=submit] {
     width: 115px;
 }
 
-.estyleInputName {
+.styleInputTextGrande {
     width: 500px;
+}
+
+.styleOutputLabel {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
 }
 
 a.ui-menuitem-link.ui-corner-all.ui-state-hover {

@@ -37,9 +37,15 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     }
 
     @Override
+    public String novo() {
+        setObjetoSelecionado(new Cidade());
+        return "/cadastro/cad_cidade.jsf?faces-redirect=true";
+    }
+
+    @Override
     public String save() throws Exception {
-        System.out.println(getObjetoSelecionado().getNome());
-        //Se quiser podemos redirecionar para alguma tela nesse retorno
+        setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
+        //Se quiser podemos redirecionar para alguma tela nesse retorno, vamos manter na mesma tela ao salvar!
         return "";
     }
 

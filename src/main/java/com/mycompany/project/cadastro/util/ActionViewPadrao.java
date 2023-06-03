@@ -26,6 +26,8 @@ public interface ActionViewPadrao extends Serializable {
     public abstract String ativar() throws Exception;
 
     public abstract void initComponentes();
+    
+    public abstract String novo();
 
     public abstract String editar() throws Exception;
 

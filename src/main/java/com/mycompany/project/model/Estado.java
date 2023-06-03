@@ -49,9 +49,15 @@ public class Estado implements Serializable {
 
     @NotNull
     @IdentificaCampoPesquisa(campoBancoDeDados = "nome", descricaoCampoEmTela = "Nome", ordemCampoEmTela = 1)
-    @Size(max = 100)
+    @Size(max = 50)
     @Column(name = "nome")
     private String nome;
+
+    @NotNull
+    @IdentificaCampoPesquisa(campoBancoDeDados = "siglauf", descricaoCampoEmTela = "UF")
+    @Size(max = 2)
+    @Column(name = "siglauf")
+    private String siglauf;
 
     //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)
     @Version
@@ -115,6 +121,14 @@ public class Estado implements Serializable {
 
     public void setVersionnum(Integer versionnum) {
         this.versionnum = versionnum;
+    }
+
+    public String getSiglauf() {
+        return siglauf;
+    }
+
+    public void setSiglauf(String siglauf) {
+        this.siglauf = siglauf;
     }
 
     @Override

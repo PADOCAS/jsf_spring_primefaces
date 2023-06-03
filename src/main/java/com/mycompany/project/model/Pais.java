@@ -46,7 +46,7 @@ public class Pais implements Serializable {
     @NotNull
     @IdentificaCampoPesquisa(descricaoCampoEmTela = "Nome", campoBancoDeDados = "nome", ordemCampoEmTela = 1)
     @Column(name = "nome")
-    @Size(max = 80)
+    @Size(max = 50)
     private String nome;
 
     @NotNull
