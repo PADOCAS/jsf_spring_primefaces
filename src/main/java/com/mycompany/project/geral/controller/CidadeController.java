@@ -8,6 +8,8 @@ import com.mycompany.hibernate.impl.crud.CrudImpl;
 import com.mycompany.project.model.Cidade;
 import com.mycompany.srv.interfaces.ServiceCidade;
 import java.io.Serializable;
+import java.util.List;
+import javax.faces.model.SelectItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,5 +24,16 @@ public class CidadeController extends CrudImpl<Cidade> implements Serializable {
     
     @Autowired
     private ServiceCidade serviceCidade;
+    
+    @Autowired
+    private EstadoController estadoController;
+    
+    public List<SelectItem> getListSelectItemEstado() {
+        if (estadoController != null) {
+            return estadoController.getListSelectItemEstado();
+        }
+
+        return null;
+    }
     
 }

@@ -89,7 +89,7 @@ function ocultarMenu() {
  * 
  * @returns {undefined}
  */
-function initTamplate() {    
+function initTamplate() {
     $(document).ready(function () {
         $('#menupop').hide();
         $('#barramenu').hide();
@@ -122,6 +122,7 @@ function logout(contextPath) {
 
 //Função logout - seta para sair -> sair do sistema vai abrir um menu:
 function abrirMenupop() {
+    $("#id").css("display", "block");
     $("#menupop").show("slow").mouseleave(function () {
         fecharMenupop();
     });
@@ -133,7 +134,20 @@ function fecharMenupop() {
         //Fechar menu com efeito slow:
         $("#menupop").hide("slow");
     }
+    $("#id").css("display", "none");
 }
+
+//InputTexts com UpperCase (Classe criada (ui-text-uppercase) -> Declarar nos inputs
+$(function () {
+    $(document).ready(function () {
+        document.querySelectorAll(".ui-text-uppercase")
+                .forEach((current) => {
+                    current.addEventListener("input", function (event) {
+                        event.target.value = event.target.value.toLocaleUpperCase();
+                    });
+                });
+    });
+});
 
 //Redireciona para uma página especifica:
 function redirecionarPagina(contextPath, pagina) {

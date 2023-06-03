@@ -68,13 +68,14 @@ a:focus {
 }
 
 #menupop {
+    display: none;
     position: absolute;
     border: 1px solid #61cded;
     top: 63px;
     right: 25px;
     height: 30px;
     width: 150px;
-    background-color: white;
+    background-color: ghostwhite;
     -webkit-border-bottom-right-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
     -moz-border-radius-bottomright: 5px;

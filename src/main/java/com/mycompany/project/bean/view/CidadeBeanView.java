@@ -7,7 +7,9 @@ package com.mycompany.project.bean.view;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.CidadeController;
 import com.mycompany.project.model.Cidade;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.model.SelectItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,10 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         System.out.println(getObjetoSelecionado().getNome());
         //Se quiser podemos redirecionar para alguma tela nesse retorno
         return "";
+    }
+
+    public List<SelectItem> getListSelectItemEstado() {
+        return cidadeController.getListSelectItemEstado();
     }
 
     public Cidade getObjetoSelecionado() {

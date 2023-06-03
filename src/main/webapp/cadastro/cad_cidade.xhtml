@@ -25,8 +25,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <p:message for="txtCodigo"/>
 
                     <h:outputLabel id="lblNome" value="* Nome" for="txtNome" />
-                    <p:inputText id="txtNome" class="estyleInputName" value="#{cidadeBeanView.objetoSelecionado.nome}" required="true" maxlength="100" requiredMessage="Informe o Nome da Cidade."/>
+                    <p:inputText id="txtNome" class="estyleInputName ui-text-uppercase" value="#{cidadeBeanView.objetoSelecionado.nome}" required="true" maxlength="100" requiredMessage="Informe o Nome da Cidade."/>
                     <p:message for="txtNome" />
+
+                    <h:outputLabel id="lblEstado" value="* Estado" for="selOneMenuEstado" />
+                    <p:selectOneMenu id="selOneMenuEstado"  >
+                        <f:selectItems value="#{cidadeBeanView.listSelectItemEstado}" />
+                    </p:selectOneMenu>
+                    <p:message for="selOneMenuEstado" />
                 </h:panelGrid>               
             </p:panel>
 
