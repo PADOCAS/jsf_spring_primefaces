@@ -7,6 +7,7 @@ package com.mycompany.project.cadastro.util;
 import com.mycompany.project.message.util.Mensagem;
 import com.mycompany.project.message.util.StatusPersistencia;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import org.springframework.stereotype.Component;
 
 /**
@@ -87,10 +88,20 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
     }
 
     @Override
-    public void addMessage(String msg) throws Exception {
+    public void addMessage(String msg, String sumario, FacesMessage.Severity severity) throws Exception {
         if (msg != null
-                && !msg.isEmpty()) {
-            Mensagem.msgSeverityInfo(msg);
+                && !msg.isEmpty()
+                && sumario != null
+                && severity != null) {
+            if (severity.equals(FacesMessage.SEVERITY_INFO)) {
+                Mensagem.msgSeverityInfo(msg, "Informação");
+            } else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
+                Mensagem.msgSeverityError(msg, "Erro");
+            } else if (!severity.equals(FacesMessage.SEVERITY_FATAL)) {
+                Mensagem.msgSeverityError(msg, "Erro");
+            } else if (!severity.equals(FacesMessage.SEVERITY_WARN)) {
+                Mensagem.msgSeverityWarn(msg, "Atenção");
+            }
         }
     }
 

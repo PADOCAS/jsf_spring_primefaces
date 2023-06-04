@@ -15,6 +15,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="corpo">
         <h:form id="formCadastro" prependId="false" >
+            <p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+
             <!--Variável para saber se está cadastrando, consultando, etc..-->
             <c:set var="isCadastro" value="true" scope="view" />
 
@@ -48,18 +50,64 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <h:panelGrid style="margin-top: 3px;" columns="2">
                 <p:commandButton id="btnSalvar" 
                                  value="Salvar (F2)" 
-                                 ajax="false" 
-                                 onstart="PF('statusDialog').show();"
-                                 onsuccess="PF('statusDialog').hide();"
+                                 ajax="false"
                                  actionListener="#{cidadeBeanView.save()}" />
 
                 <p:commandButton id="btnNovo" 
                                  value="Novo (F8)"          
-                                 onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');"
-                                 onstart="PF('statusDialog').show();"
-                                 onsuccess="PF('statusDialog').hide();">
+                                 onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');">
                 </p:commandButton>
             </h:panelGrid>
+
+            <p:dataTable id="dataTableListCidade"
+                         value="#{cidadeBeanView.listAllCidade}"
+                         var="cid"
+                         rows="5" 
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                         rowsPerPageTemplate="5,10,15"
+                         emptyMessage="Nenhuma Cidade cadastrada.">
+                <p:column style="width: 10%;">
+                    <f:facet name="header" >Código</f:facet>
+                    <h:outputText value="#{cid.codigo}" />
+                </p:column>
+
+                <p:column style="width: 38%;">
+                    <f:facet name="header" >Nome</f:facet>
+                    <h:outputText value="#{cid.nome}" />
+                </p:column>
+
+                <p:column style="width: 30%;">
+                    <f:facet name="header" >Estado</f:facet>
+                    <h:outputText value="#{cid.estado.nome}" />
+                </p:column>
+
+                <p:column style="text-align: center; width: 10%;">
+                    <f:facet name="header" >UF</f:facet>
+                    <h:outputText value="#{cid.estado.siglauf}" />
+                </p:column>
+
+                <p:column style="text-align: center; width: 6%;">
+                    <f:facet name="header" >Editar</f:facet>
+                    <h:commandLink id="cmdLinkEditar"
+                                   immediate="true">                       
+                        <f:setPropertyActionListener target="#{cidadeBeanView.objetoSelecionado}" value="#{cid}" />
+                        <h:graphicImage name="editar.png" library="img" height="20" width="20" title="Editar"></h:graphicImage>
+                        <f:ajax execute="cmdLinkEditar" render="@form"/>
+                    </h:commandLink>
+                </p:column>  
+                <p:column style="text-align: center; width: 6%;">
+                    <f:facet name="header" >Excluir</f:facet>
+                    <h:commandLink id="cmdLinkExcluir" 
+                                   immediate="true"
+                                   action="#{cidadeBeanView.excluir()}">
+                        <f:setPropertyActionListener target="#{cidadeBeanView.objetoSelecionado}" value="#{cid}" />
+                        <h:graphicImage name="table_remove.png" library="img" height="20" width="20" title="Excluir"></h:graphicImage>
+                        <f:ajax execute="cmdLinkExcluir" render="@form"/>
+                    </h:commandLink>
+                </p:column>
+            </p:dataTable>
         </h:form>
 
         <script type="text/javascript">

@@ -6,6 +6,7 @@ package com.mycompany.project.cadastro.util;
 
 import com.mycompany.project.message.util.StatusPersistencia;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -41,5 +42,5 @@ public interface ActionViewPadrao extends Serializable {
 
     public abstract String redirecionarFindEntidade() throws Exception;
 
-    public abstract void addMessage(String msg) throws Exception;
+    public abstract void addMessage(String msg, String sumario, FacesMessage.Severity severity) throws Exception;
 }

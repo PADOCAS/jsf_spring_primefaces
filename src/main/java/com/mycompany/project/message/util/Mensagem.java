@@ -33,7 +33,7 @@ public abstract class Mensagem extends FacesContext implements Serializable {
             msgOperacaoRealizadaComSucesso();
         } else if (status != null
                 && status.equals(StatusPersistencia.OBJETO_REFERENCIADO)) {
-            msgSeverityFatal(StatusPersistencia.OBJETO_REFERENCIADO.toString());
+            msgSeverityFatal(StatusPersistencia.OBJETO_REFERENCIADO.toString(), StatusPersistencia.OBJETO_REFERENCIADO.toString());
         } else if (status != null
                 && status.equals(StatusPersistencia.ERRO)) {
             msgErroNaOperacao();
@@ -42,43 +42,43 @@ public abstract class Mensagem extends FacesContext implements Serializable {
 
     //Mensagens Genéricas já prontas:
     public static void msgOperacaoRealizadaComSucesso() {
-        msgSeverityInfo(ConstanteMensagemSistema.OPERACAO_REALIZADA_COM_SUCESSO);
+        msgSeverityInfo(ConstanteMensagemSistema.OPERACAO_REALIZADA_COM_SUCESSO, "Ok");
     }
 
     public static void msgSalvoComSucesso() {
-        msgSeverityInfo(ConstanteMensagemSistema.REGISTRO_SALVO_COM_SUCESSO);
+        msgSeverityInfo(ConstanteMensagemSistema.REGISTRO_SALVO_COM_SUCESSO, "Ok");
     }
 
     public static void msgExcluidoComSucesso() {
-        msgSeverityInfo(ConstanteMensagemSistema.REGISTRO_EXCLUIDO_COM_SUCESSO);
+        msgSeverityInfo(ConstanteMensagemSistema.REGISTRO_EXCLUIDO_COM_SUCESSO, "Ok");
     }
 
     public static void msgErroNaOperacao() {
-        msgSeverityError(ConstanteMensagemSistema.ERRO_OPERACAO);
+        msgSeverityError(ConstanteMensagemSistema.ERRO_OPERACAO, "Erro");
     }
 
     //Métodos para chamar mensagens criadas nos programas:
-    public static void msgSeverityWarn(String msg) {
+    public static void msgSeverityWarn(String msg, String sumario) {
         if (facesContextValido()) {
-            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg));
+            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_WARN, sumario, msg));
         }
     }
 
-    public static void msgSeverityInfo(String msg) {
+    public static void msgSeverityInfo(String msg, String sumario) {
         if (facesContextValido()) {
-            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_INFO, sumario, msg));
         }
     }
 
-    public static void msgSeverityError(String msg) {
+    public static void msgSeverityError(String msg, String sumario) {
         if (facesContextValido()) {
-            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_ERROR, sumario, msg));
         }
     }
 
-    public static void msgSeverityFatal(String msg) {
+    public static void msgSeverityFatal(String msg, String sumario) {
         if (facesContextValido()) {
-            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_FATAL, msg, msg));
+            getFacesContext().addMessage(msg, new FacesMessage(FacesMessage.SEVERITY_FATAL, sumario, msg));
         }
     }
 }

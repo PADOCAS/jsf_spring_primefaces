@@ -140,7 +140,7 @@ function fecharMenupop() {
 }
 
 //InputTexts com UpperCase (Classe criada (ui-text-uppercase) -> Declarar nos inputs
-$(function () {
+function setUppercaseInputTextJs() {
     $(document).ready(function () {
         document.querySelectorAll(".ui-text-uppercase")
                 .forEach((current) => {
@@ -149,7 +149,7 @@ $(function () {
                     });
                 });
     });
-});
+}
 
 //Redireciona para uma página especifica:
 function redirecionarPagina(contextPath, pagina) {
