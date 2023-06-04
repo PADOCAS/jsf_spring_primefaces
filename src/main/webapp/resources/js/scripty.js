@@ -151,6 +151,53 @@ function setUppercaseInputTextJs() {
     });
 }
 
+/**
+ * Adiciona foco ao campo passado como paramentro
+ * 
+ * @param campo
+ */
+function addFocoAoCampo(campo) {
+    var id = getValorElementPorId(campo);
+    if (id !== null
+            && id !== undefined) {
+        document.getElementById(id).focus();
+    }
+}
+
+/**
+ * Tecla enter funciona como TAB nos campos de input
+ * 
+ * @returns {undefined}
+ */
+function tabInTeclaEnter() {
+    $(document).ready(function () {
+        $('input').keypress(function (e) {
+            var code = null;
+            code = (e.keyCode ? e.keyCode : e.which);
+            return (code === 13) ? false : true;
+
+        });
+
+        $('input[type=text]').keydown(function (e) {
+            // Obter o próximo índice do elemento de entrada de texto
+            var next_idx = $('input[type=text]').index(this) + 1;
+
+            // Obter o número de elemento de entrada de texto em um documento html
+            var tot_idx = $('body').find('input[type=text]').length;
+
+            // Entra na tecla no código ASCII
+            if (e.keyCode === 13) {
+                if (tot_idx === next_idx)
+                    // Vá para o primeiro elemento de texto
+                    $('input[type=text]:eq(0)').focus();
+                else
+                    // Vá para o elemento de entrada de texto seguinte
+                    $('input[type=text]:eq(' + next_idx + ')').focus();
+            }
+        });
+    });
+}
+
 //Redireciona para uma página especifica:
 function redirecionarPagina(contextPath, pagina) {
     document.location = (contextPath + pagina + ".jsf");

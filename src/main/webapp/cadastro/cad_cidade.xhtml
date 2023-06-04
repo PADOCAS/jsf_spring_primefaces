@@ -47,7 +47,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 </h:panelGrid>               
             </p:panel>
 
-            <h:panelGrid style="margin-top: 3px;" columns="2">
+            <div class="espacoBranco" />
+
+            <h:panelGrid columns="2">
                 <p:commandButton id="btnSalvar" 
                                  value="Salvar (F2)" 
                                  ajax="false"
@@ -59,6 +61,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 </p:commandButton>
             </h:panelGrid>
 
+            <div class="espacoBranco" />
+            
             <p:dataTable id="dataTableListCidade"
                          value="#{cidadeBeanView.listAllCidade}"
                          var="cid"
@@ -110,12 +114,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             </p:dataTable>
         </h:form>
 
-        <script type="text/javascript">
+        <script type="text/javascript" charset="UTF-8">
             //Evita conflito entre bibliotecas:
             jQuery.noConflict();
 
             //Foco no campo nome ao carregar a tela:
-            jQuery('input[name="form:txtNome"]').focus();
+//            jQuery('input[name="form:txtNome"]').focus();
+            addFocoAoCampo("txtNome");
+            tabInTeclaEnter();
         </script>
     </ui:define>
 </ui:decorate>
