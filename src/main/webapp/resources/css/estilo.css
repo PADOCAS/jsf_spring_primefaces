@@ -215,7 +215,7 @@ a:focus {
 }
 
 #barramenu {
-    display: block;
+    display: none;
     background-color: ghostwhite;
     position: absolute;
     top: 110px;

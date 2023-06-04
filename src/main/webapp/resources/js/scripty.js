@@ -97,7 +97,9 @@ function initTamplate() {
         $('#iniciarmenu').click(function () {
             if ($('#barramenu').is(':visible')) {
                 ocultarMenu();
+                $("#barramenu").css("display", "none");
             } else {
+                $("#barramenu").css("display", "block");
                 $('#barramenu').show();
                 $('#barramenu').animate({"left": "0px"}, "slow");
             }

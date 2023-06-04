@@ -39,7 +39,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public String novo() {
         setObjetoSelecionado(new Cidade());
-        return "/cadastro/cad_cidade.jsf?faces-redirect=true";
+        return "";
     }
 
     @Override

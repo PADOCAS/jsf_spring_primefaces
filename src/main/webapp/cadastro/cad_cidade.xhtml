@@ -45,21 +45,29 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 </h:panelGrid>               
             </p:panel>
 
-            <p:commandButton id="btnSalvar" 
-                             value="Salvar (F2)" 
-                             ajax="false" 
-                             onstart="PF('statusDialog').show();"
-                             onsuccess="PF('statusDialog').hide();"
-                             actionListener="#{cidadeBeanView.save()}" 
-                             style="margin-top: 3px;"/>
-            
-            <p:commandButton id="btnNovo" 
-                             value="Novo (F8)"                              
-                             ajax="false" 
-                             onstart="PF('statusDialog').show();"
-                             onsuccess="PF('statusDialog').hide();"
-                             actionListener="#{cidadeBeanView.novo()}" 
-                             style="margin-top: 3px;"/>
+            <h:panelGrid style="margin-top: 3px;" columns="2">
+                <p:commandButton id="btnSalvar" 
+                                 value="Salvar (F2)" 
+                                 ajax="false" 
+                                 onstart="PF('statusDialog').show();"
+                                 onsuccess="PF('statusDialog').hide();"
+                                 actionListener="#{cidadeBeanView.save()}" />
+
+                <p:commandButton id="btnNovo" 
+                                 value="Novo (F8)"          
+                                 onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');"
+                                 onstart="PF('statusDialog').show();"
+                                 onsuccess="PF('statusDialog').hide();">
+                </p:commandButton>
+            </h:panelGrid>
         </h:form>
+
+        <script type="text/javascript">
+            //Evita conflito entre bibliotecas:
+            jQuery.noConflict();
+
+            //Foco no campo nome ao carregar a tela:
+            jQuery('input[name="form:txtNome"]').focus();
+        </script>
     </ui:define>
 </ui:decorate>
