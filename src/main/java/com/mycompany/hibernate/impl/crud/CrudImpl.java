@@ -194,6 +194,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             List<T> list = getSessionFactory().getCurrentSession().createQuery(sql.toString()).list();
 
+            clearSession();
             return list;
         }
 
@@ -210,6 +211,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             Object obj = getSessionFactory().getCurrentSession().load(entidade, id);
 
+            clearSession();
             return obj;
         }
 
@@ -226,6 +228,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             T obj = (T) getSessionFactory().getCurrentSession().load(entidade, id);
 
+            clearSession();
             return obj;
         }
 
@@ -241,6 +244,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             List<T> list = getSessionFactory().getCurrentSession().createQuery(query).list();
 
+            clearSession();
             return list;
         }
 
@@ -309,6 +313,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             List<T> list = getSessionFactory().getCurrentSession().createSQLQuery(query).list();
 
+            clearSession();
             return list;
         }
 
@@ -325,6 +330,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
             List<Object[]> list = (List<Object[]>) getSessionFactory().getCurrentSession().createSQLQuery(query).list();
 
+            clearSession();
             return list;
         }
 
@@ -372,8 +378,9 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
                 && query != null) {
             validaSessionFactory();
 
-            Query queryReturn = getSessionFactory().getCurrentSession().createQuery(query.toString());
+            Query queryReturn = getSessionFactory().getCurrentSession().createQuery(query);
 
+            clearSession();
             return queryReturn;
         }
 
@@ -402,6 +409,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
                     .setMaxResults(maxResult)
                     .list();
 
+            clearSession();
             return list;
         }
 
@@ -416,6 +424,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
             validaSessionFactory();
             T object = (T) getSessionFactory().getCurrentSession().createQuery(query).uniqueResult();
 
+            clearSession();
             return object;
         }
 

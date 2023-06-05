@@ -31,7 +31,7 @@ function getTextoAtalhoPressionado(event) {
 }
 
 function getLocalAtalho() {
-    const dialogs = document.querySelectorAll('.ui-dialog, .ui-confirm-dialog');
+    const dialogs = document.querySelectorAll('.ui-dialog-ative-atalho');
 
     if (dialogs.length > 0) {
         for (let i = (dialogs.length - 1); i >= 0; i--) {

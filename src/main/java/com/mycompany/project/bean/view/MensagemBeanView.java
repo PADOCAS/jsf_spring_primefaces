@@ -22,7 +22,6 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void initComponentes() {
-        System.out.println("Chamou método initComponentes...");
         super.initComponentes();
     }
 

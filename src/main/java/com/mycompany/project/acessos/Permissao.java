@@ -18,16 +18,24 @@ public enum Permissao {
     //Padrão:
     ADMIN("ADMIN", "Administrador"),
     USER("USER", "Usuário Padrão"),
+    //Menus:
     CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
-    //Especificos:
-    FINANCEIRO("FINANCEIRO", "Financeiro - Acessar"),
-    PAIS_ACESSAR("PAIS_ACESSAR", "País - Acessar"),
+    //Cadastros:
+    //Cad. Bairro:
     BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
-    CIDADE_ACESSAR("CIDADE_ACESSAR", "Cidade - Acessar"),
-    //Especificos - Funções:
     BAIRRO_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
     BAIRRO_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
     BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
+    //Cad. Cidade:
+    CIDADE_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
+    CIDADE_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
+    CIDADE_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
+    CIDADE_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
+    //Cad. País:
+    PAIS_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
+    PAIS_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
+    PAIS_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
+    PAIS_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
     //Mensagens:
     MENSAGEM_ACESSAR("MENSAGEM_ACESSAR", "Mensagem Recebida - Acessar"),
     MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),
