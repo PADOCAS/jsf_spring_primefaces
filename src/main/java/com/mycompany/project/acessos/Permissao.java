@@ -23,19 +23,19 @@ public enum Permissao {
     //Cadastros:
     //Cad. Bairro:
     BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
-    BAIRRO_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
+    BAIRRO_SALVAR("BAIRRO_SALVAR", "Bairro - Salvar"),
     BAIRRO_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
     BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
     //Cad. Cidade:
-    CIDADE_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
-    CIDADE_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
-    CIDADE_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
-    CIDADE_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
+    CIDADE_ACESSAR("CIDADE_ACESSAR", "Cidade - Acessar"),
+    CIDADE_SALVAR("CIDADE_SALVAR", "Cidade - Salvar"),
+    CIDADE_EDITAR("CIDADE_EDITAR", "Bairro - Editar"),
+    CIDADE_EXCLUIR("CIDADE_EXCLUIR", "Bairro - Excluir"),
     //Cad. País:
-    PAIS_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
-    PAIS_NOVO("BAIRRO_NOVO", "Bairro - Novo"),
-    PAIS_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
-    PAIS_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
+    PAIS_ACESSAR("PAIS_ACESSAR", "País - Acessar"),
+    PAIS_SALVAR("PAIS_SALVAR", "País - Salvar"),
+    PAIS_EDITAR("PAIS_EDITAR", "País - Editar"),
+    PAIS_EXCLUIR("PAIS_EXCLUIR", "País - Excluir"),
     //Mensagens:
     MENSAGEM_ACESSAR("MENSAGEM_ACESSAR", "Mensagem Recebida - Acessar"),
     MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),

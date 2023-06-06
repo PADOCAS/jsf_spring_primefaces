@@ -17,6 +17,8 @@ public interface ActionViewPadrao extends Serializable {
     public abstract void limparLista() throws Exception;
 
     public abstract String save() throws Exception;
+    
+    public abstract String saveNew() throws Exception;
 
     public abstract void saveNotReturn() throws Exception;
 

@@ -27,6 +27,11 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
     }
 
     @Override
+    public String saveNew() throws Exception {
+        return null;
+    }
+
+    @Override
     public void saveNotReturn() throws Exception {
     }
 

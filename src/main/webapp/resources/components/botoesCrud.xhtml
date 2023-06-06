@@ -17,33 +17,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
     <composite:interface name="botoesCrud">
         <composite:attribute name="managedBeanView" required="true" />
-        <composite:attribute name="exibeBtnNovo" required="false" default="true" />
+        <composite:attribute name="disableBtnNovo" required="false" default="false" />
+        <composite:attribute name="disableBtnSalvar" required="false" default="false" />
+        <composite:attribute name="disableBtnExcluir" required="false" default="false" />
         <composite:attribute name="urlBtnNovo" required="false" />
     </composite:interface>
 
     <composite:implementation>
-        <c:choose>
-            <c:when test="#{cc.attrs.exibeBtnNovo}">
-                <h:panelGrid columns="2" style="margin-left: -2px;">
-                    <p:commandButton id="btnSalvar" 
-                                     value="Salvar (F2)" 
-                                     ajax="false"
-                                     actionListener="#{cc.attrs.managedBeanView.save()}" />
+        <h:panelGrid columns="4" style="margin-left: -2px;">
+            <p:commandButton id="btnSalvar" 
+                             value="Salvar (F2)" 
+                             ajax="false"
+                             disabled="#{cc.attrs.disableBtnSalvar}"
+                             actionListener="#{cc.attrs.managedBeanView.save()}" />
+            
+            <p:commandButton id="btnSalvarNovo" 
+                             value="Salvar/Novo (F3)" 
+                             ajax="false"
+                             disabled="#{cc.attrs.disableBtnSalvar}"
+                             actionListener="#{cc.attrs.managedBeanView.saveNew()}" />
+            
+            <p:commandButton id="btnExcluir" 
+                             value="Excluir (F7)" 
+                             process="@this"
+                             immediate="true"
+                             disabled="#{cc.attrs.disableBtnExcluir}" >
+                <p:ajax update="@form" listener="#{cc.attrs.managedBeanView.excluir()}" process="@this" />
+            </p:commandButton>
 
-                    <p:commandButton id="btnNovo" 
-                                     value="Novo (F8)"          
-                                     onclick="redirecionarPagina('#{request.contextPath}', '#{cc.attrs.urlBtnNovo}');" />
-                </h:panelGrid>
-            </c:when>
-            <c:otherwise>
-                <h:panelGrid columns="1" style="margin-left: -2px;">
-                    <p:commandButton id="btnSalvar" 
-                                     value="Salvar (F2)" 
-                                     ajax="false"
-                                     actionListener="#{cc.attrs.managedBeanView.save()}" />
-                </h:panelGrid>
-            </c:otherwise>
-        </c:choose>
+            <p:commandButton id="btnNovo" 
+                             value="Novo (F8)"          
+                             disabled="#{cc.attrs.disableBtnNovo}"
+                             onclick="redirecionarPagina('#{request.contextPath}', '#{cc.attrs.urlBtnNovo}');" />
+        </h:panelGrid>
 
         <div class="espacoBranco" />        
     </composite:implementation>

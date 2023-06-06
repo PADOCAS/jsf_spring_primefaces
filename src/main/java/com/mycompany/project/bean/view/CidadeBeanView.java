@@ -47,9 +47,28 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public String save() throws Exception {
-        setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
-        Mensagem.msgSalvoComSucesso();
-        //Se quiser podemos redirecionar para alguma tela nesse retorno, vamos manter na mesma tela ao salvar!
+        try {
+            setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
+            Mensagem.msgSalvoComSucesso();
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+        }
+
+        return "";
+    }
+
+    @Override
+    public String saveNew() throws Exception {
+        try {
+            cidadeController.merge(getObjetoSelecionado());
+            Mensagem.msgSalvoComSucesso();
+            setObjetoSelecionado(new Cidade());
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+        }
+
         return "";
     }
 
@@ -61,9 +80,19 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void excluir() throws Exception {
-        cidadeController.delete(getObjetoSelecionado());
-        setObjetoSelecionado(new Cidade());        
-        Mensagem.msgExcluidoComSucesso();
+        try {
+            if (getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getCodigo() != null) {
+                cidadeController.delete(getObjetoSelecionado());
+                setObjetoSelecionado(new Cidade());
+                Mensagem.msgExcluidoComSucesso();
+            } else {
+                Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            Mensagem.msgSeverityError("Erro ao Excluir!\n" + ex.getMessage(), "Erro");
+        }
     }
 
     public List<SelectItem> getListSelectItemEstado() {

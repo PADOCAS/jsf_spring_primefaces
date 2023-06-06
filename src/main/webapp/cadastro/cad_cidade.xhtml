@@ -22,10 +22,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <c:set var="isCadastro" value="true" scope="view" />
 
         <!--Importa o xhtml genérico criado (components:botoesCrud)-->
-        <util:botoesCrud managedBeanView="#{cidadeBeanView}" 
-                         exibeBtnNovo="#{true}"
+        <util:botoesCrud managedBeanView="#{cidadeBeanView}"      
+                         disableBtnSalvar="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"                         
+                         disableBtnNovo="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"
+                         disableBtnExcluir="#{!contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
                          urlBtnNovo="/cadastro/cad_cidade"/>
-        
+
         <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
             <h:panelGrid id="pnlGridCadastro" columns="2" >
                 <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
@@ -51,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </p:panel>
 
         <div class="espacoBranco" />
-        
+
         <p:dataTable id="dataTableListCidade"
                      value="#{cidadeBeanView.listAllCidade}"
                      var="cid"

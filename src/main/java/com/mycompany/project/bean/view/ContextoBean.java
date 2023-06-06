@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import com.mycompany.project.geral.controller.SessionController;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
@@ -103,5 +104,25 @@ public class ContextoBean implements Serializable {
         }
 
         return "";
+    }
+
+    /**
+     * Verifica se o usuário possui acesso liberado para tal funcionalidade (através do Spring Security)
+     * 
+     * @param listAcessos
+     * @return 
+     */
+    public Boolean possuiAcesso(String... listAcessos) {
+        if (listAcessos != null) {
+            for (String acesso : listAcessos) {
+                for (GrantedAuthority authority : getAuthentication().getAuthorities()) {
+                    if (authority.getAuthority() != null
+                            && authority.getAuthority().trim().equals(acesso.trim())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
