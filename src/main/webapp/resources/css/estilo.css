@@ -286,7 +286,7 @@ a:focus {
 
 .ui-growl {
     position: fixed;
-    top: 10%;
+    top: 115px;
     right: 5px;
     width: 301px;
 }
@@ -360,7 +360,7 @@ input[type=submit] {
     bottom: 2px;
     right: 2px;
     left: 2px;
-    top: 112px;
+    top: 107px;
     position: absolute;
     padding: 8px;
 }

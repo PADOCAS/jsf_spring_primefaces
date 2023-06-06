@@ -11,6 +11,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
              xmlns:p="http://primefaces.org/ui"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:composite="http://java.sun.com/jsf/composite"
              xmlns:sec="http://www.springframework.org/security/tags"
              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="corpo">
@@ -19,6 +21,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
         <c:set var="isCadastro" value="true" scope="view" />
 
+        <!--Importa o xhtml genérico criado (components:botoesCrud)-->
+        <util:botoesCrud managedBeanView="#{cidadeBeanView}" 
+                         exibeBtnNovo="#{true}"
+                         urlBtnNovo="/cadastro/cad_cidade"/>
+        
         <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
             <h:panelGrid id="pnlGridCadastro" columns="2" >
                 <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
@@ -44,21 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </p:panel>
 
         <div class="espacoBranco" />
-
-        <h:panelGrid columns="2">
-            <p:commandButton id="btnSalvar" 
-                             value="Salvar (F2)" 
-                             ajax="false"
-                             actionListener="#{cidadeBeanView.save()}" />
-
-            <p:commandButton id="btnNovo" 
-                             value="Novo (F8)"          
-                             onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');">
-            </p:commandButton>
-        </h:panelGrid>
-
-        <div class="espacoBranco" />
-
+        
         <p:dataTable id="dataTableListCidade"
                      value="#{cidadeBeanView.listAllCidade}"
                      var="cid"
@@ -117,7 +110,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          header="Exclusão"                         
                          message="Confirma a Exclusão da Cidade: (#{cidadeBeanView.objetoSelecionado.codigo}) #{cidadeBeanView.objetoSelecionado.nome} ?"
                          closable="false">
-            <h:panelGrid id="pnlGridExclusaoCidade" columns="2">
+            <h:panelGrid id="pnlGridExclusaoCidade" columns="2" style="display: flex; flex-direction: row; justify-content: center;">
                 <p:commandButton id="btnExclusaoSim" 
                                  value="Sim (F2)" 
                                  update="form"

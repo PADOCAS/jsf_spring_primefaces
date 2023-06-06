@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <composite:interface name="botoesCrud">
+        <composite:attribute name="managedBeanView" required="true" />
+        <composite:attribute name="exibeBtnNovo" required="false" default="true" />
+        <composite:attribute name="urlBtnNovo" required="false" />
+    </composite:interface>
+
+    <composite:implementation>
+        <c:choose>
+            <c:when test="#{cc.attrs.exibeBtnNovo}">
+                <h:panelGrid columns="2" style="margin-left: -2px;">
+                    <p:commandButton id="btnSalvar" 
+                                     value="Salvar (F2)" 
+                                     ajax="false"
+                                     actionListener="#{cc.attrs.managedBeanView.save()}" />
+
+                    <p:commandButton id="btnNovo" 
+                                     value="Novo (F8)"          
+                                     onclick="redirecionarPagina('#{request.contextPath}', '#{cc.attrs.urlBtnNovo}');" />
+                </h:panelGrid>
+            </c:when>
+            <c:otherwise>
+                <h:panelGrid columns="1" style="margin-left: -2px;">
+                    <p:commandButton id="btnSalvar" 
+                                     value="Salvar (F2)" 
+                                     ajax="false"
+                                     actionListener="#{cc.attrs.managedBeanView.save()}" />
+                </h:panelGrid>
+            </c:otherwise>
+        </c:choose>
+
+        <div class="espacoBranco" />        
+    </composite:implementation>
+</html>
