@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.bean.geral;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.report.util.BeanReportView;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,11 @@ import org.springframework.stereotype.Component;
 //@Component para o Spring trabalhar com ela:
 @Component
 public abstract class BeanManagedViewAbstract extends BeanReportView {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
+    protected abstract Class<?> getClassImplement();
+
+    protected abstract IInterfaceCrud<?> getController();
+
 }

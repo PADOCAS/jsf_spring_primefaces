@@ -4,7 +4,9 @@
  */
 package com.mycompany.project.bean.view;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
+import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.model.Entidade;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
@@ -26,6 +28,9 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
     @Autowired
     private ContextoBean contextoBean;
 
+    @Autowired
+    private EntidadeController entidadeController;
+
     public String getUsuarioLogadoSecurity() {
         if (contextoBean != null
                 && contextoBean.getAuthentication() != null
@@ -46,5 +51,15 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
         }
 
         return null;
+    }
+
+    @Override
+    protected Class<?> getClassImplement() {
+        return Entidade.class;
+    }
+
+    @Override
+    protected IInterfaceCrud<?> getController() {
+        return entidadeController;
     }
 }

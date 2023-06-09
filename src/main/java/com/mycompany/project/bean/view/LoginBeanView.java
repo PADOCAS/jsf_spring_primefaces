@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.bean.view;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,8 +46,8 @@ public class LoginBeanView extends BeanManagedViewAbstract {
     private ServiceLogin serviceLogin;
 
     /**
-     * Spring RestFull - Post para invalidar sessão assim que o usuário deslogar (Chamada no javascript (scripty.js))
-     * do sistema
+     * Spring RestFull - Post para invalidar sessão assim que o usuário deslogar
+     * (Chamada no javascript (scripty.js)) do sistema
      *
      * @param httpServletRequest
      * @throws Exception
@@ -111,6 +112,16 @@ public class LoginBeanView extends BeanManagedViewAbstract {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    @Override
+    protected Class<?> getClassImplement() {
+        return null;
+    }
+
+    @Override
+    protected IInterfaceCrud<?> getController() {
+        return null;
     }
 
 }

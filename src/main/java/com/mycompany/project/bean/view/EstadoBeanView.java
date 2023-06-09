@@ -4,8 +4,10 @@
  */
 package com.mycompany.project.bean.view;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.EstadoController;
+import com.mycompany.project.model.Estado;
 import javax.faces.bean.ManagedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,5 +26,15 @@ public class EstadoBeanView extends BeanManagedViewAbstract {
 
     @Autowired
     private EstadoController estadoController;
+
+    @Override
+    protected Class<?> getClassImplement() {
+        return Estado.class;
+    }
+
+    @Override
+    protected IInterfaceCrud<?> getController() {
+        return estadoController;
+    }
 
 }

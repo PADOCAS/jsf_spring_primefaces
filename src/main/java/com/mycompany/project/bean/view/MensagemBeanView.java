@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.bean.view;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import javax.faces.bean.ManagedBean;
 import org.springframework.context.annotation.Scope;
@@ -23,6 +24,16 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
     @Override
     public void initComponentes() {
         super.initComponentes();
+    }
+
+    @Override
+    protected Class<?> getClassImplement() {
+        return null;
+    }
+
+    @Override
+    protected IInterfaceCrud<?> getController() {
+        return null;
     }
 
 }

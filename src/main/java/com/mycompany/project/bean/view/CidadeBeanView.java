@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.bean.view;
 
+import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.CidadeController;
 import com.mycompany.project.message.util.Mensagem;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +30,52 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     private static final long serialVersionUID = 1L;
 
+    private String urlFind = "/cadastro/find_cidade.jsf?faces-redirect=true";
+
     private Cidade objetoSelecionado;
 
     @Autowired
     private CidadeController cidadeController;
 
     @Override
+    protected Class<?> getClassImplement() {
+        return Cidade.class;
+    }
+
+    @Override
     public void initComponentes() {
         super.initComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        try {
+            setarVariaveisNulas();
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void setarVariaveisNulas() throws Exception {
         setObjetoSelecionado(new Cidade());
     }
 
     @Override
+    public String redirecionarFindEntidade() throws Exception {
+        setarVariaveisNulas();
+        return urlFind;
+    }
+
+    @Override
+    protected IInterfaceCrud<?> getController() {
+        return cidadeController;
+    }
+
+    @Override
     public String novo() {
-        setObjetoSelecionado(new Cidade());
+        try {
+            setarVariaveisNulas();
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return "";
     }
 
@@ -81,7 +113,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         try {
             cidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
-            setObjetoSelecionado(new Cidade());
+            setarVariaveisNulas();
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
@@ -100,7 +132,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     public void validExclusao() throws Exception {
         PrimeFaces.current().ajax().addCallbackParam("validExclusao", false);
         //FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("validExclusao", false);
-        
+
         if (getObjetoSelecionado() == null
                 || getObjetoSelecionado().getCodigo() == null) {
             Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
@@ -116,7 +148,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             if (getObjetoSelecionado() != null
                     && getObjetoSelecionado().getCodigo() != null) {
                 cidadeController.delete(getObjetoSelecionado());
-                setObjetoSelecionado(new Cidade());
+                setarVariaveisNulas();
                 Mensagem.msgExcluidoComSucesso();
             } else {
                 Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
