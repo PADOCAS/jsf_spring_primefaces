@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,22 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public String novo() {
         setObjetoSelecionado(new Cidade());
+        return "";
+    }
+
+    @Override
+    public String getMessageExclusao() throws Exception {
+        //Confirma a Exclusão da Cidade: (#{cidadeBeanView.objetoSelecionado.codigo}) #{cidadeBeanView.objetoSelecionado.nome} ?
+        if (getObjetoSelecionado() != null
+                && getObjetoSelecionado().getCodigo() != null
+                && getObjetoSelecionado().getNome() != null) {
+            StringBuilder str = new StringBuilder();
+            str.append("Confirma a exclusão da Cidade: (").append(getObjetoSelecionado().getCodigo()).append(") ");
+            str.append(getObjetoSelecionado().getNome()).append(" ?");
+
+            return str.toString();
+        }
+
         return "";
     }
 
@@ -76,6 +94,20 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     public String editar() throws Exception {
         //Redireciona para mesma página:
         return "";
+    }
+
+    @Override
+    public void validExclusao() throws Exception {
+        PrimeFaces.current().ajax().addCallbackParam("validExclusao", false);
+        //FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("validExclusao", false);
+        
+        if (getObjetoSelecionado() == null
+                || getObjetoSelecionado().getCodigo() == null) {
+            Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
+        } else {
+            PrimeFaces.current().ajax().addCallbackParam("validExclusao", true);
+            //FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("validExclusao", true);
+        }
     }
 
     @Override

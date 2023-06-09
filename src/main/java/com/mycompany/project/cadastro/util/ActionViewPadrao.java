@@ -23,10 +23,14 @@ public interface ActionViewPadrao extends Serializable {
     public abstract void saveNotReturn() throws Exception;
 
     public abstract void saveEdit() throws Exception;
+    
+    public abstract void validExclusao() throws Exception;
 
     public abstract void excluir() throws Exception;
 
     public abstract String ativar() throws Exception;
+    
+    public abstract String getMessageExclusao() throws Exception;
 
     public abstract void initComponentes();
     

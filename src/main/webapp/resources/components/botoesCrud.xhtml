@@ -16,33 +16,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <composite:interface name="botoesCrud">
+        <composite:attribute name="idCompositeBotoesCrud" required="true" />
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="disableBtnNovo" required="false" default="false" />
         <composite:attribute name="disableBtnSalvar" required="false" default="false" />
         <composite:attribute name="disableBtnExcluir" required="false" default="false" />
         <composite:attribute name="urlBtnNovo" required="false" />
+        <composite:attribute name="idDialogExclude" required="false" />
     </composite:interface>
 
     <composite:implementation>
+        <!--RemoteCommand -> Caso a exclusão for permitida, chamar o dialog para confirmação-->
+        <p:remoteCommand id="remComExclusaoOk"
+                         name="remComExclusaoOk"
+                         update="form:#{cc.attrs.idCompositeBotoesCrud}:#{cc.attrs.idDialogExclude}" 
+                         oncomplete="PF('#{cc.attrs.idDialogExclude}').show();"
+                         process="@this" />
+
         <h:panelGrid columns="4" style="margin-left: -2px;">
             <p:commandButton id="btnSalvar" 
                              value="Salvar (F2)" 
                              ajax="false"
                              disabled="#{cc.attrs.disableBtnSalvar}"
                              actionListener="#{cc.attrs.managedBeanView.save()}" />
-            
+
             <p:commandButton id="btnSalvarNovo" 
                              value="Salvar/Novo (F3)" 
                              ajax="false"
                              disabled="#{cc.attrs.disableBtnSalvar}"
                              actionListener="#{cc.attrs.managedBeanView.saveNew()}" />
-            
+
             <p:commandButton id="btnExcluir" 
                              value="Excluir (F7)" 
                              process="@this"
-                             immediate="true"
+                             update="form"
+                             actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
+                             oncomplete="if(args.validExclusao) {remComExclusaoOk();};"
                              disabled="#{cc.attrs.disableBtnExcluir}" >
-                <p:ajax update="@form" listener="#{cc.attrs.managedBeanView.excluir()}" process="@this" />
             </p:commandButton>
 
             <p:commandButton id="btnNovo" 
@@ -50,6 +60,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              disabled="#{cc.attrs.disableBtnNovo}"
                              onclick="redirecionarPagina('#{request.contextPath}', '#{cc.attrs.urlBtnNovo}');" />
         </h:panelGrid>
+
+        <p:confirmDialog id="#{cc.attrs.idDialogExclude}"
+                         widgetVar="#{cc.attrs.idDialogExclude}"
+                         class="ui-dialog-ative-atalho"
+                         header="Exclusão"                         
+                         message="#{cc.attrs.managedBeanView.getMessageExclusao()}"
+                         closable="false">
+            <h:panelGrid columns="2" style="display: flex; flex-direction: row; justify-content: center;">
+                <p:commandButton value="Sim (F2)" 
+                                 update="form"
+                                 onsuccess="PF('#{cc.attrs.idDialogExclude}').hide();"
+                                 actionListener="#{cc.attrs.managedBeanView.excluir()}" />
+                <p:commandButton value="Não (ESC)"         
+                                 update="form"
+                                 actionListener="#{cc.attrs.managedBeanView.novo()}"
+                                 onclick="PF('#{cc.attrs.idDialogExclude}').hide();">
+                </p:commandButton>
+            </h:panelGrid> 
+        </p:confirmDialog>
 
         <div class="espacoBranco" />        
     </composite:implementation>

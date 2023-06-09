@@ -155,6 +155,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <div id="barramenu" >
                         <p:tieredMenu id="menuEsquerdo" style="width: 185px; border: none; background: none; color: #000;" >
                             <p:menuitem id="menuInicio"
+                                        process="@this"
                                         onclick="redirecionarPagina('#{request.contextPath}', '/restrito/principal');"
                                         onstart="PF('statusDialog').show();"
                                         onsuccess="PF('statusDialog').hide();"
@@ -173,6 +174,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                     <sec:authorize access="(hasAuthority('CIDADE_ACESSAR') or hasAuthority('ADMIN'))">
                                         <p:menuitem id="menuCadCidade" 
                                                     value="Cidade" 
+                                                    process="@this"
                                                     onclick="redirecionarPagina('#{request.contextPath}', '/cadastro/cad_cidade');"
                                                     onstart="PF('statusDialog').show();"
                                                     onsuccess="PF('statusDialog').hide();"/>
@@ -182,6 +184,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                             <p:menuitem id="menuSair"
                                         value="Sair"
+                                        process="@this"
                                         onclick="javascript:logout('#{request.contextPath}');"
                                         onstart="PF('statusDialog').show();"
                                         onsuccess="PF('statusDialog').hide();" />

@@ -48,6 +48,15 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
         return null;
     }
 
+    @Override
+    public String getMessageExclusao() throws Exception {
+        return null;
+    }
+
+    @Override
+    public void validExclusao() throws Exception {
+    }
+
     /**
      * PostConstruct - Ao abrir a tela ja inicia os componentes, váriaveis
      * desejadas etc..
