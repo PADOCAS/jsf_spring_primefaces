@@ -21,6 +21,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
         <c:set var="isCadastro" value="true" scope="view" />
 
+        <!--Relatório-->
+        <h:commandLink immediate="#{true}">
+            <p:fileDownload value="#{cidadeBeanView.arquivoReport}" />
+            <h:graphicImage library="img" name="pdf.png" />
+        </h:commandLink>
+        
         <!--Importa o xhtml genérico criado (components:botoesCrud)-->
         <util:botoesCrud id="compBotoesCrudCadCidade"
                          idCompositeBotoesCrud="compBotoesCrudCadCidade"

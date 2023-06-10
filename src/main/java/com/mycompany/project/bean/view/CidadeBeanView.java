@@ -14,12 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
-import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.webflow.execution.RequestContext;
 
 /**
  *
@@ -158,7 +157,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             Mensagem.msgSeverityError("Erro ao Excluir!\n" + ex.getMessage(), "Erro");
         }
     }
-
+    
     public List<SelectItem> getListSelectItemEstado() {
         return cidadeController.getListSelectItemEstado();
     }
