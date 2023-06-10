@@ -15,9 +15,11 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 import org.primefaces.PrimeFaces;
+import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.webflow.execution.RequestContext;
 
 /**
  *
@@ -130,15 +132,13 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void validExclusao() throws Exception {
-        PrimeFaces.current().ajax().addCallbackParam("validExclusao", false);
-        //FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("validExclusao", false);
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", false);
 
         if (getObjetoSelecionado() == null
                 || getObjetoSelecionado().getCodigo() == null) {
             Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
         } else {
-            PrimeFaces.current().ajax().addCallbackParam("validExclusao", true);
-            //FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("validExclusao", true);
+            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
         }
     }
 
