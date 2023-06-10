@@ -7,29 +7,48 @@
 		<![CDATA[]]>
 	</queryString>
 	<title>
-		<band height="39" splitType="Stretch">
+		<band height="41" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="550" height="39" uuid="4f9344f8-571f-4bf4-abd3-4d0b720bdc07"/>
-				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_IMG} + "img_rel.png"]]></imageExpression>
+				<reportElement x="0" y="0" width="120" height="41" uuid="7d7bf0d4-da0a-482d-be0c-439f63f328a6"/>
+				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_IMG} + "logo.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="17" width="550" height="20" uuid="4d75e77e-103c-4bcc-8021-31d4fa0d0f17">
+				<reportElement x="0" y="21" width="550" height="20" uuid="34483a8a-1d16-43ad-b42c-199f39d5c08f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font size="11" isBold="true" isUnderline="false"/>
+					<font size="13" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[Relatório não disponível]]></text>
 			</staticText>
-		</band>
-	</title>
-	<summary>
-		<band height="20" splitType="Stretch">
 			<textField pattern="EEEE, dd &apos;de&apos; MMMM &apos;de&apos; YYYY - HH:mm:ss">
-				<reportElement x="320" y="0" width="230" height="20" uuid="26b87c4d-d74b-44c4-b825-9865e16808d2"/>
+				<reportElement x="320" y="0" width="230" height="21" uuid="5c656af4-26db-4789-9ad6-a284dbe9a484"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
-	</summary>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<line>
+				<reportElement x="0" y="0" width="550" height="1" uuid="bedc33db-a7d5-4b6f-ac1a-4954e0e0b825">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="370" y="1" width="159" height="19" uuid="d1f3a17b-2076-4559-a32e-034caa55a224"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="530" y="1" width="20" height="19" uuid="641a29f6-5249-4e0c-96be-e250e627b0ec"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

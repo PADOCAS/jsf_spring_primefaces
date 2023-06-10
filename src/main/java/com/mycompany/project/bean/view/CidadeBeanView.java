@@ -39,7 +39,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     private CidadeController cidadeController;
 
     @Override
-    protected Class<?> getClassImplement() {
+    protected Class<Cidade> getClassImplement() {
         return Cidade.class;
     }
 
@@ -157,7 +157,17 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             Mensagem.msgSeverityError("Erro ao Excluir!\n" + ex.getMessage(), "Erro");
         }
     }
-    
+
+    @Override
+    public StreamedContent getArquivoReport() throws Exception {
+        //Parâmetros para o Relatório:
+        setNomeRelatorioJasper("cidade_report");
+        setNomeRelatorioSaida("cidade_report");
+        setListDataBeanCollectionReport(cidadeController.findListByQueryDinamica(" FROM Cidade ORDER BY nome"));
+
+        return super.getArquivoReport();
+    }
+
     public List<SelectItem> getListSelectItemEstado() {
         return cidadeController.getListSelectItemEstado();
     }
