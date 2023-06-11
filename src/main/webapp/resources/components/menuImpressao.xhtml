@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <composite:interface name="menuImpressao">
+        <composite:attribute name="managedBeanView" required="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <!--Relatórios-->
+        <h:panelGrid columns="2" style="margin-left: -2px;">
+            <h:commandLink immediate="#{true}" title="Impressão PDF">
+                <!--PDF - Tipo Relatorio = 1-->
+                <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="1" />
+                <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
+                <h:graphicImage library="img" name="pdf.png" />
+            </h:commandLink>
+
+            <h:commandLink immediate="#{true}" title="Impressão Excel">
+                <!--PDF - Tipo Relatorio = 2-->
+                <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="2" />
+                <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
+                <h:graphicImage library="img" name="excel.png" />
+            </h:commandLink>
+
+<!--            <h:commandLink immediate="#{true}" title="Impressão HTML">
+                PDF - Tipo Relatorio = 3
+                <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="3" />
+                <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
+                <h:graphicImage library="img" name="html.png" />
+            </h:commandLink>
+
+            <h:commandLink immediate="#{true}" title="Impressão ODS">
+                PDF - Tipo Relatorio = 4
+                <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="4" />
+                <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
+                <h:graphicImage library="img" name="ods.png" />
+            </h:commandLink>-->
+        </h:panelGrid>
+    </composite:implementation>
+</html>

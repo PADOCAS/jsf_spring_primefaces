@@ -21,20 +21,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
         <c:set var="isCadastro" value="true" scope="view" />
 
-        <!--Relatórios-->
-        <h:commandLink immediate="#{true}">
-            <!--PDF - Tipo Relatorio = 1-->
-            <f:setPropertyActionListener target="#{cidadeBeanView.tipoRelatorio}" value="1" />
-            <p:fileDownload value="#{cidadeBeanView.arquivoReport}" />
-            <h:graphicImage library="img" name="pdf.png" />
-        </h:commandLink>
-
-        <h:commandLink immediate="#{true}">
-            <!--PDF - Tipo Relatorio = 2-->
-            <f:setPropertyActionListener target="#{cidadeBeanView.tipoRelatorio}" value="2" />
-            <p:fileDownload value="#{cidadeBeanView.arquivoReport}" />
-            <h:graphicImage library="img" name="excel.png" />
-        </h:commandLink>
+        <!--Importa o xhmtm genérico menu relatórios-->
+        <util:menuImpressao id="compMenuImpressaoCidade"
+                            managedBeanView="#{cidadeBeanView}" />
 
         <!--Importa o xhtml genérico criado (components:botoesCrud)-->
         <util:botoesCrud id="compBotoesCrudCadCidade"
