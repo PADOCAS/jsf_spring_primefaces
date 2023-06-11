@@ -36,20 +36,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <h:graphicImage library="img" name="excel.png" />
         </h:commandLink>
 
-        <h:commandLink immediate="#{true}">
-            <!--PDF - Tipo Relatorio = 3-->
-            <f:setPropertyActionListener target="#{cidadeBeanView.tipoRelatorio}" value="3" />
-            <p:fileDownload value="#{cidadeBeanView.arquivoReport}" />
-            <h:graphicImage library="img" name="html.png" />
-        </h:commandLink>
-
-        <h:commandLink immediate="#{true}">
-            <!--PDF - Tipo Relatorio = 4-->
-            <f:setPropertyActionListener target="#{cidadeBeanView.tipoRelatorio}" value="4" />
-            <p:fileDownload value="#{cidadeBeanView.arquivoReport}" />
-            <h:graphicImage library="img" name="ods.png" />
-        </h:commandLink>
-
         <!--Importa o xhtml genérico criado (components:botoesCrud)-->
         <util:botoesCrud id="compBotoesCrudCadCidade"
                          idCompositeBotoesCrud="compBotoesCrudCadCidade"

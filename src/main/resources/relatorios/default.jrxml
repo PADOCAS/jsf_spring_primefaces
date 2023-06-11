@@ -3,13 +3,16 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="default" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65806227-993f-4009-86d7-461ffd20223d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="REPORT_PARAMETERS_IMG" class="java.lang.String"/>
+	<parameter name="PRINT_EXCEL" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<title>
 		<band height="41" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="120" height="41" uuid="7d7bf0d4-da0a-482d-be0c-439f63f328a6"/>
+				<reportElement x="0" y="0" width="120" height="41" uuid="7d7bf0d4-da0a-482d-be0c-439f63f328a6">
+					<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
+				</reportElement>
 				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_IMG} + "logo.png"]]></imageExpression>
 			</image>
 			<staticText>
@@ -22,7 +25,9 @@
 				<text><![CDATA[Relatório não disponível]]></text>
 			</staticText>
 			<textField pattern="EEEE, dd &apos;de&apos; MMMM &apos;de&apos; YYYY - HH:mm:ss">
-				<reportElement x="320" y="0" width="230" height="21" uuid="5c656af4-26db-4789-9ad6-a284dbe9a484"/>
+				<reportElement x="320" y="0" width="230" height="21" uuid="5c656af4-26db-4789-9ad6-a284dbe9a484">
+					<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -30,6 +35,7 @@
 	</title>
 	<pageFooter>
 		<band height="20">
+			<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="0" width="550" height="1" uuid="bedc33db-a7d5-4b6f-ac1a-4954e0e0b825">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>

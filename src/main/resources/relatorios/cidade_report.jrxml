@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="REPORT_PARAMETERS_IMG" class="java.lang.String"/>
+	<parameter name="PRINT_EXCEL" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -19,7 +20,9 @@
 	<title>
 		<band height="41" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="120" height="41" uuid="2e5b575c-1c53-4dc0-ab5a-95a2d43e2e64"/>
+				<reportElement x="0" y="0" width="120" height="41" uuid="2e5b575c-1c53-4dc0-ab5a-95a2d43e2e64">
+					<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
+				</reportElement>
 				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_IMG} + "logo.png"]]></imageExpression>
 			</image>
 			<staticText>
@@ -32,7 +35,9 @@
 				<text><![CDATA[Relatório de Cidades]]></text>
 			</staticText>
 			<textField pattern="EEEE, dd &apos;de&apos; MMMM &apos;de&apos; YYYY - HH:mm:ss">
-				<reportElement x="320" y="0" width="230" height="21" uuid="bc434d9c-56c7-4f6a-ac52-f6bb7b7c1cee"/>
+				<reportElement x="320" y="0" width="230" height="21" uuid="bc434d9c-56c7-4f6a-ac52-f6bb7b7c1cee">
+					<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -91,6 +96,7 @@
 	</detail>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[($P{PRINT_EXCEL} == null || !$P{PRINT_EXCEL})]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="0" width="550" height="1" uuid="692440bb-23a8-4f91-89cb-96b7d3bca3a1">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
