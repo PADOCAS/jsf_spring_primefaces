@@ -22,32 +22,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <composite:implementation>
         <!--Relatórios-->
         <h:panelGrid columns="2" style="margin-left: -2px;">
-            <h:commandLink immediate="#{true}" title="Impressão PDF">
+            <h:commandLink id="cmdLinkPrintPdf" immediate="#{true}">
                 <!--PDF - Tipo Relatorio = 1-->
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="1" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
                 <h:graphicImage library="img" name="pdf.png" />
+                <p:tooltip value="Impressão PDF" for="cmdLinkPrintPdf" />
             </h:commandLink>
 
-            <h:commandLink immediate="#{true}" title="Impressão Excel">
-                <!--PDF - Tipo Relatorio = 2-->
+            <h:commandLink id="cmdLinkPrintExcel" immediate="#{true}">
+                <!--Excel - Tipo Relatorio = 2-->
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="2" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
                 <h:graphicImage library="img" name="excel.png" />
+                <p:tooltip value="Impressão Excel" for="cmdLinkPrintExcel" />
             </h:commandLink>
 
-<!--            <h:commandLink immediate="#{true}" title="Impressão HTML">
-                PDF - Tipo Relatorio = 3
+<!--            <h:commandLink id="cmdLinkPrintHtml" immediate="#{true}">
+                HTML - Tipo Relatorio = 3
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="3" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
                 <h:graphicImage library="img" name="html.png" />
+                <p:tooltip value="Impressão HTML" for="cmdLinkPrintHtml" />
             </h:commandLink>
 
-            <h:commandLink immediate="#{true}" title="Impressão ODS">
-                PDF - Tipo Relatorio = 4
+            <h:commandLink id="cmdLinkPrintOds" immediate="#{true}">
+                ODS - Tipo Relatorio = 4
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="4" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
                 <h:graphicImage library="img" name="ods.png" />
+                <p:tooltip value="Impressão ODS" for="cmdLinkPrintOds" />
             </h:commandLink>-->
         </h:panelGrid>
     </composite:implementation>
