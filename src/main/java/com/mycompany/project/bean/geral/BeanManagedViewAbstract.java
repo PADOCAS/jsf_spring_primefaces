@@ -22,4 +22,14 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
 
     protected abstract IInterfaceCrud<?> getController();
 
+    public ObjetoCampoConsulta objetoCampoConsulta;
+
+    public ObjetoCampoConsulta getObjetoCampoConsulta() {
+        return objetoCampoConsulta;
+    }
+
+    public void setObjetoCampoConsulta(ObjetoCampoConsulta objetoCampoConsulta) {
+        this.objetoCampoConsulta = objetoCampoConsulta;
+    }
+
 }

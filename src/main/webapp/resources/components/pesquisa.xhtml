@@ -20,6 +20,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="showBtnNovo" required="true" />
         <composite:attribute name="showMenuImpressao" required="false" default="true" />
+        <composite:attribute name="nomePesquisa" required="true"/>
     </composite:interface>
 
     <composite:implementation>
@@ -38,5 +39,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              immediate="true"
                              action="#{cc.attrs.managedBeanView.novo()}"/>
         </h:panelGrid>
+
+        <div class="espacoBranco" />
+
+        <!--Vai trabalhar as pesquisas genericamente de acordo com nossos VO's -> Atributos de pesquisa:-->
+        <p:panel id="pnlPesquisa" header="#{cc.attrs.nomePesquisa}" >
+            <h:panelGrid id="pnlGridPesquisa" columns="2" style="margin-left: -2px;">
+                <h:outputLabel id="lblCampo" class="styleOutputLabel" value="Campo" for="selOneCampo" />
+                <p:selectOneMenu id="selOneCampo" style="width: 200px;" onchange="" value="">
+                    <f:selectItems id="selItensCampoPesquisa"
+                                   var="campoPesquisaSelecionado" />
+                </p:selectOneMenu>
+            </h:panelGrid>
+        </p:panel>
     </composite:implementation>
 </html>

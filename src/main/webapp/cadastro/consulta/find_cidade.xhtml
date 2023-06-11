@@ -21,7 +21,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Importa o Pesquisa para Cidades:-->
         <util:pesquisa id="compPesquisaCidade"
                        managedBeanView="#{cidadeBeanView}"
-                       showBtnNovo="#{true}"
-                       showMenuImpressao="#{true}"/>
+                       showBtnNovo="#{contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"
+                       showMenuImpressao="#{true}"
+                       nomePesquisa="Consulta de Cidades"/>
     </ui:define>
 </ui:decorate>
