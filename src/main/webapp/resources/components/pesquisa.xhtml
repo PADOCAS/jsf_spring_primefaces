@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!--Não fiz o form aqui! vai trabalhar com o form do template principal Ver se será necessário! -->
+    <composite:interface name="pesquisa">
+        <composite:attribute name="managedBeanView" required="true" />
+        <composite:attribute name="showBtnNovo" required="true" />
+        <composite:attribute name="showMenuImpressao" required="false" default="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
+        <c:set var="isCadastro" value="false" scope="view" />
+
+        <!--Importa o xhmtm genérico menu relatórios-->
+        <util:menuImpressao id="compMenuImpressaoCidade"
+                            rendered="#{cc.attrs.showMenuImpressao}"
+                            managedBeanView="#{cc.attrs.managedBeanView}" />
+
+        <h:panelGrid columns="1" style="margin-left: -2px;" rendered="#{cc.attrs.showBtnNovo}">
+            <p:commandButton id="btnNovoRegistro"
+                             value="Novo (F8)" 
+                             ajax="false"
+                             immediate="true"
+                             action="#{cc.attrs.managedBeanView.novo()}"/>
+        </h:panelGrid>
+    </composite:implementation>
+</html>
