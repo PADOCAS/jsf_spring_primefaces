@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.report.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -21,8 +22,12 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.stereotype.Component;
@@ -100,6 +105,13 @@ public class ReportUtil implements Serializable {
 
             //Caminho para Imagem:
             paramRelatorio.put("REPORT_PARAMETERS_IMG", caminhoRelatorio);
+            
+            if(tipoRelatorio == 2) {
+                //Excel
+                paramRelatorio.put("PRINT_EXCEL", true);
+            } else {
+                paramRelatorio.put("PRINT_EXCEL", false);
+            }
 
             //Caminho completo para o relatório:
             String caminhoArquivoJasper = caminhoRelatorio + SEPARATOR + nomeRelatorioJasper + PONTO + "jasper";
@@ -121,6 +133,13 @@ public class ReportUtil implements Serializable {
                 case RELATORIO_EXCEL:
                     tipoArquivoExportado = new JRXlsExporter();
                     extensaoArquivoExportado = EXTENSION_XLS;
+
+                    //Tratamento para Excel não mostrar como imagem o relatório e sim as células corretamente!
+                    tipoArquivoExportado.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BACKGROUND, Boolean.FALSE);
+                    tipoArquivoExportado.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
+                    tipoArquivoExportado.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+                    tipoArquivoExportado.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+                    tipoArquivoExportado.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE);
                     break;
                 case RELATORIO_PLANILHA_OPEN_OFFICE:
                     tipoArquivoExportado = new JROdtExporter();
