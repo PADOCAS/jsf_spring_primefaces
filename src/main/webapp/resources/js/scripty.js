@@ -1,4 +1,9 @@
 var arrayIdsElementsPage = new Array;
+var classTypeString = 'java.lang.String';
+var classTypeLong = 'java.lang.Long';
+var classTypeDate = 'java.util.Date';
+var classTypeBoolean = 'java.lang.Boolean';
+var classTypeBigDecimal = 'java.math.BigDecimal';
 
 /**
  * Carrega um array global com os ids de todos os componentes da pagina Para ter
@@ -233,4 +238,70 @@ function validarSenhaLogin() {
     }
 
     return true;
+}
+
+/**
+ * Gera automaticamente mascara para a tela de pesquisa var classTypeString =
+ * 'java.lang.String'; var classTypeLong = 'java.lang.Long'; var classTypeDate =
+ * 'java.util.Date'; var classTypeBoolean = 'java.lang.Boolean'; var
+ * classTypeBigDecimal = 'java.math.BigDecimal';
+ * 
+ * @param elemento
+ */
+function addMascaraPesquisa(elemento) {
+    var id = getValorElementPorIdJQuery('txtValorPesquisa');
+    //Separação por '*' que definimos no converter do ObjetoCampoConsultaConverter
+    var vals = elemento.split("*");
+    var campoBanco = vals[0];
+    var typeCampo = vals[1];
+
+    jQuery(id).unmask();
+    $(id).unbind("keypress");
+    $(id).unbind("keyup");
+    $(id).unbind("focus");
+    $(id).val('');
+    if (id !== undefined) {
+        jQuery(function ($) {
+            if (typeCampo === classTypeLong) {
+                $(id).keypress(permitNumber);
+            } else if (typeCampo === classTypeBigDecimal) {
+                $(id).maskMoney({precision: 4, decimal: ",", thousands: "."});
+            } else if (typeCampo === classTypeDate) {
+                $(id).mask('99/99/9999');
+            } else {
+                jQuery(id).unmask();
+                $(id).unbind("keypress");
+                $(id).unbind("keyup");
+                $(id).unbind("focus");
+                $(id).val('');
+            }
+            
+            addFocoAoCampo("txtValorPesquisa");
+        });
+    }
+}
+
+function permitNumber(e) {
+    var unicode = e.charCode ? e.charCode : e.keyCode;
+    if (unicode !== 8 && unicode !== 9) {
+        if (unicode < 48 || unicode > 57) {
+            return false;
+        }
+    }
+}
+
+/**
+ * primefaces.js cï¿½digo fonte
+ * escapeClientId:function(a){return"#"+a.replace(/:/g,"\\:")}
+ * 
+ * @param id
+ * @returns id
+ */
+function getValorElementPorIdJQuery(id) {
+    var id = getValorElementPorId(id);
+    if (id.trim() !== undefined) {
+        return PrimeFaces.escapeClientId(id);
+    }
+
+    return undefined;
 }

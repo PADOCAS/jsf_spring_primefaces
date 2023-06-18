@@ -20,7 +20,7 @@ public class ObjetoCampoConsulta implements Serializable, Comparator<ObjetoCampo
 
     private String campoNoBanco;
 
-    private Object classe;
+    private String classe;
 
     private Integer ordemEmTela;
 
@@ -40,11 +40,11 @@ public class ObjetoCampoConsulta implements Serializable, Comparator<ObjetoCampo
         this.campoNoBanco = campoNoBanco;
     }
 
-    public Object getClasse() {
+    public String getClasse() {
         return classe;
     }
 
-    public void setClasse(Object classe) {
+    public void setClasse(String classe) {
         this.classe = classe;
     }
 

@@ -46,28 +46,62 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <p:panel id="pnlPesquisa" header="#{cc.attrs.nomePesquisa}" >
             <h:panelGrid id="pnlGridPesquisa" columns="2" style="margin-left: -2px;">
                 <h:outputLabel id="lblCampo" class="styleOutputLabel" value="Campo" for="selOneCampo" />
-                <p:selectOneMenu id="selOneCampo" style="width: 200px;" onchange="" value="#{cc.attrs.managedBeanView.objetoCampoConsulta}">
+                <p:selectOneMenu id="selOneCampo" style="width: 200px;" onchange="addMascaraPesquisa(this.value);" value="#{cc.attrs.managedBeanView.objetoCampoConsulta}">
                     <f:selectItems id="selItensCampoPesquisa"
                                    var="campoPesquisaSelecionado"
                                    itemLabel="#{campoPesquisaSelecionado.descricaoEmTela}"
                                    itemValue="#{campoPesquisaSelecionado.classe}"
                                    value="#{cc.attrs.managedBeanView.listCampoConsulta}" />
                 </p:selectOneMenu>
-                
+
                 <h:outputLabel id="lblCondicao" class="styleOutputLabel" value="Condição" for="selOneCondicao" />
-                <p:selectOneMenu id="selOneCondicao" style="width: 150px;" onchange="" value="#{cc.attrs.managedBeanView.objetoCondicaoConsulta}" >
+                <p:selectOneMenu id="selOneCondicao" style="width: 200px;" value="#{cc.attrs.managedBeanView.objetoCondicaoConsulta}" >
                     <f:selectItems id="selItensCampoCondicao"
                                    var="campoCondicaoSelecionado"
                                    value="#{cc.attrs.managedBeanView.listCondicaoPesquisa}" />
                 </p:selectOneMenu>
-                
+
+                <h:outputLabel class="styleOutputLabel" value="Valor" for="txtValorPesquisa"/>
+                <p:inputText id="txtValorPesquisa" 
+                             immediate="#{false}"
+                             maxlength="50"
+                             value="#{cc.attrs.managedBeanView.valorPesquisa}"/>
+
+                <h:outputLabel class="styleOutputLabel" value="" for="btnPesquisar"/>
                 <p:commandButton id="btnPesquisar" 
                                  value="Pesquisar (F2)" 
                                  process="@this, pnlGridPesquisa"
                                  actionListener="#{cc.attrs.managedBeanView.consultarEntidade}">
-                    
+
                 </p:commandButton>
             </h:panelGrid>
         </p:panel>
+
+        <script type="text/javascript" charset="UTF-8">
+            let idCampo = getValorElementPorIdJQuery('selOneCampo');
+            let idCampoCondicao = getValorElementPorIdJQuery('selOneCondicao');
+            let idPesquisa = getValorElementPorIdJQuery('txtValorPesquisa');
+
+            $(idPesquisa).keypress(permitNumber);
+
+            $(idCampo + ' :nth-child(1)').prop('selected', true);
+            $(idCampoCondicao + ' :nth-child(1)').prop('selected', true);
+            $(idPesquisa).val('');
+
+            addMascaraPesquisa($(idCampo).val());
+
+            addFocoAoCampo('txtValorPesquisa');
+
+            //chama o pesquisar ao dar enter na pesquisa
+            function executaPesquisaComEnter(event, button) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    addFocoAoCampo('btnPesquisar');
+
+                    var buttonPesquisar = getValorElementPorIdJQuery('btnPesquisar');
+                    $(buttonPesquisar).click();
+                }
+            }
+        </script>
     </composite:implementation>
 </html>

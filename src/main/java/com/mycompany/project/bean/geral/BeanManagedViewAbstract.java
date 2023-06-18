@@ -35,6 +35,9 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
     //Objeto CondicaoPesquisa seleciona na tela de pesquisa!
     public CondicaoPesquisa objetoCondicaoConsulta;
 
+    //Valor da Pesquisa que informou em tela!
+    public String valorPesquisa;
+
     public List<SelectItem> listCampoConsulta;
 
     public List<SelectItem> listCondicaoPesquisa;
@@ -53,6 +56,14 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
 
     public void setObjetoCondicaoConsulta(CondicaoPesquisa objetoCondicaoConsulta) {
         this.objetoCondicaoConsulta = objetoCondicaoConsulta;
+    }
+
+    public String getValorPesquisa() {
+        return valorPesquisa;
+    }
+
+    public void setValorPesquisa(String valorPesquisa) {
+        this.valorPesquisa = valorPesquisa;
     }
 
     /**
@@ -95,7 +106,7 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
                 objCamCon.setDescricaoEmTela(descricaoCampoEmTela);
                 //Default de ordenação é 1000 -> ou seja, nunca será nulo
                 objCamCon.setOrdemEmTela(ordemCampoEmTela);
-                objCamCon.setClasse(field.getType());
+                objCamCon.setClasse(field.getType().getCanonicalName());
 
                 listObjCamPesTemp.add(objCamCon);
             }
