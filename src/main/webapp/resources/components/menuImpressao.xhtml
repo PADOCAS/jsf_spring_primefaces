@@ -22,7 +22,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <composite:implementation>
         <!--Relatórios-->
         <h:panelGrid columns="2" style="margin-left: -2px;">
-            <h:commandLink id="cmdLinkPrintPdf" immediate="#{true}">
+            <h:commandLink id="cmdLinkPrintPdf" 
+                           immediate="#{true}" 
+                           onclick= "PrimeFaces.monitorDownload(function () {
+                                       PF('statusDialog').show();
+                                   }, function () {
+                                       PF('statusDialog').hide();
+                                   });">
                 <!--PDF - Tipo Relatorio = 1-->
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="1" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
@@ -30,7 +36,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:tooltip value="Impressão PDF" for="cmdLinkPrintPdf" />
             </h:commandLink>
 
-            <h:commandLink id="cmdLinkPrintExcel" immediate="#{true}">
+            <h:commandLink id="cmdLinkPrintExcel" 
+                           immediate="#{true}"
+                           onclick= "PrimeFaces.monitorDownload(function () {
+                                       PF('statusDialog').show();
+                                   }, function () {
+                                       PF('statusDialog').hide();
+                                   });">
                 <!--Excel - Tipo Relatorio = 2-->
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="2" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
@@ -38,7 +50,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:tooltip value="Impressão Excel" for="cmdLinkPrintExcel" />
             </h:commandLink>
 
-<!--            <h:commandLink id="cmdLinkPrintHtml" immediate="#{true}">
+<!--            <h:commandLink id="cmdLinkPrintHtml" 
+                               immediate="#{true}"
+                               onclick= "PrimeFaces.monitorDownload(function () {
+                                       PF('statusDialog').show();
+                                   }, function () {
+                                       PF('statusDialog').hide();
+                                   });">
                 HTML - Tipo Relatorio = 3
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="3" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
@@ -46,7 +64,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:tooltip value="Impressão HTML" for="cmdLinkPrintHtml" />
             </h:commandLink>
 
-            <h:commandLink id="cmdLinkPrintOds" immediate="#{true}">
+            <h:commandLink id="cmdLinkPrintOds" 
+                           immediate="#{true}"
+                           onclick= "PrimeFaces.monitorDownload(function () {
+                                       PF('statusDialog').show();
+                                   }, function () {
+                                       PF('statusDialog').hide();
+                                   });">
                 ODS - Tipo Relatorio = 4
                 <f:setPropertyActionListener target="#{cc.attrs.managedBeanView.tipoRelatorio}" value="4" />
                 <p:fileDownload value="#{cc.attrs.managedBeanView.arquivoReport}" />
