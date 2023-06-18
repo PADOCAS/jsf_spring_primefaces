@@ -6,6 +6,7 @@ package com.mycompany.project.bean.geral;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.annotation.IdentificaCampoPesquisa;
+import com.mycompany.project.enums.CondicaoPesquisa;
 import com.mycompany.project.report.util.BeanReportView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,7 +32,12 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
     //Objeto Campo Consulta selecionado na tela de pesquisa!
     public ObjetoCampoConsulta objetoCampoConsulta;
 
+    //Objeto CondicaoPesquisa seleciona na tela de pesquisa!
+    public CondicaoPesquisa objetoCondicaoConsulta;
+
     public List<SelectItem> listCampoConsulta;
+
+    public List<SelectItem> listCondicaoPesquisa;
 
     public ObjetoCampoConsulta getObjetoCampoConsulta() {
         return objetoCampoConsulta;
@@ -39,6 +45,30 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
 
     public void setObjetoCampoConsulta(ObjetoCampoConsulta objetoCampoConsulta) {
         this.objetoCampoConsulta = objetoCampoConsulta;
+    }
+
+    public CondicaoPesquisa getObjetoCondicaoConsulta() {
+        return objetoCondicaoConsulta;
+    }
+
+    public void setObjetoCondicaoConsulta(CondicaoPesquisa objetoCondicaoConsulta) {
+        this.objetoCondicaoConsulta = objetoCondicaoConsulta;
+    }
+
+    /**
+     * Método que vai retornar uma lista de SelectItem com as condições de
+     * Pesquisa definida pelo enum 'CondicaoPesquisa'
+     *
+     * @return
+     */
+    public List<SelectItem> getListCondicaoPesquisa() {
+        listCondicaoPesquisa = new ArrayList<>();
+
+        for (CondicaoPesquisa conPes : CondicaoPesquisa.values()) {
+            listCondicaoPesquisa.add(new SelectItem(conPes, conPes.getCondicao()));
+        }
+
+        return listCondicaoPesquisa;
     }
 
     /**

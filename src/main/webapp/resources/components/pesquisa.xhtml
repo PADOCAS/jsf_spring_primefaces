@@ -54,6 +54,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                    value="#{cc.attrs.managedBeanView.listCampoConsulta}" />
                 </p:selectOneMenu>
                 
+                <h:outputLabel id="lblCondicao" class="styleOutputLabel" value="Condição" for="selOneCondicao" />
+                <p:selectOneMenu id="selOneCondicao" style="width: 150px;" onchange="" value="#{cc.attrs.managedBeanView.objetoCondicaoConsulta}" >
+                    <f:selectItems id="selItensCampoCondicao"
+                                   var="campoCondicaoSelecionado"
+                                   value="#{cc.attrs.managedBeanView.listCondicaoPesquisa}" />
+                </p:selectOneMenu>
+                
                 <p:commandButton id="btnPesquisar" 
                                  value="Pesquisar (F2)" 
                                  process="@this, pnlGridPesquisa"
