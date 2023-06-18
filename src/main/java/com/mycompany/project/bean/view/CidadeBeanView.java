@@ -32,7 +32,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     private static final long serialVersionUID = 1L;
 
     private String url = "/cadastro/cad_cidade.jsf?faces-redirect=true";
-    
+
     private String urlFind = "/cadastro/consulta/find_cidade.jsf?faces-redirect=true";
 
     private Cidade objetoSelecionado;
@@ -158,6 +158,11 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao Excluir!\n" + ex.getMessage(), "Erro");
         }
+    }
+
+    @Override
+    public void consultarEntidade() throws Exception {
+        super.consultarEntidade();
     }
 
     @Override

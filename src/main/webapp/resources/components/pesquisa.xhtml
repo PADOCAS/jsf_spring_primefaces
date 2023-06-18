@@ -46,10 +46,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <p:panel id="pnlPesquisa" header="#{cc.attrs.nomePesquisa}" >
             <h:panelGrid id="pnlGridPesquisa" columns="2" style="margin-left: -2px;">
                 <h:outputLabel id="lblCampo" class="styleOutputLabel" value="Campo" for="selOneCampo" />
-                <p:selectOneMenu id="selOneCampo" style="width: 200px;" onchange="" value="">
+                <p:selectOneMenu id="selOneCampo" style="width: 200px;" onchange="" value="#{cc.attrs.managedBeanView.objetoCampoConsulta}">
                     <f:selectItems id="selItensCampoPesquisa"
-                                   var="campoPesquisaSelecionado" />
+                                   var="campoPesquisaSelecionado"
+                                   itemLabel="#{campoPesquisaSelecionado.descricaoEmTela}"
+                                   itemValue="#{campoPesquisaSelecionado.classe}"
+                                   value="#{cc.attrs.managedBeanView.listCampoConsulta}" />
                 </p:selectOneMenu>
+                
+                <p:commandButton id="btnPesquisar" 
+                                 value="Pesquisar (F2)" 
+                                 process="@this, pnlGridPesquisa"
+                                 actionListener="#{cc.attrs.managedBeanView.consultarEntidade}">
+                    
+                </p:commandButton>
             </h:panelGrid>
         </p:panel>
     </composite:implementation>

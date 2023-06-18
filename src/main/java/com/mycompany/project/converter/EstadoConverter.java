@@ -23,6 +23,7 @@ public class EstadoConverter implements Converter, Serializable {
 
     /**
      * Recebe um código(String value) e retorna objeto (Estado.class)
+     * -> Conversão da tela para o Objeto
      *
      * @param context
      * @param component
@@ -41,6 +42,7 @@ public class EstadoConverter implements Converter, Serializable {
 
     /**
      * Recebe um objeto(Estado.class) e retorna Código (String)
+     * -> Conversão do objeto para tela
      *
      * @param context
      * @param component
