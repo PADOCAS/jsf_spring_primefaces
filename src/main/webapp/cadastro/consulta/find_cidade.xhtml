@@ -22,6 +22,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <util:pesquisa id="compPesquisaCidade"
                        managedBeanView="#{cidadeBeanView}"
                        showBtnNovo="#{contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"
+                       showBtnAlterar="#{contextoBean.possuiAcesso('CIDADE_EDITAR', 'ADMIN')}"
+                       showBtnExcluir="#{contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
                        showMenuImpressao="#{true}"
                        nomePesquisa="Consulta de Cidades"/>
     </ui:define>

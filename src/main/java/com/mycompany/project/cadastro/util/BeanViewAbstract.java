@@ -54,6 +54,21 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
     }
 
     @Override
+    public void geraMensagemSaveDefault() {
+        Mensagem.msgSalvoComSucesso();
+    }
+
+    @Override
+    public String getUrfFindEntidade() {
+        return null;
+    }
+
+    @Override
+    public String getUrfEntidade() {
+        return null;
+    }
+
+    @Override
     public void validExclusao() throws Exception {
     }
 

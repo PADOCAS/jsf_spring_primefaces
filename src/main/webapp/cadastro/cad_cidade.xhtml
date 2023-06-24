@@ -26,9 +26,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          idCompositeBotoesCrud="compBotoesCrudCadCidade"
                          managedBeanView="#{cidadeBeanView}"      
                          disableBtnSalvar="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"                         
-                         disableBtnNovo="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"
                          disableBtnExcluir="#{!contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
-                         urlBtnNovo="/cadastro/cad_cidade"
                          idDialogExclude="confDialogExclusaoCidade"/>
 
         <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
@@ -54,7 +52,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 </p:selectOneMenu>
             </h:panelGrid>               
         </p:panel>
-
+        
         <div class="espacoBranco" />
 
         <p:dataTable id="dataTableListCidade"

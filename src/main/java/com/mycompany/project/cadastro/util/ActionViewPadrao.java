@@ -47,6 +47,12 @@ public interface ActionViewPadrao extends Serializable {
     public abstract String redirecionarNewEntidade() throws Exception;
 
     public abstract String redirecionarFindEntidade() throws Exception;
+    
+    public abstract String getUrfFindEntidade();
+    
+    public abstract String getUrfEntidade();
+    
+    public abstract void geraMensagemSaveDefault();
 
     public abstract void addMessage(String msg, String sumario, FacesMessage.Severity severity) throws Exception;
 }

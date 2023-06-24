@@ -67,6 +67,16 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     }
 
     @Override
+    public String getUrfFindEntidade() {
+        return "/cadastro/consulta/find_cidade";
+    }
+
+    @Override
+    public String getUrfEntidade() {
+        return "/cadastro/cad_cidade";
+    }
+
+    @Override
     protected IInterfaceCrud<?> getController() {
         return cidadeController;
     }
@@ -100,23 +110,32 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public String save() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
+
         try {
             setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
+            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+            //Caso der erro, mantém na mesma página:
+            return "";
         }
 
-        return "";
+        //Tudo ok, retorna para página de pesquisa:
+        return urlFind;
     }
 
     @Override
     public String saveNew() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
+        
         try {
             cidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
+            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");

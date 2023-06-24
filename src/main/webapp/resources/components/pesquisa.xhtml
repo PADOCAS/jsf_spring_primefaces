@@ -19,6 +19,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <composite:interface name="pesquisa">
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="showBtnNovo" required="true" />
+        <composite:attribute name="showBtnAlterar" required="true" />
+        <composite:attribute name="showBtnExcluir" required="true" />
         <composite:attribute name="showMenuImpressao" required="false" default="true" />
         <composite:attribute name="nomePesquisa" required="true"/>
     </composite:interface>
@@ -32,12 +34,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             rendered="#{cc.attrs.showMenuImpressao}"
                             managedBeanView="#{cc.attrs.managedBeanView}" />
 
-        <h:panelGrid columns="1" style="margin-left: -2px;" rendered="#{cc.attrs.showBtnNovo}">
-            <p:commandButton id="btnNovoRegistro"
-                             value="Incluir (F8)" 
-                             ajax="false"
-                             immediate="true"
-                             action="#{cc.attrs.managedBeanView.novo()}"/>
+        <h:panelGrid columns="3" style="margin-left: -2px;">
+            <c:choose>
+                <c:when test="#{cc.attrs.showBtnNovo}">
+                    <p:commandButton id="btnNovoRegistro"
+                                     value="Incluir (F8)" 
+                                     ajax="false"
+                                     immediate="true"
+                                     action="#{cc.attrs.managedBeanView.novo()}"/>             
+                </c:when>
+                <c:otherwise>
+                    <h:outputLabel value="" style="display: none;" />            
+                </c:otherwise>
+            </c:choose>
+
+            <c:choose>
+                <c:when test="#{cc.attrs.showBtnAlterar}">
+                    <p:commandButton id="btnAlterarRegistro"
+                                     value="Alterar (F9)" 
+                                     ajax="false"
+                                     immediate="true"/>           
+                </c:when>
+                <c:otherwise>
+                    <h:outputLabel value="" style="display: none;" />            
+                </c:otherwise>
+            </c:choose>   
+
+            <c:choose>
+                <c:when test="#{cc.attrs.showBtnExcluir}">
+                    <p:commandButton id="btnExcluirRegistro"
+                                     value="Excluir (F10)" 
+                                     ajax="false"
+                                     immediate="true"/>        
+                </c:when>
+                <c:otherwise>
+                    <h:outputLabel value="" style="display: none;" />            
+                </c:otherwise>
+            </c:choose>        
         </h:panelGrid>
 
         <div class="espacoBranco" />
@@ -67,8 +100,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              maxlength="50"
                              value="#{cc.attrs.managedBeanView.valorPesquisa}"/>
 
-                <h:outputLabel class="styleOutputLabel" value="" for="btnPesquisar"/>
+                <h:outputLabel class="styleOutputLabel" value="" for="btnPesquisar" style="margin-top: 5px;"/>
                 <p:commandButton id="btnPesquisar" 
+                                 style="margin-top: 5px;"
                                  value="Pesquisar (F2)" 
                                  process="@this, pnlGridPesquisa"
                                  actionListener="#{cc.attrs.managedBeanView.consultarEntidade}">
