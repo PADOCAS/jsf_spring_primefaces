@@ -6,6 +6,7 @@ package com.mycompany.project.cadastro.util;
 
 import com.mycompany.project.message.util.Mensagem;
 import com.mycompany.project.message.util.StatusPersistencia;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import org.springframework.stereotype.Component;
@@ -72,6 +73,10 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
     public void validExclusao() throws Exception {
     }
 
+    @Override
+    public void validEditar() throws Exception {        
+    }
+
     /**
      * PostConstruct - Ao abrir a tela ja inicia os componentes, váriaveis
      * desejadas etc..
@@ -113,6 +118,11 @@ public abstract class BeanViewAbstract implements ActionViewPadrao {
 
     @Override
     public String redirecionarFindEntidade() throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<?> getListAll() throws Exception {
         return null;
     }
 

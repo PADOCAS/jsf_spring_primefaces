@@ -20,7 +20,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="disableBtnSalvar" required="false" default="false" />
         <composite:attribute name="disableBtnExcluir" required="false" default="false" />
-        <composite:attribute name="idDialogExclude" required="false" />
+        <composite:attribute name="idDialogExclude" required="true" />
     </composite:interface>
 
     <composite:implementation>
@@ -35,14 +35,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          name="remComSave"
                          update="@widgetVar(message)"
                          actionListener="#{cc.attrs.managedBeanView.geraMensagemSaveDefault()}"
-                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfFindEntidade()}');"
+                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfFindEntidade()}'); PF('statusDialog').hide();"
                          process="@this" />    
         
         <p:remoteCommand id="remComSaveNew"
                          name="remComSaveNew"
                          update="@widgetVar(message)"
                          actionListener="#{cc.attrs.managedBeanView.geraMensagemSaveDefault()}"
-                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfEntidade()}');"
+                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfEntidade()}'); PF('statusDialog').hide();"
                          process="@this" />   
 
         <h:panelGrid columns="4" style="margin-left: -2px;">
@@ -104,8 +104,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             function save(context, url) {
                 setTimeout(() => {
                     redirecionarPagina(context, url);
-                    PF('statusDialog').hide();
-                }, 850);
+                }, 500);
             }
         </script>
     </composite:implementation>

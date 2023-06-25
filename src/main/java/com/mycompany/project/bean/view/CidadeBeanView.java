@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
@@ -31,11 +32,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     private static final long serialVersionUID = 1L;
 
-    private String url = "/cadastro/cad_cidade.jsf?faces-redirect=true";
+    private final String url = "/cadastro/cad_cidade.jsf?faces-redirect=true";
 
-    private String urlFind = "/cadastro/consulta/find_cidade.jsf?faces-redirect=true";
+    private final String urlFind = "/cadastro/consulta/find_cidade.jsf?faces-redirect=true";
 
     private Cidade objetoSelecionado;
+
+    //acao: 0(default-insert), 1(update)
+    private String acao = "0";
 
     @Autowired
     private CidadeController cidadeController;
@@ -49,6 +53,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     public void initComponentes() {
         super.initComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         try {
+            setAcao("0");
+            if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap() != null) {
+                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("acao");
+                FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("acao");
+                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap().get("acao");
+                
+                ///TODODOOO !! saber quando é alteracao para tratar as variaveis de objeto e acao!!!
+            }
             setarVariaveisNulas();
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,7 +142,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public String saveNew() throws Exception {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
-        
+
         try {
             cidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
@@ -145,9 +157,25 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     }
 
     @Override
+    public void validEditar() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", false);
+
+        if (getObjetoSelecionado() == null
+                || getObjetoSelecionado().getCodigo() == null) {
+            Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+        } else {
+            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+        }
+    }
+
+    @Override
     public String editar() throws Exception {
-        //Redireciona para mesma página:
-        return "";
+        if (getObjetoSelecionado() != null
+                && getObjetoSelecionado().getCodigo() != null) {
+            return "/cadastro/cad_cidade.jsf?acao=1&codigo=" + getObjetoSelecionado().getCodigo().toString();
+        }
+
+        return url;
     }
 
     @Override
@@ -156,7 +184,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
         if (getObjetoSelecionado() == null
                 || getObjetoSelecionado().getCodigo() == null) {
-            Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
+            Mensagem.msgSeverityWarn("Selecione um registro para excluí-lo.", "Atenção");
         } else {
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
         }
@@ -206,7 +234,16 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         this.objetoSelecionado = objetoSelecionado;
     }
 
-    public List<Cidade> getListAllCidade() {
+    public String getAcao() {
+        return acao;
+    }
+
+    public void setAcao(String acao) {
+        this.acao = acao;
+    }
+
+    @Override
+    public List<Cidade> getListAll() throws Exception {
         List<Cidade> listCidade = null;
 
         try {

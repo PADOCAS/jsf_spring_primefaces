@@ -20,11 +20,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
         <!--Importa o Pesquisa para Cidades:-->
         <util:pesquisa id="compPesquisaCidade"
+                       idCompositePesquisa="compPesquisaCidade"
                        managedBeanView="#{cidadeBeanView}"
                        showBtnNovo="#{contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"
                        showBtnAlterar="#{contextoBean.possuiAcesso('CIDADE_EDITAR', 'ADMIN')}"
                        showBtnExcluir="#{contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
                        showMenuImpressao="#{true}"
+                       colunasGridDataTable="/resources/components/columnsDataTableCidade.xhtml"
+                       rowKeyDataTable="#{objeto.codigo}"
+                       idDialogExclude="confDialogExclusaoCidade"
                        nomePesquisa="Consulta de Cidades"/>
     </ui:define>
 </ui:decorate>

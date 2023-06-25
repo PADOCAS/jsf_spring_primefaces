@@ -17,17 +17,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
     <!--Não fiz o form aqui! vai trabalhar com o form do template principal Ver se será necessário! -->
     <composite:interface name="pesquisa">
+        <composite:attribute name="idCompositePesquisa" required="true" />
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="showBtnNovo" required="true" />
         <composite:attribute name="showBtnAlterar" required="true" />
         <composite:attribute name="showBtnExcluir" required="true" />
         <composite:attribute name="showMenuImpressao" required="false" default="true" />
         <composite:attribute name="nomePesquisa" required="true"/>
+        <composite:attribute name="rowKeyDataTable" required="true" />
+        <composite:attribute name="idDialogExclude" required="true" />
+        <composite:attribute name="colunasGridDataTable" required="true" />
     </composite:interface>
 
     <composite:implementation>
         <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
         <c:set var="isCadastro" value="false" scope="view" />
+
+        <!--RemoteCommand -> Caso a exclusão for permitida, chamar o dialog para confirmação-->
+        <p:remoteCommand id="remComExclusaoOk"
+                         name="remComExclusaoOk"
+                         update="form:#{cc.attrs.idCompositePesquisa}:#{cc.attrs.idDialogExclude}" 
+                         oncomplete="PF('#{cc.attrs.idDialogExclude}').show();"
+                         process="@this" />    
+
+        <p:remoteCommand id="remComEditarOk"
+                         name="remComEditarOk"
+                         process="@this"                         
+                         immediate="true"
+                         action="#{cc.attrs.managedBeanView.editar()}" >
+            <!--TODOOOOOOOOOOOOOOOOOOOOO - acertar a parte de editar redirecionamento para outra página com o objeto preenchido e acao editar-->
+            <f:setPropertyActionListener id="codigo" target="#{cc.attrs.managedBeanView.objetoSelecionado}" value="#{cc.attrs.managedBeanView.objetoSelecionado}" />
+            <f:setPropertyActionListener id="acao" target="#{cc.attrs.managedBeanView.acao}" value="1" />
+            <f:param name="acaox" value="1" />
+            <f:param name="codigox" value="#{cc.attrs.managedBeanView.objetoSelecionado}" />
+        </p:remoteCommand>
 
         <!--Importa o xhmtm genérico menu relatórios-->
         <util:menuImpressao id="compMenuImpressaoCidade"
@@ -52,8 +75,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <c:when test="#{cc.attrs.showBtnAlterar}">
                     <p:commandButton id="btnAlterarRegistro"
                                      value="Alterar (F9)" 
-                                     ajax="false"
-                                     immediate="true"/>           
+                                     process="@this"
+                                     update="form"
+                                     actionListener="#{cc.attrs.managedBeanView.validEditar()}"
+                                     oncomplete="if(args.validEditar) {remComEditarOk();};"/>
                 </c:when>
                 <c:otherwise>
                     <h:outputLabel value="" style="display: none;" />            
@@ -64,8 +89,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <c:when test="#{cc.attrs.showBtnExcluir}">
                     <p:commandButton id="btnExcluirRegistro"
                                      value="Excluir (F10)" 
-                                     ajax="false"
-                                     immediate="true"/>        
+                                     process="@this"
+                                     update="form"
+                                     actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
+                                     oncomplete="if(args.validExclusao) {remComExclusaoOk();};"/>        
                 </c:when>
                 <c:otherwise>
                     <h:outputLabel value="" style="display: none;" />            
@@ -104,12 +131,55 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton id="btnPesquisar" 
                                  style="margin-top: 5px;"
                                  value="Pesquisar (F2)" 
+                                 update="@widgetVar(message), dataTableListAll"
                                  process="@this, pnlGridPesquisa"
-                                 actionListener="#{cc.attrs.managedBeanView.consultarEntidade}">
-
+                                 actionListener="#{cc.attrs.managedBeanView.consultarEntidade}"
+                                 oncomplete="addFocoAoCampo('txtValorPesquisa');">                                 
                 </p:commandButton>
             </h:panelGrid>
         </p:panel>
+
+        <div class="espacoBranco" />
+
+        <p:dataTable id="dataTableListAll"
+                     widgetVar="dataTableListAll"
+                     value="#{cc.attrs.managedBeanView.listAll}"
+                     var="objeto"
+                     rows="10" 
+                     rowKey="#{cc.attrs.rowKeyDataTable}"                     
+                     selection="#{cc.attrs.managedBeanView.objetoSelecionado}"
+                     selectionMode="single"
+                     lazy="true"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     paginatorPosition="bottom"
+                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="10,15,20"
+                     emptyMessage="Nenhum registro encontrado.">
+            <p:ajax event="rowSelect" process="@this" />
+            <!--Duplo clique editar cadastro-->
+            <p:ajax event="rowDblselect" process="@this" oncomplete="remComEditarOk();" />
+            <!--Incluir as colunas de forma genérica-->
+            <ui:include src="#{cc.attrs.colunasGridDataTable}" />
+        </p:dataTable>
+
+        <p:confirmDialog id="#{cc.attrs.idDialogExclude}"
+                         widgetVar="#{cc.attrs.idDialogExclude}"
+                         class="ui-dialog-ative-atalho"
+                         header="Exclusão"                         
+                         message="#{cc.attrs.managedBeanView.getMessageExclusao()}"
+                         closable="false">
+            <h:panelGrid columns="2" style="display: flex; flex-direction: row; justify-content: center;">
+                <p:commandButton value="Sim (F2)" 
+                                 update="form"
+                                 onsuccess="PF('#{cc.attrs.idDialogExclude}').hide();"
+                                 actionListener="#{cc.attrs.managedBeanView.excluir()}" />
+                <p:commandButton value="Não (ESC)"         
+                                 update="form"
+                                 onclick="PF('#{cc.attrs.idDialogExclude}').hide();">
+                </p:commandButton>
+            </h:panelGrid> 
+        </p:confirmDialog>
 
         <script type="text/javascript" charset="UTF-8">
             let idCampo = getValorElementPorIdJQuery('selOneCampo');

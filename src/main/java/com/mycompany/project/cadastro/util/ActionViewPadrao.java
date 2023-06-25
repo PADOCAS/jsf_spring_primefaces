@@ -6,7 +6,9 @@ package com.mycompany.project.cadastro.util;
 
 import com.mycompany.project.message.util.StatusPersistencia;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.application.FacesMessage;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  *
@@ -25,6 +27,8 @@ public interface ActionViewPadrao extends Serializable {
     public abstract void saveEdit() throws Exception;
     
     public abstract void validExclusao() throws Exception;
+    
+    public abstract void validEditar() throws Exception;
 
     public abstract void excluir() throws Exception;
 
@@ -49,6 +53,8 @@ public interface ActionViewPadrao extends Serializable {
     public abstract String redirecionarFindEntidade() throws Exception;
     
     public abstract String getUrfFindEntidade();
+    
+    public abstract List<?> getListAll() throws Exception;
     
     public abstract String getUrfEntidade();
     
