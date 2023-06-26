@@ -44,13 +44,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          name="remComEditarOk"
                          process="@this"                         
                          immediate="true"
-                         action="#{cc.attrs.managedBeanView.editar()}" >
-            <!--TODOOOOOOOOOOOOOOOOOOOOO - acertar a parte de editar redirecionamento para outra página com o objeto preenchido e acao editar-->
-            <f:setPropertyActionListener id="codigo" target="#{cc.attrs.managedBeanView.objetoSelecionado}" value="#{cc.attrs.managedBeanView.objetoSelecionado}" />
-            <f:setPropertyActionListener id="acao" target="#{cc.attrs.managedBeanView.acao}" value="1" />
-            <f:param name="acaox" value="1" />
-            <f:param name="codigox" value="#{cc.attrs.managedBeanView.objetoSelecionado}" />
-        </p:remoteCommand>
+                         action="#{cc.attrs.managedBeanView.editar()}" />
 
         <!--Importa o xhmtm genérico menu relatórios-->
         <util:menuImpressao id="compMenuImpressaoCidade"
@@ -64,7 +58,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                      value="Incluir (F8)" 
                                      ajax="false"
                                      immediate="true"
-                                     action="#{cc.attrs.managedBeanView.novo()}"/>             
+                                     action="#{cc.attrs.managedBeanView.novo()}"/>
                 </c:when>
                 <c:otherwise>
                     <h:outputLabel value="" style="display: none;" />            

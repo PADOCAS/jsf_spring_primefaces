@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,9 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     private Cidade objetoSelecionado;
 
     //acao: 0(default-insert), 1(update)
-    private String acao = "0";
+    private String acao;
+
+    private Cidade objetoAlteracao;
 
     @Autowired
     private CidadeController cidadeController;
@@ -52,16 +55,30 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public void initComponentes() {
         super.initComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+
+        if (FacesContext.getCurrentInstance() != null
+                && FacesContext.getCurrentInstance().getExternalContext() != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash() != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao") != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao") != null) {
+            setAcao((String) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao"));
+            setObjetoAlteracao((Cidade) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao"));
+            //Após utilizar da um clear nos parâmetros para não deixar em memória
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("acao");
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("objetoAlteracao");
+        }
+
         try {
-            setAcao("0");
-            if(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap() != null) {
-                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("acao");
-                FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("acao");
-                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap().get("acao");
-                
-                ///TODODOOO !! saber quando é alteracao para tratar as variaveis de objeto e acao!!!
+            if (getAcao() == null
+                    || getAcao().equals("0")) {
+                //Insert:
+                setarVariaveisNulas();
+            } else if (getAcao().equals("1")
+                    && getObjetoAlteracao() != null) {
+                setObjetoSelecionado(getObjetoAlteracao());
+            } else {
+                setarVariaveisNulas();
             }
-            setarVariaveisNulas();
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -70,6 +87,17 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public void setarVariaveisNulas() throws Exception {
         setObjetoSelecionado(new Cidade());
+        setAcao("0");
+        setObjetoAlteracao(null);
+
+        if (FacesContext.getCurrentInstance() != null
+                && FacesContext.getCurrentInstance().getExternalContext() != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash() != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao") != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao") != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("acao");
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("objetoAlteracao");
+        }
     }
 
     @Override
@@ -171,8 +199,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public String editar() throws Exception {
         if (getObjetoSelecionado() != null
-                && getObjetoSelecionado().getCodigo() != null) {
-            return "/cadastro/cad_cidade.jsf?acao=1&codigo=" + getObjetoSelecionado().getCodigo().toString();
+                && getObjetoSelecionado().getCodigo() != null
+                && FacesContext.getCurrentInstance() != null
+                && FacesContext.getCurrentInstance().getExternalContext() != null
+                && FacesContext.getCurrentInstance().getExternalContext().getFlash() != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("acao", "1");
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("objetoAlteracao", getObjetoSelecionado());
+            //Redireciona diratemente com os parâmetros setadas no flash (depois apenas retorna null para o método para não ser redirecionado 2 vezes):
+//            FacesContext.getCurrentInstance().getExternalContext().redirect(PrimeFacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + url);
         }
 
         return url;
@@ -240,6 +274,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     public void setAcao(String acao) {
         this.acao = acao;
+    }
+
+    public Cidade getObjetoAlteracao() {
+        return objetoAlteracao;
+    }
+
+    public void setObjetoAlteracao(Cidade objetoAlteracao) {
+        this.objetoAlteracao = objetoAlteracao;
     }
 
     @Override
