@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,8 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     private Cidade objetoAlteracao;
 
+    private Boolean enableButtonsAcao = true;
+
     @Autowired
     private CidadeController cidadeController;
 
@@ -56,19 +57,19 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     public void initComponentes() {
         super.initComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
 
-        if (FacesContext.getCurrentInstance() != null
-                && FacesContext.getCurrentInstance().getExternalContext() != null
-                && FacesContext.getCurrentInstance().getExternalContext().getFlash() != null
-                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao") != null
-                && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao") != null) {
-            setAcao((String) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao"));
-            setObjetoAlteracao((Cidade) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao"));
-            //Após utilizar da um clear nos parâmetros para não deixar em memória
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("acao");
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("objetoAlteracao");
-        }
-
         try {
+            if (FacesContext.getCurrentInstance() != null
+                    && FacesContext.getCurrentInstance().getExternalContext() != null
+                    && FacesContext.getCurrentInstance().getExternalContext().getFlash() != null
+                    && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao") != null
+                    && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao") != null) {
+                setAcao((String) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("acao"));
+                setObjetoAlteracao((Cidade) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao"));
+                //Após utilizar da um clear nos parâmetros para não deixar em memória
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("acao");
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("objetoAlteracao");
+            }
+
             if (getAcao() == null
                     || getAcao().equals("0")) {
                 //Insert:
@@ -153,12 +154,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
+            setEnableButtonsAcao(false);
             setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+            setEnableButtonsAcao(true);
             //Caso der erro, mantém na mesma página:
             return "";
         }
@@ -172,6 +175,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
+            setEnableButtonsAcao(false);
             cidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
@@ -179,6 +183,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+            setEnableButtonsAcao(true);
         }
 
         return "";
@@ -226,12 +231,20 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void excluir() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", false);
         try {
             if (getObjetoSelecionado() != null
                     && getObjetoSelecionado().getCodigo() != null) {
-                cidadeController.delete(getObjetoSelecionado());
-                setarVariaveisNulas();
-                Mensagem.msgExcluidoComSucesso();
+                //Find no objeto atual, para evitar que está diferente no banco de dados por alguma alteração que aqui ainda está em cache!
+                Cidade cidadeDel = cidadeController.findByPorId(Cidade.class, getObjetoSelecionado().getCodigo());
+
+                if (cidadeDel != null) {
+                    cidadeController.delete(cidadeDel);
+                    setarVariaveisNulas();
+                    Mensagem.msgExcluidoComSucesso();
+
+                    PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
+                }
             } else {
                 Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
             }
@@ -297,4 +310,13 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
         return listCidade;
     }
+
+    public Boolean getEnableButtonsAcao() {
+        return enableButtonsAcao;
+    }
+
+    public void setEnableButtonsAcao(Boolean enableButtonsAcao) {
+        this.enableButtonsAcao = enableButtonsAcao;
+    }
+
 }

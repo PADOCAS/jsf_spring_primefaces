@@ -167,7 +167,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton value="Sim (F2)" 
                                  update="form"
                                  onsuccess="PF('#{cc.attrs.idDialogExclude}').hide();"
-                                 actionListener="#{cc.attrs.managedBeanView.excluir()}" />
+                                 actionListener="#{cc.attrs.managedBeanView.excluir()}"
+                                 oncomplete="if(args.validExclusao) {PF('statusDialog').show(); exclusaoOk();};"/>
                 <p:commandButton value="Não (ESC)"         
                                  update="form"
                                  onclick="PF('#{cc.attrs.idDialogExclude}').hide();">
@@ -189,6 +190,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             addMascaraPesquisa($(idCampo).val());
 
             addFocoAoCampo('txtValorPesquisa');
+
+            function exclusaoOk() {
+                setTimeout(() => {
+                    PF('statusDialog').hide();
+                }, 750);
+            }
 
             //chama o pesquisar ao dar enter na pesquisa
             function executaPesquisaComEnter(event, button) {

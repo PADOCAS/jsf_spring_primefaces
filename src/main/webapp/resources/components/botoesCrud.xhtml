@@ -20,6 +20,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="disableBtnSalvar" required="false" default="false" />
         <composite:attribute name="disableBtnExcluir" required="false" default="false" />
+        <composite:attribute name="isVisibleBtnExcluir" required="true" default="false" />
         <composite:attribute name="idDialogExclude" required="true" />
     </composite:interface>
 
@@ -35,44 +36,59 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          name="remComSave"
                          update="@widgetVar(message)"
                          actionListener="#{cc.attrs.managedBeanView.geraMensagemSaveDefault()}"
-                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfFindEntidade()}'); PF('statusDialog').hide();"
-                         process="@this" />    
+                         oncomplete="PF('statusDialog').show(); save();"
+                         process="@this" />
         
+        <!--Redirecionamento feito direto no vo para carregar novamente a página do find (carregando a lista atualizada para ter os objetos corretos preenchidos)-->
+        <p:remoteCommand id="remComSaveRedirecionamento"
+                         name="remComSaveRedirecionamento"
+                         update="@widgetVar(message)"
+                         action="#{cc.attrs.managedBeanView.redirecionarFindEntidade()}"
+                         process="@this" />        
+
         <p:remoteCommand id="remComSaveNew"
                          name="remComSaveNew"
                          update="@widgetVar(message)"
                          actionListener="#{cc.attrs.managedBeanView.geraMensagemSaveDefault()}"
-                         oncomplete="PF('statusDialog').show(); save('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfEntidade()}'); PF('statusDialog').hide();"
+                         oncomplete="PF('statusDialog').show(); saveNew('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfEntidade()}');"
                          process="@this" />   
 
-        <h:panelGrid columns="4" style="margin-left: -2px;">
+        <h:panelGrid id="pnlGridButtons" columns="#{cc.attrs.isVisibleBtnExcluir ? '4' : '3'}" style="margin-left: -2px;">
             <p:commandButton id="btnSalvar" 
                              value="Salvar (F2)" 
-                             update="@widgetVar(message)"
-                             disabled="#{cc.attrs.disableBtnSalvar}"
+                             update="form:#{cc.attrs.idCompositeBotoesCrud}:pnlGridButtons, @widgetVar(message)"
+                             disabled="#{cc.attrs.disableBtnSalvar
+                                         or !cc.attrs.managedBeanView.enableButtonsAcao}"
                              actionListener="#{cc.attrs.managedBeanView.save()}"
                              oncomplete="if(args.saveOk) {remComSave();};" />
 
             <p:commandButton id="btnSalvarNovo" 
                              value="Salvar/Novo (F3)" 
-                             update="@widgetVar(message)"
-                             disabled="#{cc.attrs.disableBtnSalvar}"
+                             update="form:#{cc.attrs.idCompositeBotoesCrud}:pnlGridButtons, @widgetVar(message)"
+                             disabled="#{cc.attrs.disableBtnSalvar
+                                         or !cc.attrs.managedBeanView.enableButtonsAcao}"
                              actionListener="#{cc.attrs.managedBeanView.saveNew()}"
                              oncomplete="if(args.saveOk) {remComSaveNew();};" />
 
-            <p:commandButton id="btnExcluir" 
-                             value="Excluir (F10)" 
-                             process="@this"
-                             update="form"
-                             actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
-                             oncomplete="if(args.validExclusao) {remComExclusaoOk();};"
-                             disabled="#{cc.attrs.disableBtnExcluir}" >
-            </p:commandButton>
+
+            <c:if test="#{cc.attrs.isVisibleBtnExcluir}" >
+                <p:commandButton id="btnExcluir" 
+                                 value="Excluir (F10)" 
+                                 process="@this"
+                                 update="form:#{cc.attrs.idCompositeBotoesCrud}:pnlGridButtons, form"
+                                 actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
+                                 oncomplete="if(args.validExclusao) {remComExclusaoOk();};"
+                                 disabled="#{cc.attrs.disableBtnExcluir
+                                             or !cc.attrs.managedBeanView.enableButtonsAcao}" >
+                </p:commandButton>
+            </c:if>
 
             <p:commandButton id="btnCancelar" 
                              ajax="false"
                              immediate="true"
+                             update="form:#{cc.attrs.idCompositeBotoesCrud}:pnlGridButtons, @widgetVar(message)"
                              value="Cancelar (ESC)"          
+                             disabled="#{!cc.attrs.managedBeanView.enableButtonsAcao}"
                              action="#{cc.attrs.managedBeanView.redirecionarFindEntidade()}" />
         </h:panelGrid>
 
@@ -86,10 +102,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton value="Sim (F2)" 
                                  update="form"
                                  onsuccess="PF('#{cc.attrs.idDialogExclude}').hide();"
-                                 actionListener="#{cc.attrs.managedBeanView.excluir()}" />
+                                 actionListener="#{cc.attrs.managedBeanView.excluir()}"
+                                 oncomplete="if(args.validExclusao) {PF('statusDialog').show(); exclusaoOk('#{request.contextPath}', '#{cc.attrs.managedBeanView.getUrfFindEntidade()}');};"/>
                 <p:commandButton value="Não (ESC)"         
                                  update="form"
-                                 actionListener="#{cc.attrs.managedBeanView.novo()}"
                                  onclick="PF('#{cc.attrs.idDialogExclude}').hide();">
                 </p:commandButton>
             </h:panelGrid> 
@@ -101,10 +117,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             //Evita conflito entre bibliotecas:
             jQuery.noConflict();
 
-            function save(context, url) {
+            function exclusaoOk(context, url) {
                 setTimeout(() => {
                     redirecionarPagina(context, url);
-                }, 500);
+                    PF('statusDialog').hide();
+                }, 750);
+            }
+
+            function save() {
+                setTimeout(() => {
+                    remComSaveRedirecionamento();
+                    PF('statusDialog').hide();
+                }, 750);
+            }
+            
+            function saveNew(context, url) {
+                setTimeout(() => {
+                    redirecionarPagina(context, url);
+                    PF('statusDialog').hide();
+                }, 750);
             }
         </script>
     </composite:implementation>

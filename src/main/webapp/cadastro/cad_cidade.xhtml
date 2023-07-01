@@ -27,13 +27,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                          managedBeanView="#{cidadeBeanView}"      
                          disableBtnSalvar="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"                         
                          disableBtnExcluir="#{!contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
+                         isVisibleBtnExcluir="#{cidadeBeanView.acao ne null and cidadeBeanView.acao eq '1'}"
                          idDialogExclude="confDialogExclusaoCidade"/>
 
         <p:panel id="pnlCadastro" header="Cadastro de Cidade" >
             <h:panelGrid id="pnlGridCadastro" columns="2" >
                 <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
                 <p:inputText id="txtCodigo" class="estiloIdCadastro" disabled="true" value="#{cidadeBeanView.objetoSelecionado.codigo}" />
-
+                
                 <h:outputLabel id="lblNome" class="styleOutputLabel" value="* Nome" for="txtNome" />
                 <p:inputText id="txtNome" 
                              class="styleInputTextGrande ui-text-uppercase" 
@@ -52,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 </p:selectOneMenu>
             </h:panelGrid>               
         </p:panel>
-               
+
         <script type="text/javascript" charset="UTF-8">
             //Evita conflito entre bibliotecas:
             jQuery.noConflict();
