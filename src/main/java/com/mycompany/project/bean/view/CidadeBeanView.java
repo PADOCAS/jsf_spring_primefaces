@@ -158,9 +158,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             setObjetoSelecionado(cidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
+        } catch (javax.persistence.OptimisticLockException ex) {
+            Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>Registro já foi alterado por outro usuário.<br>Retorne a consulta de cidades e selecione novamente para alteração.", "Atenção");
+            setEnableButtonsAcao(true);
+            //Caso der erro, mantém na mesma página:
+            return "";
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
             //Caso der erro, mantém na mesma página:
             return "";
@@ -180,9 +185,12 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
+        } catch (javax.persistence.OptimisticLockException ex) {
+            Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>Registro já foi alterado por outro usuário.<br>Retorne a consulta de cidades e selecione novamente para alteração.", "Atenção");
+            setEnableButtonsAcao(true);
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!\n" + ex.getMessage(), "Erro");
+            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
         }
 
@@ -248,9 +256,15 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             } else {
                 Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
             }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            Mensagem.msgSeverityWarn("Erro ao Excluir!<br><br>Registro foi alterado por outro usuário,<br>retorne a consulta de cidade e tente excluí-lo novamente.", "Atenção");
         } catch (Exception ex) {
-            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao Excluir!\n" + ex.getMessage(), "Erro");
+            if (ex.getMessage().contains("No row with the given identifier exists")) {
+                Mensagem.msgSeverityWarn("Erro ao Excluir!<br><br>Esse registro já foi excluído por outro usuário.", "Atenção");
+            } else {
+                Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+                Mensagem.msgSeverityError("Erro ao Excluir!<br><br>" + ex.getMessage(), "Erro");
+            }
         }
     }
 

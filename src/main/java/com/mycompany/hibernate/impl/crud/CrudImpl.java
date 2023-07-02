@@ -17,6 +17,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
+import com.mycompany.project.listener.ContextLoaderListenerUtil;
+import javax.sql.DataSource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  *
@@ -111,71 +117,148 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
         }
     }
 
+    /**
+     * Método para fazer o rollback em casos de erro na transação, exemplo
+     * alteração de registro simultânea por 2 usuários diferentes, se o que está
+     * em memória está diferente do banco de dados atual o hibernate lança uma
+     * exception (javax.persistence.OptimisticLockException), onde devemos fazer
+     * o rollback e finalizar a session para não chegar com sujeira no filter e
+     * quebrar a sessão do usuário!
+     *
+     */
+    private void executeRollbackTransactionInError() {
+        DataSource springBasicDataSource = (DataSource) ContextLoaderListenerUtil.getBean("springDataSource");  //Usando DataSource direto, glassfish/payara
+        DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(springBasicDataSource);
+        TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
+        transactionManager.rollback(transactionStatus);
+
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null) {
+            if (getSessionFactory().getCurrentSession().getTransaction() != null
+                    && getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+                getSessionFactory().getCurrentSession().getTransaction().rollback();
+            }
+
+            if (getSessionFactory().getCurrentSession().isOpen()) {
+                getSessionFactory().getCurrentSession().close();
+            }
+        }
+    }
+
     @Override
     public void save(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().save(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().save(objeto);
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public void persist(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().persist(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().persist(objeto);
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public void saveOrUpdate(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().saveOrUpdate(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().saveOrUpdate(objeto);
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public void update(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().update(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().update(objeto);
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public void delete(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().delete(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().delete(objeto);
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public T merge(T objeto) throws Exception {
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && objeto != null) {
-            validaSessionFactory();
-            objeto = (T) getSessionFactory().getCurrentSession().merge(objeto);
-            executeFlushSession();
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && objeto != null) {
+                validaSessionFactory();
+                objeto = (T) getSessionFactory().getCurrentSession().merge(objeto);
+                executeFlushSession();
 
-            return objeto;
+                return objeto;
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
 
         return null;
@@ -253,25 +336,41 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
 
     @Override
     public void executeUpdateQueryDinamica(String query) throws Exception {
-        //Essa é por HQL do hibernate ou JPA (usa o createQuery)
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && query != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().createQuery(query).executeUpdate();
-            executeFlushSession();
+        try {
+            //Essa é por HQL do hibernate ou JPA (usa o createQuery)
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && query != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().createQuery(query).executeUpdate();
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 
     @Override
     public void executeUpdateSqlDinamica(String query) throws Exception {
-        //Essa é por SQL puro (usa o createSQLQuery)
-        if (getSessionFactory() != null
-                && getSessionFactory().getCurrentSession() != null
-                && query != null) {
-            validaSessionFactory();
-            getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();
-            executeFlushSession();
+        try {
+            //Essa é por SQL puro (usa o createSQLQuery)
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null
+                    && query != null) {
+                validaSessionFactory();
+                getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
         }
     }
 

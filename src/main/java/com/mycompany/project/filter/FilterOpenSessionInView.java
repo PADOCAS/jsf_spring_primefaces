@@ -5,6 +5,7 @@
 package com.mycompany.project.filter;
 
 import com.mycompany.framework.util.FrameworkUtil;
+import static com.mycompany.hibernate.impl.crud.CrudImpl.getSessionFactory;
 import com.mycompany.hibernate.session.HibernateUtil;
 import com.mycompany.project.listener.ContextLoaderListenerUtil;
 import com.mycompany.project.model.Entidade;
@@ -87,18 +88,35 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
             //sessionFactory.getCurrentSession().createNativeQuery("INSERT INTO PUBLIC.PAIS VALUES (3, 'ARROZ', 'BOUS1', 2);").executeUpdate();  
             //
             //Se tudo ok depois do doFilter, faz o commit, caso deu erro vai dar Rollback:
-            transactionManager.commit(transactionStatus);
+            if (!transactionStatus.isRollbackOnly()) {
+                transactionManager.commit(transactionStatus);
 
-            if (sessionFactory != null
-                    && sessionFactory.getCurrentSession() != null) {
-                if (sessionFactory.getCurrentSession().getTransaction() != null
-                        && sessionFactory.getCurrentSession().getTransaction().isActive()) {
-                    sessionFactory.getCurrentSession().flush();
-                    sessionFactory.getCurrentSession().getTransaction().commit();
+                if (sessionFactory != null
+                        && sessionFactory.getCurrentSession() != null) {
+                    if (sessionFactory.getCurrentSession().getTransaction() != null
+                            && sessionFactory.getCurrentSession().getTransaction().isActive()) {
+                        sessionFactory.getCurrentSession().flush();
+                        sessionFactory.getCurrentSession().getTransaction().commit();
+                    }
+
+                    if (sessionFactory.getCurrentSession().isOpen()) {
+                        sessionFactory.getCurrentSession().close();
+                    }
                 }
+            } else {
+                transactionManager.rollback(transactionStatus);
 
-                if (sessionFactory.getCurrentSession().isOpen()) {
-                    sessionFactory.getCurrentSession().close();
+                if (sessionFactory != null
+                        && sessionFactory.getCurrentSession() != null) {
+                    //Casos de rollback já tratados antes de chegar no filter, não precisa fazer isso na session:
+//                    if (sessionFactory.getCurrentSession().getTransaction() != null
+//                            && sessionFactory.getCurrentSession().getTransaction().isActive()) {
+//                        sessionFactory.getCurrentSession().getTransaction().rollback();
+//                    }
+
+                    if (sessionFactory.getCurrentSession().isOpen()) {
+                        sessionFactory.getCurrentSession().close();
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -107,10 +125,11 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
 
             if (sessionFactory != null
                     && sessionFactory.getCurrentSession() != null) {
-                if (sessionFactory.getCurrentSession().getTransaction() != null
-                        && sessionFactory.getCurrentSession().getTransaction().isActive()) {
-                    sessionFactory.getCurrentSession().getTransaction().rollback();
-                }
+                //Casos de rollback já tratados antes de chegar no filter, não precisa fazer isso na session:
+//                if (sessionFactory.getCurrentSession().getTransaction() != null
+//                        && sessionFactory.getCurrentSession().getTransaction().isActive()) {
+//                    sessionFactory.getCurrentSession().getTransaction().rollback();
+//                }
 
                 if (sessionFactory.getCurrentSession().isOpen()) {
                     sessionFactory.getCurrentSession().close();
