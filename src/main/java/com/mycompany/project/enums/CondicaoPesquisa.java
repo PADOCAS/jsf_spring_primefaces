@@ -15,7 +15,7 @@ public enum CondicaoPesquisa {
     TERMINA("Termina com"),
     IGUAL("Igual");
 
-    private String condicao;
+    private final String condicao;
 
     private CondicaoPesquisa(String condicao) {
         this.condicao = condicao;
@@ -23,10 +23,6 @@ public enum CondicaoPesquisa {
 
     public String getCondicao() {
         return condicao;
-    }
-
-    public void setCondicao(String condicao) {
-        this.condicao = condicao;
     }
 
     @Override
