@@ -69,7 +69,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <c:when test="#{cc.attrs.showBtnAlterar}">
                     <p:commandButton id="btnAlterarRegistro"
                                      value="Alterar (F9)" 
-                                     process="@this"
+                                     process="@this, form:#{cc.attrs.idCompositePesquisa}:dataTableListAll"
                                      update="form"
                                      actionListener="#{cc.attrs.managedBeanView.validEditar()}"
                                      oncomplete="if(args.validEditar) {remComEditarOk();};"/>
@@ -83,7 +83,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <c:when test="#{cc.attrs.showBtnExcluir}">
                     <p:commandButton id="btnExcluirRegistro"
                                      value="Excluir (F10)" 
-                                     process="@this"
+                                     process="@this, form:#{cc.attrs.idCompositePesquisa}:dataTableListAll"
                                      update="form"
                                      actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
                                      oncomplete="if(args.validExclusao) {remComExclusaoOk();};"/>        
@@ -150,7 +150,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                      currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords} registros"
                      rowsPerPageTemplate="10,15,20"
                      emptyMessage="Nenhum registro encontrado.">
-            <p:ajax event="rowSelect" process="@this" />
             <!--Duplo clique editar cadastro-->
             <p:ajax event="rowDblselect" process="@this" oncomplete="remComEditarOk();" />
             <!--Incluir as colunas de forma genérica-->
