@@ -6,6 +6,7 @@ package com.mycompany.project.bean.view;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
+import com.mycompany.project.bean.geral.EntidadeAlterarSenha;
 import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.model.Entidade;
 import java.util.Date;
@@ -30,6 +31,14 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
 
     @Autowired
     private EntidadeController entidadeController;
+
+    private EntidadeAlterarSenha entidadeAlterarSenha;
+
+    @Override
+    public void initComponentes() {
+        super.initComponentes(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        entidadeAlterarSenha = new EntidadeAlterarSenha();
+    }
 
     public String getUsuarioLogadoSecurity() {
         if (contextoBean != null
@@ -66,6 +75,14 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
     @Override
     public String condicaoAndParaPesquisa() throws Exception {
         return null;
+    }
+
+    public EntidadeAlterarSenha getEntidadeAlterarSenha() {
+        return entidadeAlterarSenha;
+    }
+
+    public void setEntidadeAlterarSenha(EntidadeAlterarSenha entidadeAlterarSenha) {
+        this.entidadeAlterarSenha = entidadeAlterarSenha;
     }
 
 }

@@ -417,6 +417,10 @@ input[type=submit] {
     width: 500px;
 }
 
+.styleInputTextSenha {
+    width: 200px;
+}
+
 .styleOutputLabel {
     display: flex;
     flex-direction: row;

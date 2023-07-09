@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head>        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title> 
+            <ui:insert name="titulo">Alteração Senha</ui:insert>
+        </title>
+
+        <!--JavaScript para atalhos-->
+        <h:outputScript id="scriptAtalhos" library="js" name="atalhosGerador.js"/>            
+    </h:head>
+
+
+    <h:body>
+        <p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+
+        <h:form id="formAlterarSenha" >
+            <!--Inclui o template progressBar para toda chamada ajax da página chamar o progresBar:-->
+            <ui:include src="../templates/progressBar.xhtml" />
+            
+            <!--Colocando o p:growl padrão para tratar mensagens sticky true para não sumir a mensagem com o tempo-->
+            <div id="divMessage" class="espacoMensagem">
+                <p:growl id="message" widgetVar="message" showSummary="true" showDetail="true" sticky="true" escape="false" />  
+                <!--Deixando toolTip de forma genérica para o focus (usando jQuery do globalSelector) quando ganha o foco da o tootip e quando perde o foco some-->
+                <!--Para isso é so escrever os title dentro dos componentes que quer dar toolTip-->
+                <p:tooltip id="toolTipFocus" globalSelector="a,:input,:button" showEvent="focus" hideEvent="blur" />
+            </div>
+            
+            <p:panel id="pnlAlterarSenha">
+                <h:panelGrid id="pnlGridAlterarSenha" columns="2" >
+                    <h:outputLabel id="lblSenhaAtual" class="styleOutputLabel" value="* Senha Atual" for="txtSenhaAtual" />
+                    <p:password id="txtSenhaAtual" 
+                                class="styleInputTextSenha"
+                                value="#{entidadeBeanView.entidadeAlterarSenha.senhaAtual}" 
+                                required="true" 
+                                maxlength="20" 
+                                requiredMessage="Informe a Senha Atual."/>
+
+                    <h:outputLabel id="lblSenhaNova" class="styleOutputLabel" value="* Senha Nova" for="txtSenhaNova" />
+                    <p:password id="txtSenhaNova" 
+                                class="styleInputTextSenha"
+                                value="#{entidadeBeanView.entidadeAlterarSenha.senhaNova}" 
+                                required="true" 
+                                maxlength="20" 
+                                requiredMessage="Informe a Senha Nova."/>
+
+                    <h:outputLabel id="lblSenhaNovaConfirmacao" class="styleOutputLabel" value="* Senha Atual" for="txtSenhaNovaConfirmacao" />
+                    <p:password id="txtSenhaNovaConfirmacao" 
+                                class="styleInputTextSenha"
+                                value="#{entidadeBeanView.entidadeAlterarSenha.senhaNovaConfirmacao}" 
+                                required="true" 
+                                maxlength="20" 
+                                requiredMessage="Informe a Confirmação para nova senha."/>
+
+                    <h:outputLabel value="" />
+                    <p:commandButton id="btnAlterarSenha" 
+                                     style="margin-top: 5px;"
+                                     value="Confirmar (F2)" 
+                                     process="@this, pnlGridAlterarSenha" />  
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

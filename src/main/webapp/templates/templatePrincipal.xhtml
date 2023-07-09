@@ -193,13 +193,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                     <p:dialog id="alterarSenhaDialog"
                               widgetVar="alterarSenhaDialog"
-                              width="240"
                               modal="true" 
                               resizable="false" 
-                              height="170"
                               header="Alterar senha" 
                               dynamic="true">
-                        Dialog Alterar Senha
+                        <ui:include src="/cadastro/dialog_alterar_senha.xhtml" />
                     </p:dialog>
 
                     <p:dialog id="enviarMensagemDialog" 
