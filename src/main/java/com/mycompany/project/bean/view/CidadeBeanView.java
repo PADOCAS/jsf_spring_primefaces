@@ -6,6 +6,7 @@ package com.mycompany.project.bean.view;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
+import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.geral.controller.CidadeController;
 import com.mycompany.project.message.util.Mensagem;
 import com.mycompany.project.model.Cidade;
@@ -44,6 +45,8 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     private Cidade objetoAlteracao;
 
     private Boolean enableButtonsAcao = true;
+
+    private CarregamentoLazyListForObject<Cidade> list = new CarregamentoLazyListForObject<>();
 
     @Autowired
     private CidadeController cidadeController;
@@ -90,6 +93,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
         setObjetoSelecionado(new Cidade());
         setAcao("0");
         setObjetoAlteracao(null);
+        consultarEntidade();
 
         if (FacesContext.getCurrentInstance() != null
                 && FacesContext.getCurrentInstance().getExternalContext() != null
@@ -270,7 +274,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void consultarEntidade() throws Exception {
-        super.consultarEntidade();
+        try {
+            objetoSelecionado = new Cidade();
+            list.clean();
+            list.setTotRegConsulta(getTotalRegistroConsulta(), getSqlLazyQueryTotRegistro());
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            Mensagem.msgSeverityError(ex.getMessage(), "Erro");
+        }
     }
 
     @Override
@@ -312,17 +323,8 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     }
 
     @Override
-    public List<Cidade> getListAll() throws Exception {
-        List<Cidade> listCidade = null;
-
-        try {
-            listCidade = cidadeController.findListByQueryDinamica(" FROM Cidade ORDER BY nome");
-        } catch (Exception ex) {
-            Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError(ex.getMessage(), "Erro");
-        }
-
-        return listCidade;
+    public String condicaoAndParaPesquisa() throws Exception {
+        return null;
     }
 
     public Boolean getEnableButtonsAcao() {
@@ -331,6 +333,14 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     public void setEnableButtonsAcao(Boolean enableButtonsAcao) {
         this.enableButtonsAcao = enableButtonsAcao;
+    }
+
+    public CarregamentoLazyListForObject<Cidade> getList() {
+        return list;
+    }
+
+    public void setList(CarregamentoLazyListForObject<Cidade> list) {
+        this.list = list;
     }
 
 }

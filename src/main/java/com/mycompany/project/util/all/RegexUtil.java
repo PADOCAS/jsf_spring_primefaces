@@ -11,12 +11,16 @@ package com.mycompany.project.util.all;
 public class RegexUtil {
 
     public static String getRetiraAcentos(String string) {
-        String aux = string;
-        aux = aux.replaceAll("[èéêëÈÉÊË]", "e");
-        aux = aux.replaceAll("[ûùüúÛÚÙÜ]", "u");
-        aux = aux.replaceAll("[ïîíìÏÎÍÌ]", "i");
-        aux = aux.replaceAll("[àâáäãÁÀÂÄ]", "a");
-        aux = aux.replaceAll("[óòôöõÓÒÔÖ]", "o");
-        return aux;
+        if (string != null) {
+            String aux = string;
+            aux = aux.replaceAll("[èéêëÈÉÊË]", "e");
+            aux = aux.replaceAll("[ûùüúÛÚÙÜ]", "u");
+            aux = aux.replaceAll("[ïîíìÏÎÍÌ]", "i");
+            aux = aux.replaceAll("[àâáäãÁÀÂÄ]", "a");
+            aux = aux.replaceAll("[óòôöõÓÒÔÖ]", "o");
+            return aux;
+        } else {
+            return "";
+        }
     }
 }

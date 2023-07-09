@@ -7,6 +7,7 @@ package com.mycompany.project.carregamento.lazy;
 import com.mycompany.framework.controller.crud.CrudGeralController;
 import com.mycompany.project.listener.ContextLoaderListenerUtil;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,8 @@ import org.primefaces.model.SortMeta;
 /**
  * Classe para implementar o carregamento por demanda (lazy -> preguiçoso) para
  * nossas telas de pesquisas (dataTable primefaces) Com isso, mesmo tendo muitos
- * registros no cadastro, ficará paginado não sobrecarregando o sistema, só carregará para as páginas necessárias
+ * registros no cadastro, ficará paginado não sobrecarregando o sistema, só
+ * carregará para as páginas necessárias
  *
  * @param <T>
  * @author lucia
@@ -36,8 +38,7 @@ public class CarregamentoLazyListForObject<T> extends LazyDataModel<T> implement
 
     @Override
     public int count(Map<String, FilterMeta> map) {
-        //TODOOOOOOOOOOOOOOOOOOOOOOO Ver como tratar o count aqui, na aula não é necessário sobrescrever o count!
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return totalRegistrosConsulta;
     }
 
     @Override
@@ -56,6 +57,53 @@ public class CarregamentoLazyListForObject<T> extends LazyDataModel<T> implement
         }
 
         return list;
+    }
+
+    /**
+     * Método para retornar o objeto selecionado em uma row da dataTable (atráves do seu rowKey)
+     * 
+     * @param rowKey
+     * @return 
+     */
+    @Override
+    public T getRowData(String rowKey) {
+        if (rowKey != null) {
+            for (T object : list) {
+                String key = getRowKey(object);
+                if (key != null
+                        && key.equals(rowKey)) {
+                    return object;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Método para tratar o rowKey dos nossos tableDetail (Cadastros), onde sempre será tratado pela PK das tabelas (campo codigo)
+     * 
+     * @param object
+     * @return 
+     */
+    @Override
+    public String getRowKey(T object) {
+        try {
+            if (object != null
+                    && object.getClass() != null) {
+                //Tratar sempre pela PK da tabela (Cadastros sempre vão ser por padrão pk com nome codigo, caso modifique algum tratar aqui genericamente depois):
+                Field pkField = object.getClass().getDeclaredField("codigo");
+                // Permite acesso ao atributo mesmo se for privado
+                pkField.setAccessible(true);
+                // Obtém o valor do atributo
+                Object pkValue = pkField.get(object);
+                return String.valueOf(pkValue);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void clean() {

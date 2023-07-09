@@ -98,6 +98,11 @@ public class LoginBeanView extends BeanManagedViewAbstract {
         requestContext.getCallbackParams().put("loggedIn", loggedIn);
     }
 
+    @Override
+    public String condicaoAndParaPesquisa() throws Exception {
+        return null;
+    }
+
     public String getLogin() {
         return login;
     }

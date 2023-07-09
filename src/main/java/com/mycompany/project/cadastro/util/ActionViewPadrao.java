@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.cadastro.util;
 
+import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.message.util.StatusPersistencia;
 import java.io.Serializable;
 import java.util.List;
@@ -53,8 +54,6 @@ public interface ActionViewPadrao extends Serializable {
     public abstract String redirecionarFindEntidade() throws Exception;
     
     public abstract String getUrfFindEntidade();
-    
-    public abstract List<?> getListAll() throws Exception;
     
     public abstract String getUrfEntidade();
     

@@ -24,7 +24,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <composite:attribute name="showBtnExcluir" required="true" />
         <composite:attribute name="showMenuImpressao" required="false" default="true" />
         <composite:attribute name="nomePesquisa" required="true"/>
-        <composite:attribute name="rowKeyDataTable" required="true" />
         <composite:attribute name="idDialogExclude" required="true" />
         <composite:attribute name="colunasGridDataTable" required="true" />
     </composite:interface>
@@ -137,10 +136,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
         <p:dataTable id="dataTableListAll"
                      widgetVar="dataTableListAll"
-                     value="#{cc.attrs.managedBeanView.listAll}"
+                     value="#{cc.attrs.managedBeanView.list}"
                      var="objeto"
-                     rows="10" 
-                     rowKey="#{cc.attrs.rowKeyDataTable}"                     
+                     rows="10"                                    
                      selection="#{cc.attrs.managedBeanView.objetoSelecionado}"
                      selectionMode="single"
                      lazy="true"
