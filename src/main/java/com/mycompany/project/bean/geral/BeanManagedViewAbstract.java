@@ -59,21 +59,24 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
             listCampoConsulta = new ArrayList<>();
             List<ObjetoCampoConsulta> listObjCamPesTemp = new ArrayList<>();
 
-            for (Field field : getClassImplement().getDeclaredFields()) {
-                //Verifica se o campo tem a anotação de IdentificaCampoPesquisa:
-                if (field.isAnnotationPresent(IdentificaCampoPesquisa.class)) {
-                    String campoBancoDeDados = field.getAnnotation(IdentificaCampoPesquisa.class).campoBancoDeDados();
-                    String descricaoCampoEmTela = field.getAnnotation(IdentificaCampoPesquisa.class).descricaoCampoEmTela();
-                    Integer ordemCampoEmTela = field.getAnnotation(IdentificaCampoPesquisa.class).ordemCampoEmTela();
+            if (getClassImplement() != null
+                    && getClassImplement().getDeclaredFields() != null) {
+                for (Field field : getClassImplement().getDeclaredFields()) {
+                    //Verifica se o campo tem a anotação de IdentificaCampoPesquisa:
+                    if (field.isAnnotationPresent(IdentificaCampoPesquisa.class)) {
+                        String campoBancoDeDados = field.getAnnotation(IdentificaCampoPesquisa.class).campoBancoDeDados();
+                        String descricaoCampoEmTela = field.getAnnotation(IdentificaCampoPesquisa.class).descricaoCampoEmTela();
+                        Integer ordemCampoEmTela = field.getAnnotation(IdentificaCampoPesquisa.class).ordemCampoEmTela();
 
-                    ObjetoCampoConsulta objCamCon = new ObjetoCampoConsulta();
-                    objCamCon.setCampoNoBanco(campoBancoDeDados);
-                    objCamCon.setDescricaoEmTela(descricaoCampoEmTela);
-                    //Default de ordenação é 1000 -> ou seja, nunca será nulo
-                    objCamCon.setOrdemEmTela(ordemCampoEmTela);
-                    objCamCon.setClasse(field.getType().getCanonicalName());
+                        ObjetoCampoConsulta objCamCon = new ObjetoCampoConsulta();
+                        objCamCon.setCampoNoBanco(campoBancoDeDados);
+                        objCamCon.setDescricaoEmTela(descricaoCampoEmTela);
+                        //Default de ordenação é 1000 -> ou seja, nunca será nulo
+                        objCamCon.setOrdemEmTela(ordemCampoEmTela);
+                        objCamCon.setClasse(field.getType().getCanonicalName());
 
-                    listObjCamPesTemp.add(objCamCon);
+                        listObjCamPesTemp.add(objCamCon);
+                    }
                 }
             }
 
