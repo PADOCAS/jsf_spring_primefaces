@@ -45,6 +45,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
         <h:body>
             <f:view>
+                <p:remoteCommand id="remComOpenAlteracaoSenha"
+                                 name="remComOpenAlteracaoSenha"
+                                 actionListener="#{entidadeBeanView.iniciarAlteraracaoSenha()}"
+                                 update="form:alterarSenhaDialog, @widgetVar(message)"
+                                 oncomplete="PF('alterarSenhaDialog').show();"
+                                 process="@this" />
+
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
                         jQuery.noConflict();
@@ -146,9 +153,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <a id="linkAlterarSenha" 
                            href="#" 
-                           onclick="PF('alterarSenhaDialog').show();" 
+                           onclick="remComOpenAlteracaoSenha();"                            
                            style="display: block;">
-                            <span style="display: block;" id="spanAlterarSenha">Alterar Senha</span>
+                            <span style="display: block;" id="spanAlterarSenha">Alterar Senha</span>                            
                         </a>
                     </div>
 
@@ -194,6 +201,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <p:dialog id="alterarSenhaDialog"
                               widgetVar="alterarSenhaDialog"
                               modal="true" 
+                              class="ui-dialog-ative-atalho"
                               resizable="false" 
                               header="Alterar senha" 
                               dynamic="true">
@@ -204,6 +212,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                               widgetVar="enviarMensagemDialog" 
                               width="500"
                               modal="true" 
+                              class="ui-dialog-ative-atalho"
                               resizable="false" 
                               height="360"
                               header="Enviar menssagem" 

@@ -9,6 +9,7 @@ import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.bean.geral.EntidadeAlterarSenha;
 import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.model.Entidade;
+import com.mycompany.repository.interfaces.RepositoryLogin;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,32 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
         }
 
         return null;
+    }
+
+    public void iniciarAlteraracaoSenha() {
+        entidadeAlterarSenha = new EntidadeAlterarSenha();
+    }
+
+    /**
+     * Método para alteração de senha do usuário
+     */
+    public void updateSenha() {
+        if (entidadeAlterarSenha != null
+                && entidadeAlterarSenha.getSenhaAtual() != null
+                && entidadeAlterarSenha.getSenhaNova() != null
+                && entidadeAlterarSenha.getSenhaNovaConfirmacao() != null
+                && contextoBean != null
+                && contextoBean.getAuthentication() != null
+                && contextoBean.getAuthentication().getName() != null) {
+            //Usuario logado: contextoBean.getAuthentication().getName()
+            
+            //Método para valida autenticacao do usuario temos no DAOLogin! ver da onde vai ser pego na aula antes de fazer aqui.. caso precise injetar e tal..!!
+//                return repositoryLogin.autenticaUsuario(login, senha);
+
+//TODOOOOOOOOO: VERIFICAR SE SENHA NOVA E CONFIRMACAO DE SENHA NOVA BATEM            
+//TODOOOOOOOOO: VERIFICAR SE SENHA QUE O USUÁRIO DIGITOU ATUAL ESTÁ CORRETA:
+//TODOOOOOOOOO: SE TUDO OK, GRAVAR NO BANCO A NOVA SENHA CRIPTOGRAFADA!
+        }
     }
 
     @Override
