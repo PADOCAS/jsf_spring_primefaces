@@ -16,14 +16,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
     <h:form id="formAlterarSenha" >                       
         <p:panel id="pnlAlterarSenha">
-            <h:panelGrid id="pnlGridAlterarSenha" columns="3" >
+            <h:panelGrid id="pnlGridAlterarSenha" columns="2" >
                 <h:outputLabel id="lblSenhaAtual" class="styleOutputLabel" value="* Senha Atual" for="txtSenhaAtual" />
                 <p:password id="txtSenhaAtual" 
                             class="styleInputTextSenha"
                             value="#{entidadeBeanView.entidadeAlterarSenha.senhaAtual}" 
                             required="true" 
                             maxlength="20" 
-                                requiredMessage="Informe a Senha Atual."/>
+                            requiredMessage="Informe a Senha Atual."/>
 
                 <h:outputLabel id="lblSenhaNova" class="styleOutputLabel" value="* Senha Nova" for="txtSenhaNova" />
                 <p:password id="txtSenhaNova" 
@@ -31,7 +31,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             value="#{entidadeBeanView.entidadeAlterarSenha.senhaNova}" 
                             required="true" 
                             maxlength="20" 
-                                requiredMessage="Informe a Senha Nova."/>
+                            requiredMessage="Informe a Senha Nova."/>
 
                 <h:outputLabel id="lblSenhaNovaConfirmacao" class="styleOutputLabel" value="* Senha Atual" for="txtSenhaNovaConfirmacao" />
                 <p:password id="txtSenhaNovaConfirmacao" 
@@ -39,16 +39,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             value="#{entidadeBeanView.entidadeAlterarSenha.senhaNovaConfirmacao}" 
                             required="true" 
                             maxlength="20" 
-                                requiredMessage="Informe a Confirmação para nova senha."/>
+                            requiredMessage="Informe a Confirmação para nova senha."/>
 
                 <h:outputLabel value="" />
                 <p:commandButton id="btnAlterarSenha" 
                                  style="margin-top: 5px;"
                                  value="Confirmar (F2)" 
-                                 update="pnlAlterarSenha"
+                                 update="@form, @widgetVar(message)"
                                  action="#{entidadeBeanView.updateSenha()}"
                                  process="@this, @form" />  
-                <h:outputLabel value="" />
             </h:panelGrid>
         </p:panel>
     </h:form>
