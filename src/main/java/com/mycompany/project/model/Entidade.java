@@ -6,6 +6,8 @@ package com.mycompany.project.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import org.hibernate.envers.Audited;
+import org.primefaces.shaded.json.JSONObject;
 
 /**
  *
@@ -91,6 +94,19 @@ public class Entidade implements Serializable {
 
     public void setVersionnum(Integer versionnum) {
         this.versionnum = versionnum;
+    }
+
+    /**
+     * Método para montar um JSON da classe Entidade e retornar
+     *
+     * @return
+     */
+    public JSONObject getJson() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("ent_codigo", getEnt_codigo());
+        map.put("ent_login", getEnt_login());
+
+        return new JSONObject(map);
     }
 
     @Override

@@ -17,7 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     <p:remoteCommand id="remComSaveEnvioMensagem"
                      name="remComSaveEnvioMensagem"
                      update="form, @widgetVar(message)"
-                     actionListener="#{entidadeBeanView.msgUpdateSenhaComSucesso()}"
+                     actionListener="#{mensagemBeanView.msgEnvioMensagemFeitoComSucesso()}"
                      oncomplete="PF('enviarMensagemDialog').hide();"
                      process="@this" />
 
@@ -28,27 +28,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:inputText id="txtCodigo" 
                              class="estiloIdCadastro"
                              value="#{mensagemBeanView.objetoSelecionado.codigo}" 
-                             readonly="true"/>
+                             disabled="true" />
 
-                <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="* Usuário Origem" for="txtUsuarioOrigemCodigo" />
-                <h:panelGroup>
-                    <p:inputText id="txtUsuarioOrigemCodigo"
-                                 class="estiloIdCadastro"
-                                 value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem.ent_codigo}"
-                                 readonly="true" />
-
-                    <p:inputText id="txtUsuarioOrigemLogin"
-                                 class="styleInputTextLogin"
-                                 value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem.ent_login}"
-                                 readonly="true" />
-                </h:panelGroup>
-
+                <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="* Usuário Origem" for="autoCompUsuarioOrigem" />
+                <p:autoComplete id="autoCompUsuarioOrigem" 
+                                value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem}"
+                                dropdown="true"
+                                disabled="true"
+                                required="true"
+                                queryDelay="600"
+                                effect="fade"
+                                requiredMessage="Informe o usuário destino."
+                                class="styleAutoComplete"
+                                var="usuario" 
+                                itemLabel="#{usuario.ent_codigo eq null ? '' : '('.concat(usuario.ent_codigo).concat(') ').concat(usuario.ent_login)}" 
+                                itemValue="#{usuario}"
+                                converter="#{entidadeConverter}" 
+                                forceSelection="true" 
+                                scrollHeight="250"/>
+               
                 <h:outputLabel id="lblUsuarioDestino" class="styleOutputLabel" value="* Usuário Destino" for="autoCompUsuarioDestino" />
                 <p:autoComplete id="autoCompUsuarioDestino" 
                                 value="#{mensagemBeanView.objetoSelecionado.usuarioDestino}"
                                 completeMethod="#{mensagemBeanView.chargedListEntidade}"
                                 dropdown="true"
                                 required="true"
+                                queryDelay="600"
+                                effect="fade"
                                 requiredMessage="Informe o usuário destino."
                                 class="styleAutoComplete"
                                 var="usuario" 
@@ -65,7 +71,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton id="btnEnviarMensagem" 
                                  value="Enviar (F2)" 
                                  update="@widgetVar(message)"
-                                 action="#{entidadeBeanView.updateSenha()}"
                                  oncomplete="if(args.saveOk) {remComSaveEnvioMensagem();};"
                                  process="@this, @form" />  
 

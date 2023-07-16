@@ -70,6 +70,10 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         return null;
     }
 
+    public void msgEnvioMensagemFeitoComSucesso() {
+        com.mycompany.project.message.util.Mensagem.msgSeverityInfo("Mensagem enviada com sucesso!", "OK");
+    }
+
     @Override
     protected Class<?> getClassImplement() {
         return Mensagem.class;
