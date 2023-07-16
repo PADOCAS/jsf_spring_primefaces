@@ -50,7 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  actionListener="#{entidadeBeanView.iniciarAlteraracaoSenha()}"
                                  update="form:alterarSenhaDialog, @widgetVar(message)"
                                  oncomplete="PF('alterarSenhaDialog').show();"
-                                 process="@this" />
+                                 process="@this" />               
 
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
@@ -202,6 +202,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                               widgetVar="alterarSenhaDialog"
                               modal="true" 
                               class="ui-dialog-ative-atalho"
+                              closable="false"
                               resizable="false" 
                               header="Alterar senha" 
                               dynamic="true">

@@ -14,6 +14,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
+    <p:remoteCommand id="remComSaveAlteracaoSenha"
+                     name="remComSaveAlteracaoSenha"
+                     update="form, @widgetVar(message)"
+                     actionListener="#{entidadeBeanView.msgUpdateSenhaComSucesso()}"
+                     oncomplete="PF('alterarSenhaDialog').hide();"
+                     process="@this" />
+
     <h:form id="formAlterarSenha" >                       
         <p:panel id="pnlAlterarSenha">
             <h:panelGrid id="pnlGridAlterarSenha" columns="2" >
@@ -40,15 +47,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             required="true" 
                             maxlength="20" 
                             requiredMessage="Informe a Confirmação para nova senha."/>
-
-                <h:outputLabel value="" />
-                <p:commandButton id="btnAlterarSenha" 
-                                 style="margin-top: 5px;"
-                                 value="Confirmar (F2)" 
-                                 update="@form, @widgetVar(message)"
-                                 action="#{entidadeBeanView.updateSenha()}"
-                                 process="@this, @form" />  
             </h:panelGrid>
+
+            <p:separator id="sepAlterarSenha" style="margin-top: 3px;" />
+
+            <div id="pnlGridBotoesAlterarSenha" style="margin-top: 3px; display: flex; flex-direction: row; justify-content: center;" >
+                <p:commandButton id="btnAlterarSenha" 
+                                 value="Salvar (F2)" 
+                                 update="@widgetVar(message)"
+                                 action="#{entidadeBeanView.updateSenha()}"
+                                 oncomplete="if(args.saveOk) {remComSaveAlteracaoSenha();};"
+                                 process="@this, @form" />  
+
+                <p:commandButton id="btnCancelarAlterarSenha" 
+                                 style="margin-left: 3px;"
+                                 value="Cancelar (ESC)" 
+                                 update="form, @widgetVar(message)"
+                                 oncomplete="PF('alterarSenhaDialog').hide();"
+                                 process="@this" />
+            </div>            
         </p:panel>
     </h:form>
 </html>

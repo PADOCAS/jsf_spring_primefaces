@@ -15,8 +15,11 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -37,7 +40,7 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
     private EntidadeController entidadeController;
 
     private EntidadeAlterarSenha entidadeAlterarSenha;
-    
+
     //Injeção de dependência do DAOLogin:
     @Autowired
     private RepositoryLogin repositoryLogin;
@@ -78,6 +81,8 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
      * Método para alteração de senha do usuário
      */
     public void updateSenha() {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
+
         try {
             if (entidadeAlterarSenha != null
                     && entidadeAlterarSenha.getSenhaAtual() != null
@@ -86,16 +91,36 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
                     && contextoBean != null
                     && contextoBean.getEntidadeLogada() != null
                     && repositoryLogin != null) {
-                //Fazer método para validar senha atual criptografando e autenticando para ver se é valida
+                //Senha são criptografadas no banco, validar com criptografia:
                 validAlteracaoSenha();
 
-                //Método para valida autenticacao do usuario temos no DAOLogin! ver da onde vai ser pego na aula antes de fazer aqui.. caso precise injetar e tal..!!
-//                return repositoryLogin.autenticaUsuario(login, senha);
+                //Atualizar senha:
+                //Gerar um salt aleatório (BCrypt.getsalt()):
+                contextoBean.getEntidadeLogada().setEnt_senha(BCrypt.hashpw(entidadeAlterarSenha.getSenhaNova(), BCrypt.gensalt()));
+                entidadeController.saveOrUpdate(contextoBean.getEntidadeLogada());
+                //Busca o objeto no banco para pegar atualizado:
+                Entidade entidadeLogadaCharged = entidadeController.findByPorId(Entidade.class, contextoBean.getEntidadeLogada().getEnt_codigo());
+
+                //Atualizar o usuário logado na sessão:
+                if (entidadeLogadaCharged != null
+                        && entidadeLogadaCharged.getEnt_codigo() != null
+                        && entidadeLogadaCharged.getEnt_senha() != null
+                        && entidadeLogadaCharged.getEnt_login() != null
+                        && FacesContext.getCurrentInstance() != null
+                        && FacesContext.getCurrentInstance().getExternalContext() != null) {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userLogadoSessao", entidadeLogadaCharged);
+                }
+
+                PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
             }
         } catch (Exception ex) {
             Logger.getLogger(EntidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
             Mensagem.msgSeverityError("Erro ao alterar senha!<br><br>" + ex.getMessage(), "Erro");
         }
+    }
+
+    public void msgUpdateSenhaComSucesso() {
+        Mensagem.msgSeverityInfo("Senha alterada com sucesso!", "OK");
     }
 
     private void validAlteracaoSenha() throws Exception {
@@ -114,12 +139,11 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
 
             //Senha atual igual a senha nova:
             if (repositoryLogin.autenticaUsuario(contextoBean.getEntidadeLogada().getEnt_login(), entidadeAlterarSenha.getSenhaNova())) {
-                throw new Exception("Senha atual não deve ser igual a senha nova!");
+                throw new Exception("Senha nova não deve ser igual a senha atual!");
             }
-            
-            // TODOOOOOOOOOO: PAREI AQUI
+
             //Senha nova e senha confirmação devem ser iguais:
-            if(!entidadeAlterarSenha.getSenhaNova().equals(entidadeAlterarSenha.getSenhaNovaConfirmacao())) {
+            if (!entidadeAlterarSenha.getSenhaNova().equals(entidadeAlterarSenha.getSenhaNovaConfirmacao())) {
                 throw new Exception("A nova senha e a confirmação não conferem!");
             }
         }
