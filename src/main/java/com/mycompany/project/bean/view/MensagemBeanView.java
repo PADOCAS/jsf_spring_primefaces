@@ -9,6 +9,7 @@ import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.model.Entidade;
 import com.mycompany.project.model.Mensagem;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +50,9 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
     @Override
     public void setarVariaveisNulas() throws Exception {
         Mensagem mensagem = new Mensagem();
-
+        mensagem.setDataMensagem(new Date());
+        mensagem.setLida(false);
+        
         if (contextoBean != null) {
             mensagem.setUsuarioOrigem(contextoBean.getEntidadeLogada());
         }

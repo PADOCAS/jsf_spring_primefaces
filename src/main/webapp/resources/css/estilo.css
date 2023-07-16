@@ -410,7 +410,7 @@ input[type=submit] {
 }
 
 .estiloIdCadastro {
-    width: 115px;
+    width: 145px;
 }
 
 .styleInputTextGrande {
@@ -427,6 +427,10 @@ input[type=submit] {
 
 .styleAutoComplete .ui-autocomplete-input {
     width: 300px;
+}
+
+.styleInputCampoGrandeDialog {
+    width: 325px;
 }
 
 .styleOutputLabel {

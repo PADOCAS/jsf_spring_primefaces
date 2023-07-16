@@ -30,6 +30,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              value="#{mensagemBeanView.objetoSelecionado.codigo}" 
                              disabled="true" />
 
+                <h:outputLabel id="lblDataMensagem" class="styleOutputLabel" value="* Data" for="txtData" />
+                <p:inputText id="txtData"
+                             class="estiloIdCadastro"
+                             value="#{mensagemBeanView.objetoSelecionado.dataMensagem}"
+                             disabled="true" >
+                    <f:convertDateTime locale="pt_BR"
+                                       pattern="dd/MM/yyyy HH:mm:ss"
+                                       dateStyle="long"
+                                       timeStyle="full"
+                                       timeZone="GMT-03:00" />
+                </p:inputText>                             
+
                 <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="* Usuário Origem" for="autoCompUsuarioOrigem" />
                 <p:autoComplete id="autoCompUsuarioOrigem" 
                                 value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem}"
@@ -46,7 +58,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 converter="#{entidadeConverter}" 
                                 forceSelection="true" 
                                 scrollHeight="250"/>
-               
+
                 <h:outputLabel id="lblUsuarioDestino" class="styleOutputLabel" value="* Usuário Destino" for="autoCompUsuarioDestino" />
                 <p:autoComplete id="autoCompUsuarioDestino" 
                                 value="#{mensagemBeanView.objetoSelecionado.usuarioDestino}"
@@ -63,6 +75,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 converter="#{entidadeConverter}" 
                                 forceSelection="true" 
                                 scrollHeight="250"/>
+
+                <h:outputLabel id="lblExigirResposta" class="styleOutputLabel" value="* Exigir Resposta" for="selBooCheckBoxExigirResposta" />
+                <p:selectBooleanCheckbox id="selBooCheckBoxExigirResposta"
+                                         style="display: flex; flex-direction: column; justify-content: center;"
+                                         required="true"
+                                         requiredMessage="Informe se deve exigir resposta."
+                                         value="#{mensagemBeanView.objetoSelecionado.exigirResposta}" />
+
+                <h:outputLabel id="lblAssunto" class="styleOutputLabel" value="* Assunto" for="txtAssunto" />
+                <p:inputText id="txtAssunto"
+                             value="#{mensagemBeanView.objetoSelecionado.assunto}"
+                             class="styleInputCampoGrandeDialog"
+                             required="true"
+                             requiredMessage="Informe o Assunto."
+                             maxlength="80" />
+
+                <h:outputLabel id="lblDescricao" class="styleOutputLabel" value="* Descrição" for="txtDescricao" />
+                <h:panelGroup>
+                    <p:inputTextarea id="txtDescricao"
+                                     class="styleInputCampoGrandeDialog"
+                                     value="#{mensagemBeanView.objetoSelecionado.descricao}"
+                                     required="true"                                 
+                                     requiredMessage="Informe a Descrição."
+                                     maxlength="1000"
+                                     counter="counterTxtAreaDescricao"
+                                     counterTemplate="{0} caracteres restantes."
+                                     rows="4"
+                                     autoResize="true"/>
+
+                    <h:outputText id    = "counterTxtAreaDescricao"
+                                  style = "display: block;"/>
+                </h:panelGroup>
             </h:panelGrid>
 
             <p:separator id="sepEnviarMensagem" style="margin-top: 3px;" />
