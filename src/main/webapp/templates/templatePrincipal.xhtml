@@ -50,7 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  actionListener="#{entidadeBeanView.iniciarAlteraracaoSenha()}"
                                  update="form:alterarSenhaDialog, @widgetVar(message)"
                                  oncomplete="PF('alterarSenhaDialog').show();"
-                                 process="@this" />               
+                                 process="@this" />
 
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
@@ -144,6 +144,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                            actionListener="#{mensagemBeanView.initComponentes()}"
                                            value="Enviar Mensagem"
                                            immediate="true"
+                                           update="form:enviarMensagemDialog, @widgetVar(message)"
                                            onstart="PF('statusDialog').show();"
                                            onsuccess="PF('statusDialog').hide(); PF('enviarMensagemDialog').show();"
                                            process="@this"
@@ -211,14 +212,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                     <p:dialog id="enviarMensagemDialog" 
                               widgetVar="enviarMensagemDialog" 
-                              width="500"
                               modal="true" 
                               class="ui-dialog-ative-atalho"
+                              closable="false"
                               resizable="false" 
-                              height="360"
                               header="Enviar mensagem" 
                               dynamic="true">
-                        Dialog Enviar Mensagem
+                        <ui:include src="/cadastro/dialog_enviar_mensagem.xhtml" />
                     </p:dialog>
                 </h:form>
             </f:view>

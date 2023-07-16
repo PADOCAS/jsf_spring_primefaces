@@ -10,6 +10,10 @@ import java.io.Serializable;
 import java.util.Date;
 import org.springframework.stereotype.Controller;
 import com.mycompany.srv.interfaces.ServiceEntidade;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -34,5 +38,35 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
 
     public void updateUltimoAcessoUsuario(String name) throws Exception {
         serviceEntidade.updateUltimoAcessoUsuario(name);
+    }
+
+    public List<Entidade> getListEntidadeEnvioMensagem(String query, Long codigoLoginOrigem) {
+        List<Entidade> listEntidade = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" FROM Entidade entity ");
+
+        if (codigoLoginOrigem != null) {
+            sql.append(" WHERE entity.ent_codigo <> ").append(codigoLoginOrigem);
+
+            if (query != null
+                    && !query.isEmpty()) {
+                sql.append(" AND ((retira_acentos(upper(cast(entity.ent_codigo as text))) ");
+                sql.append(" = retira_acentos(upper('").append(query).append("'))) ");
+                sql.append("  OR ");
+                sql.append(" (retira_acentos(upper(entity.ent_login)) ");
+                sql.append(" LIKE retira_acentos(upper('%").append(query).append("%')))) ");
+            }
+        }
+
+        sql.append(" ORDER BY entity.ent_login, entity.ent_codigo ");
+
+        try {
+            listEntidade = findListByQueryDinamica(sql.toString());
+        } catch (Exception ex) {
+            Logger.getLogger(EntidadeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listEntidade;
     }
 }

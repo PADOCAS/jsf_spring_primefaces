@@ -421,6 +421,14 @@ input[type=submit] {
     width: 150px;
 }
 
+.styleInputTextLogin {
+    width: 200px;
+}
+
+.styleAutoComplete .ui-autocomplete-input {
+    width: 300px;
+}
+
 .styleOutputLabel {
     display: flex;
     flex-direction: row;

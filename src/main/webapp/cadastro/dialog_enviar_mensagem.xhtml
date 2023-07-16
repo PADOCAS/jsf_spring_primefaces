@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <p:remoteCommand id="remComSaveEnvioMensagem"
+                     name="remComSaveEnvioMensagem"
+                     update="form, @widgetVar(message)"
+                     actionListener="#{entidadeBeanView.msgUpdateSenhaComSucesso()}"
+                     oncomplete="PF('enviarMensagemDialog').hide();"
+                     process="@this" />
+
+    <h:form id="formEnviarMensagem" >                       
+        <p:panel id="pnlEnviarMensagem">
+            <h:panelGrid id="pnlGridEnviarMensagem" columns="2" >
+                <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
+                <p:inputText id="txtCodigo" 
+                             class="estiloIdCadastro"
+                             value="#{mensagemBeanView.objetoSelecionado.codigo}" 
+                             readonly="true"/>
+
+                <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="* Usuário Origem" for="txtUsuarioOrigemCodigo" />
+                <h:panelGroup>
+                    <p:inputText id="txtUsuarioOrigemCodigo"
+                                 class="estiloIdCadastro"
+                                 value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem.ent_codigo}"
+                                 readonly="true" />
+
+                    <p:inputText id="txtUsuarioOrigemLogin"
+                                 class="styleInputTextLogin"
+                                 value="#{mensagemBeanView.objetoSelecionado.usuarioOrigem.ent_login}"
+                                 readonly="true" />
+                </h:panelGroup>
+
+                <h:outputLabel id="lblUsuarioDestino" class="styleOutputLabel" value="* Usuário Destino" for="autoCompUsuarioDestino" />
+                <p:autoComplete id="autoCompUsuarioDestino" 
+                                value="#{mensagemBeanView.objetoSelecionado.usuarioDestino}"
+                                completeMethod="#{mensagemBeanView.chargedListEntidade}"
+                                dropdown="true"
+                                required="true"
+                                requiredMessage="Informe o usuário destino."
+                                class="styleAutoComplete"
+                                var="usuario" 
+                                itemLabel="#{usuario.ent_codigo eq null ? '' : '('.concat(usuario.ent_codigo).concat(') ').concat(usuario.ent_login)}" 
+                                itemValue="#{usuario}"
+                                converter="#{entidadeConverter}" 
+                                forceSelection="true" 
+                                scrollHeight="250"/>
+            </h:panelGrid>
+
+            <p:separator id="sepEnviarMensagem" style="margin-top: 3px;" />
+
+            <div id="pnlGridBotoesEnviarMensagem" style="margin-top: 3px; display: flex; flex-direction: row; justify-content: center;" >
+                <p:commandButton id="btnEnviarMensagem" 
+                                 value="Enviar (F2)" 
+                                 update="@widgetVar(message)"
+                                 action="#{entidadeBeanView.updateSenha()}"
+                                 oncomplete="if(args.saveOk) {remComSaveEnvioMensagem();};"
+                                 process="@this, @form" />  
+
+                <p:commandButton id="btnCancelarEnviarMensagem" 
+                                 style="margin-left: 3px;"
+                                 value="Cancelar (ESC)" 
+                                 update="form, @widgetVar(message)"
+                                 oncomplete="PF('enviarMensagemDialog').hide();"
+                                 process="@this" />
+            </div>            
+        </p:panel>
+    </h:form>
+</html>
