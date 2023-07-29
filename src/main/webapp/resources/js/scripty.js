@@ -275,7 +275,7 @@ function addMascaraPesquisa(elemento) {
                 $(id).unbind("focus");
                 $(id).val('');
             }
-            
+
             addFocoAoCampo("txtValorPesquisa");
         });
     }
@@ -304,4 +304,28 @@ function getValorElementPorIdJQuery(id) {
     }
 
     return undefined;
+}
+
+/**
+ * Método para caso for fazer a busca pelo usuário destino via javascript vai chamar um método mapeado via Spring trazendo o objeto Entidade em JSON
+ * 
+ * @param {type} codUser
+ * @returns {undefined}
+ */
+function pesquisaUserDestinoPerderFocoDialog(codUser) {
+    if (codUser !== null
+            && codUser.trim() !== '') {
+        $("#txtUsuarioDestinoCodigo").val('');
+        $("#txtUsuarioDestinoLogin").val('');
+        
+        $.get("buscarUsuarioDestinoMsg?codEntidade=" + codUser, function (resposta) {
+            if (resposta !== null
+                    && resposta.trim() !== '') {
+                let entidade = JSON.parse(resposta);
+
+                $("#txtUsuarioDestinoCodigo").val(entidade.ent_codigo);
+                $("#txtUsuarioDestinoLogin").val(entidade.ent_login);
+            }
+        });
+    }
 }

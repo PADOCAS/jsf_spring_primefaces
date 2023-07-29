@@ -14,9 +14,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -52,7 +55,7 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         Mensagem mensagem = new Mensagem();
         mensagem.setDataMensagem(new Date());
         mensagem.setLida(false);
-        
+
         if (contextoBean != null) {
             mensagem.setUsuarioOrigem(contextoBean.getEntidadeLogada());
         }
@@ -71,6 +74,25 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
             Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    /**
+     * Método para acessar direto via JAVASCRIPT, responsável para trazer os
+     * usuários de destino disponíveis (diferente do usuário logado) No nosso
+     * caso fizemos um método direto, não fizemos via javascript
+     *
+     * @param httpServletResponse
+     * @param codEntidade
+     * @throws java.lang.Exception
+     */
+    @RequestMapping("**/buscarUsuarioDestinoMsg")
+    public void buscarUsuarioDestinoMsg(HttpServletResponse httpServletResponse, @RequestParam(value = "codEntidade") Long codEntidade) throws Exception {
+        Entidade entidade = entidadeController.findByPorId(Entidade.class, codEntidade);
+        if (entidade != null) {
+            getObjetoSelecionado().setUsuarioDestino(entidade);
+            //Escreve a resposta em JSON para o JavaScript obter o objeto
+            httpServletResponse.getWriter().write(entidade.getJson().toString());
+        }
     }
 
     public void msgEnvioMensagemFeitoComSucesso() {
