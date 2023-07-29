@@ -63,6 +63,17 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         setObjetoSelecionado(mensagem);
     }
 
+    @Override
+    public String novo() {
+        try {
+            setarVariaveisNulas();
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
+    }
+
     public List<Entidade> chargedListEntidade(String query) {
         try {
             if (contextoBean != null
