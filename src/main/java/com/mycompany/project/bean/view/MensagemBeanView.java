@@ -7,6 +7,7 @@ package com.mycompany.project.bean.view;
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.EntidadeController;
+import com.mycompany.project.geral.controller.MensagemController;
 import com.mycompany.project.model.Entidade;
 import com.mycompany.project.model.Mensagem;
 import java.util.Date;
@@ -40,6 +41,9 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
     @Autowired
     private EntidadeController entidadeController;
 
+    @Autowired
+    private MensagemController mensagemController;
+
     @Override
     public void initComponentes() {
         try {
@@ -70,8 +74,20 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         } catch (Exception ex) {
             Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "";
+    }
+
+    @Override
+    public void saveNotReturn() throws Exception {
+        try {
+            mensagemController.merge(getObjetoSelecionado());
+            novo();
+            msgEnvioMensagemFeitoComSucesso();
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            com.mycompany.project.message.util.Mensagem.msgSeverityError("Erro ao enviar Mensagem!<br><br>" + ex.getMessage(), "Erro");
+        }
     }
 
     public List<Entidade> chargedListEntidade(String query) {

@@ -21,7 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                      oncomplete="PF('enviarMensagemDialog').hide();"
                      process="@this" />
 
-    <h:form id="formEnviarMensagem" >                       
+    <h:form id="formEnviarMensagem" >   
         <p:panel id="pnlEnviarMensagem">
             <h:panelGrid id="pnlGridEnviarMensagem" columns="2" >
                 <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
@@ -114,13 +114,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <div id="pnlGridBotoesEnviarMensagem" style="margin-top: 3px; display: flex; flex-direction: row; justify-content: center;" >                
                 <p:commandButton id="btnEnviarMensagem" 
                                  value="Enviar (F2)" 
-                                 update="@widgetVar(message)"
-                                 oncomplete="if(args.saveOk) {remComSaveEnvioMensagem();};"
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
+                                 update="formEnviarMensagem, @widgetVar(message)"
+                                 actionListener="#{mensagemBeanView.saveNotReturn()}"
                                  process="@this, @form" />  
 
                 <p:commandButton id="btnCancelarEnviarMensagem" 
                                  style="margin-left: 3px;"
-                                 value="Cancelar (ESC)" 
+                                 value="Cancelar (ESC)"                                  
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  update="form, @widgetVar(message)"
                                  oncomplete="PF('enviarMensagemDialog').hide();"
                                  process="@this" />

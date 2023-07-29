@@ -144,6 +144,7 @@
     <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
     <bean id="sessionController" class="com.mycompany.project.geral.controller.SessionControllerImpl" scope="singleton" />
     <bean id="crudGeralController" class="com.mycompany.framework.controller.crud.CrudGeralController" />
+    <bean id="mensagemController" class="com.mycompany.project.geral.controller.MensagemController" />
     
     <!--Repositories:-->
     <!--O atributo ID sempre fica o nome da interface com a primeira letra minuscula!!!-->
