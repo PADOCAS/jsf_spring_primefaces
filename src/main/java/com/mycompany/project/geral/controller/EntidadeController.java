@@ -55,6 +55,9 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
                 sql.append(" = retira_acentos(upper('").append(query).append("'))) ");
                 sql.append("  OR ");
                 sql.append(" (retira_acentos(upper(entity.ent_login)) ");
+                sql.append(" LIKE retira_acentos(upper('%").append(query).append("%'))) ");
+                sql.append("  OR ");
+                sql.append(" (retira_acentos(upper(entity.ent_nome)) ");
                 sql.append(" LIKE retira_acentos(upper('%").append(query).append("%')))) ");
             }
         }

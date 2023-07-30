@@ -4,6 +4,7 @@
  */
 package com.mycompany.project.model;
 
+import com.mycompany.project.annotation.IdentificaCampoPesquisa;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.envers.Audited;
 import org.primefaces.shaded.json.JSONObject;
 
@@ -29,15 +32,31 @@ public class Entidade implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @NotNull
+    @Column(name = "ent_codigo")
     private Long ent_codigo;
 
+    @NotNull
+    @Size(max = 20)
+    @IdentificaCampoPesquisa(campoBancoDeDados = "ent_login", descricaoCampoEmTela = "Login", ordemCampoEmTela = 1)
+    @Column(name = "ent_login")
     private String ent_login;
 
+    @NotNull
+    @Column(name = "ent_senha")
     private String ent_senha;
 
+    @Column(name = "ent_inativo")
     private Boolean ent_inativo;
 
+    @NotNull
+    @Size(max = 50)
+    @IdentificaCampoPesquisa(campoBancoDeDados = "ent_nome", descricaoCampoEmTela = "Nome", ordemCampoEmTela = 2)
+    @Column(name = "ent_nome")
+    private String ent_nome;
+
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ent_ultimoacesso")
     private Date ent_ultimoacesso;
 
     //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)
@@ -80,6 +99,14 @@ public class Entidade implements Serializable {
         this.ent_inativo = ent_inativo;
     }
 
+    public String getEnt_nome() {
+        return ent_nome;
+    }
+
+    public void setEnt_nome(String ent_nome) {
+        this.ent_nome = ent_nome;
+    }
+
     public Date getEnt_ultimoacesso() {
         return ent_ultimoacesso;
     }
@@ -105,6 +132,7 @@ public class Entidade implements Serializable {
         Map<Object, Object> map = new HashMap<>();
         map.put("ent_codigo", getEnt_codigo());
         map.put("ent_login", getEnt_login());
+        map.put("ent_nome", getEnt_nome());
 
         return new JSONObject(map);
     }
