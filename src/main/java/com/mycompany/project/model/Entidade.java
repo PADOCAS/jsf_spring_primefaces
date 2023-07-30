@@ -59,6 +59,11 @@ public class Entidade implements Serializable {
     @Column(name = "ent_ultimoacesso")
     private Date ent_ultimoacesso;
 
+    @NotNull
+    @Size(max = 1)
+    @Column(name = "ent_tipo")
+    private String ent_tipo;
+
     //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)
     @Version
     @Column(name = "versionnum")
@@ -121,6 +126,14 @@ public class Entidade implements Serializable {
 
     public void setVersionnum(Integer versionnum) {
         this.versionnum = versionnum;
+    }
+
+    public String getEnt_tipo() {
+        return ent_tipo;
+    }
+
+    public void setEnt_tipo(String ent_tipo) {
+        this.ent_tipo = ent_tipo;
     }
 
     /**
