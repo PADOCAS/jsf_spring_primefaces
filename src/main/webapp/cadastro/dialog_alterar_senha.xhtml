@@ -55,6 +55,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton id="btnAlterarSenha" 
                                  value="Salvar (F2)" 
                                  update="@widgetVar(message)"
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  action="#{entidadeBeanView.updateSenha()}"
                                  oncomplete="if(args.saveOk) {remComSaveAlteracaoSenha();};"
                                  process="@this, @form" />  
@@ -63,6 +65,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  style="margin-left: 3px;"
                                  value="Cancelar (ESC)" 
                                  update="form, @widgetVar(message)"
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  oncomplete="PF('alterarSenhaDialog').hide();"
                                  process="@this" />
             </div>            

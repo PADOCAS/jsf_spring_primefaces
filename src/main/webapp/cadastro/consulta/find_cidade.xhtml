@@ -16,7 +16,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
              xmlns:sec="http://www.springframework.org/security/tags"
              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="corpo">
-        <p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />
+        <!--Não vamos tratar geral para página, pois o ajaxStatus vai ativar para qualquer evento ajax a progressbar, isso fica ruim em autocomplete por exemplo-->
+        <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
 
         <!--Importa o Pesquisa para Cidades:-->
         <util:pesquisa id="compPesquisaCidade"

@@ -70,6 +70,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                      value="Alterar (F9)" 
                                      process="@this, form:#{cc.attrs.idCompositePesquisa}:dataTableListAll"
                                      update="form"
+                                     onstart="PF('statusDialog').show();" 
+                                     onsuccess="PF('statusDialog').hide();"
                                      actionListener="#{cc.attrs.managedBeanView.validEditar()}"
                                      oncomplete="if(args.validEditar) {remComEditarOk();};"/>
                 </c:when>
@@ -84,6 +86,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                      value="Excluir (F10)" 
                                      process="@this, form:#{cc.attrs.idCompositePesquisa}:dataTableListAll"
                                      update="form"
+                                     onstart="PF('statusDialog').show();" 
+                                     onsuccess="PF('statusDialog').hide();"
                                      actionListener="#{cc.attrs.managedBeanView.validExclusao()}"
                                      oncomplete="if(args.validExclusao) {remComExclusaoOk();};"/>        
                 </c:when>
@@ -124,6 +128,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton id="btnPesquisar" 
                                  style="margin-top: 5px;"
                                  value="Pesquisar (F2)" 
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  update="@widgetVar(message), dataTableListAll"
                                  process="@this, pnlGridPesquisa"
                                  actionListener="#{cc.attrs.managedBeanView.consultarEntidade}"
@@ -168,6 +174,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  oncomplete="if(args.validExclusao) {PF('statusDialog').show(); exclusaoOk();};"/>
                 <p:commandButton value="Não (ESC)"         
                                  update="form"
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
                                  onclick="PF('#{cc.attrs.idDialogExclude}').hide();">
                 </p:commandButton>
             </h:panelGrid> 
