@@ -14,9 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.validation.ValidationException;
 import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -103,6 +105,9 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
     @Override
     public void setarVariaveisNulas() throws Exception {
         setObjetoSelecionado(new Entidade());
+        getObjetoSelecionado().setTipo("F");
+        getObjetoSelecionado().setInativo(false);
+
         setAcao("0");
         setObjetoAlteracao(null);
         consultarEntidade();
@@ -166,10 +171,22 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
+            validaSenha();
             setEnableButtonsAcao(false);
+            //Inclusão de novo usuário, gravar a senha:
+            if (acao != null
+                    && acao.equals("0")
+                    && getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getSenhaString() != null) {
+                //Gerar um salt aleatório (BCrypt.getsalt()):
+                getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
+            }
             setObjetoSelecionado(entidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
+        } catch (ValidationException ex) {
+            Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>" + ex.getMessage(), "Atenção");
+            setEnableButtonsAcao(true);
         } catch (javax.persistence.OptimisticLockException ex) {
             Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>Registro já foi alterado por outro usuário.<br>Retorne a consulta de usuários e selecione novamente para alteração.", "Atenção");
             setEnableButtonsAcao(true);
@@ -177,10 +194,8 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
             return "";
         } catch (Exception ex) {
             Logger.getLogger(UsuarioBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
-            //Caso der erro, mantém na mesma página:
-            return "";
+            throw new Exception(ex);
         }
 
         //Tudo ok, retorna para página de pesquisa:
@@ -192,21 +207,44 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
+            validaSenha();
             setEnableButtonsAcao(false);
+            //Inclusão de novo usuário, gravar a senha:
+            if (acao != null
+                    && acao.equals("0")
+                    && getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getSenhaString() != null) {
+                //Gerar um salt aleatório (BCrypt.getsalt()):
+                getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
+            }
             entidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
+        } catch (ValidationException ex) {
+            Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>" + ex.getMessage(), "Atenção");
+            setEnableButtonsAcao(true);
         } catch (javax.persistence.OptimisticLockException ex) {
             Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>Registro já foi alterado por outro usuário.<br>Retorne a consulta de usuários e selecione novamente para alteração.", "Atenção");
             setEnableButtonsAcao(true);
         } catch (Exception ex) {
             Logger.getLogger(UsuarioBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
+            throw new Exception(ex);
         }
 
         return "";
+    }
+
+    private void validaSenha() throws ValidationException {
+        if (getObjetoSelecionado() != null
+                && getObjetoSelecionado().getSenhaString() != null
+                && getObjetoSelecionado().getConfirmaSenha() != null) {
+            //Senha e confirmação devem ser iguais:
+            if (!getObjetoSelecionado().getSenhaString().equals(getObjetoSelecionado().getConfirmaSenha())) {
+                throw new ValidationException("A senha e a confirmação não conferem!");
+            }
+        }
     }
 
     @Override
@@ -274,8 +312,9 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
             if (ex.getMessage().contains("No row with the given identifier exists")) {
                 Mensagem.msgSeverityWarn("Erro ao Excluir!<br><br>Esse registro já foi excluído por outro usuário.", "Atenção");
             } else {
+                //Caso der outro tipo de exception, deixar para o tratamento de exception padrão nosso tratar (CustomExceptionHandler)
                 Logger.getLogger(UsuarioBeanView.class.getName()).log(Level.SEVERE, null, ex);
-                Mensagem.msgSeverityError("Erro ao Excluir!<br><br>" + ex.getMessage(), "Erro");
+                throw new Exception(ex);
             }
         }
     }

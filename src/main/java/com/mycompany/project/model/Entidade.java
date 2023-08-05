@@ -8,13 +8,25 @@ import com.mycompany.project.annotation.IdentificaCampoPesquisa;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,11 +39,14 @@ import org.primefaces.shaded.json.JSONObject;
  */
 @Audited
 @Entity
+@Table(name = "entidade")
+@SequenceGenerator(name = "entidade_seq", initialValue = 1, allocationSize = 1)
 public class Entidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entidade_seq")
     @NotNull
     @Column(name = "codigo")
     private Long codigo;
@@ -45,6 +60,14 @@ public class Entidade implements Serializable {
     @NotNull
     @Column(name = "senha")
     private String senha;
+
+    @Transient
+    @Column(name = "senha_string")
+    private String senhaString;
+
+    @Transient
+    @Column(name = "confirma_senha")
+    private String confirmaSenha;
 
     @Column(name = "inativo")
     private Boolean inativo;
@@ -68,6 +91,25 @@ public class Entidade implements Serializable {
     @Version
     @Column(name = "versionnum")
     private Integer versionnum;
+
+    @Size(max = 100)
+    @Column(name = "email")
+    private String email;
+
+    //Fazendo carregar o relacionamento com ACESSOS! -> Como não temos VO de entidadeacesso, criamos um mapeamento com STRING mesmo!
+    //Ele vai carregar sempre os acessos do usuário, caso for deletar, vai deletar todos os acessos dele antes.
+    //Chave unique criada com os 2 campos (codigo, esa_codigo) para não deixar trazer registros repetidos, é uma chave com os campos.
+    //O relacionamento com esse joinTable é com a coluna codigo da tabela entidade x entidadeacessos
+    //Set de String retornando a coluna esa_codigo
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "entidadeacesso", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_acesso_entidade_uk1", columnNames = {
+            "codigo", "esa_codigo"
+        })}, joinColumns = {
+        @JoinColumn(name = "codigo")
+    })
+    @Column(name = "esa_codigo", length = 20)
+    private Set<String> acessos = new HashSet<>();
 
     public Entidade() {
     }
@@ -134,6 +176,38 @@ public class Entidade implements Serializable {
 
     public void setVersionnum(Integer versionnum) {
         this.versionnum = versionnum;
+    }
+
+    public Set<String> getAcessos() {
+        return acessos;
+    }
+
+    public void setAcessos(Set<String> acessos) {
+        this.acessos = acessos;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getConfirmaSenha() {
+        return confirmaSenha;
+    }
+
+    public void setConfirmaSenha(String confirmaSenha) {
+        this.confirmaSenha = confirmaSenha;
+    }
+
+    public String getSenhaString() {
+        return senhaString;
+    }
+
+    public void setSenhaString(String senhaString) {
+        this.senhaString = senhaString;
     }
 
     /**

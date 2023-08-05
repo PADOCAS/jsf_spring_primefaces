@@ -169,10 +169,8 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             return "";
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
-            //Caso der erro, mantém na mesma página:
-            return "";
+            throw new Exception(ex);
         }
 
         //Tudo ok, retorna para página de pesquisa:
@@ -194,8 +192,8 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
             setEnableButtonsAcao(true);
         } catch (Exception ex) {
             Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            Mensagem.msgSeverityError("Erro ao salvar!<br><br>" + ex.getMessage(), "Erro");
             setEnableButtonsAcao(true);
+            throw new Exception(ex);
         }
 
         return "";
@@ -267,7 +265,7 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
                 Mensagem.msgSeverityWarn("Erro ao Excluir!<br><br>Esse registro já foi excluído por outro usuário.", "Atenção");
             } else {
                 Logger.getLogger(CidadeBeanView.class.getName()).log(Level.SEVERE, null, ex);
-                Mensagem.msgSeverityError("Erro ao Excluir!<br><br>" + ex.getMessage(), "Erro");
+                throw new Exception(ex);
             }
         }
     }

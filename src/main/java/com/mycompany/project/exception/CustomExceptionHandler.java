@@ -74,7 +74,7 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
                     if (exception.getMessage() != null
                             && exception.getMessage().contains("ConstraintViolationException")) {
                         //Erro por constraint não permitir:
-                        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Registro não pode ser removido por estar associado a outro.", "Registro não pode ser removido por estar associado a outro."));
+                        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Registro não pode ser removido por estar associado a outro(s).", "Registro não pode ser removido por estar associado a outro(s)."));
                     } else if (exception.getMessage() != null
                             && exception.getMessage().contains("org.hibernate.StaleObjectStateException")) {
                         //Erro pelo objeto salvo atualmente estar diferente do que você está em memória (foi atualizado ou excluído por outro usuário)

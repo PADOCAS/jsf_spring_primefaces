@@ -156,6 +156,18 @@ function setUppercaseInputTextJs() {
     });
 }
 
+//InputTexts com LowerCase (Classe criada (ui-text-lowercase) -> Declarar nos inputs
+function setLowercaseInputTextJs() {
+    $(document).ready(function () {
+        document.querySelectorAll(".ui-text-lowercase")
+                .forEach((current) => {
+                    current.addEventListener("input", function (event) {
+                        event.target.value = event.target.value.toLocaleLowerCase();
+                    });
+                });
+    });
+}
+
 /**
  * Adiciona foco ao campo passado como paramentro
  * 

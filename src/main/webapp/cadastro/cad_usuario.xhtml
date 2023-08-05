@@ -35,22 +35,74 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <h:panelGrid id="pnlGridCadastro" columns="2" >
                 <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Código" for="txtCodigo" />
                 <p:inputText id="txtCodigo" class="estiloIdCadastro" disabled="true" value="#{usuarioBeanView.objetoSelecionado.codigo}" />
-                
+
                 <h:outputLabel id="lblLogin" class="styleOutputLabel" value="* Login" for="txtLogin" />
                 <p:inputText id="txtLogin" 
-                             class="styleInputTextGrande ui-text-uppercase" 
+                             class="styleInputTextSenha ui-text-lowercase" 
                              value="#{usuarioBeanView.objetoSelecionado.login}" 
                              required="true" 
                              maxlength="20" 
                              requiredMessage="Informe o Login do Usuário."/>
-                
+
+                <h:outputLabel id="lblSenha" class="styleOutputLabel" value="* Senha" for="txtSenha" rendered="#{usuarioBeanView.acao eq '0'}" />
+                <p:password id="txtSenha" 
+                            rendered="#{usuarioBeanView.acao eq '0'}"
+                            class="styleInputTextSenha"
+                            feedback="true"
+                            inline="true"  
+                            promptLabel="Informe a Senha"
+                            strongLabel="Forte"
+                            weakLabel="Fraca"
+                            goodLabel="Boa"
+                            value="#{usuarioBeanView.objetoSelecionado.senhaString}" 
+                            required="true" 
+                            maxlength="20" 
+                            requiredMessage="Informe a Senha."/>
+
+                <h:outputLabel id="lblConfirmacaoSenha" class="styleOutputLabel" value="* Confirmação Senha" for="txtConfirmacaoSenha" rendered="#{usuarioBeanView.acao eq '0'}" />
+                <p:password id="txtConfirmacaoSenha" 
+                            class="styleInputTextSenha"
+                            rendered="#{usuarioBeanView.acao eq '0'}"
+                            value="#{usuarioBeanView.objetoSelecionado.confirmaSenha}" 
+                            required="true" 
+                            maxlength="20" 
+                            requiredMessage="Informe a Confirmação Senha."/>
+
                 <h:outputLabel id="lblNome" class="styleOutputLabel" value="* Nome" for="txtNome" />
                 <p:inputText id="txtNome" 
                              class="styleInputTextGrande ui-text-uppercase" 
                              value="#{usuarioBeanView.objetoSelecionado.nome}" 
                              required="true" 
                              maxlength="50" 
-                             requiredMessage="Informe o Nome do Usuário."/>                
+                             requiredMessage="Informe o Nome do Usuário."/> 
+
+                <h:outputLabel id="lblEmail" class="styleOutputLabel" value="Email" for="txtEmail" />
+                <p:inputText id="txtEmail"
+                             type="email"
+                             validator="emailValidator"
+                             class="styleInputTextGrande ui-text-lowercase"
+                             value="#{usuarioBeanView.objetoSelecionado.email}"
+                             maxlength="100" />
+
+                <h:outputLabel id="lblTipo" class="styleOutputLabel" value="Tipo Usuário" for="selOneMenuTipo" />
+                <p:selectOneMenu id="selOneMenuTipo" 
+                                 style="width: 200px;"
+                                 required="true"
+                                 requiredMessage="Informe o Tipo do Usuário."
+                                 value="#{usuarioBeanView.objetoSelecionado.tipo}" >
+                    <f:selectItem id="selItemAdmin" 
+                                  itemLabel="ADMINISTRADOR"
+                                  itemValue="A"/>
+                    <f:selectItem id="selItemFuncionario" 
+                                  itemLabel="FUNCIONÁRIO"
+                                  itemValue="F"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel id="lblInativo" class="styleOutputLabel" value="Inativo" for="selBooCheckBoxInativo" />
+                <p:selectBooleanCheckbox id="selBooCheckBoxInativo"
+                                         style="display: flex; flex-direction: column; justify-content: center;"
+                                         required="true"
+                                         value="#{usuarioBeanView.objetoSelecionado.inativo}" />
             </h:panelGrid>               
         </p:panel>
 

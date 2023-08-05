@@ -86,7 +86,7 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
             msgEnvioMensagemFeitoComSucesso();
         } catch (Exception ex) {
             Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            com.mycompany.project.message.util.Mensagem.msgSeverityError("Erro ao enviar Mensagem!<br><br>" + ex.getMessage(), "Erro");
+            throw new Exception(ex);
         }
     }
 
