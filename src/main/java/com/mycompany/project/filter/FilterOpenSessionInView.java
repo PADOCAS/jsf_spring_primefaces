@@ -5,7 +5,6 @@
 package com.mycompany.project.filter;
 
 import com.mycompany.framework.util.FrameworkUtil;
-import static com.mycompany.hibernate.impl.crud.CrudImpl.getSessionFactory;
 import com.mycompany.hibernate.session.HibernateUtil;
 import com.mycompany.project.listener.ContextLoaderListenerUtil;
 import com.mycompany.project.model.Entidade;
@@ -70,9 +69,9 @@ public class FilterOpenSessionInView extends DelegatingFilterProxy implements Se
             Entidade userLogadoSessao = (Entidade) httpSession.getAttribute("userLogadoSessao");
 
             if (userLogadoSessao != null
-                    && userLogadoSessao.getEnt_codigo() != null) {
+                    && userLogadoSessao.getCodigo() != null) {
                 //Importante setar aqui o EntCodigo para o hibernate envers salvar o código nas tabelas de log de auditoria (CustomListener.class):
-                FrameworkUtil.getThreadLocal().set(userLogadoSessao.getEnt_codigo());
+                FrameworkUtil.getThreadLocal().set(userLogadoSessao.getCodigo());
             }
 
             if (sessionFactory != null

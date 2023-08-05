@@ -323,8 +323,8 @@ function pesquisaUserDestinoPerderFocoDialog(codUser) {
                     && resposta.trim() !== '') {
                 let entidade = JSON.parse(resposta);
 
-                $("#txtUsuarioDestinoCodigo").val(entidade.ent_codigo);
-                $("#txtUsuarioDestinoLogin").val(entidade.ent_login);
+                $("#txtUsuarioDestinoCodigo").val(entidade.codigo);
+                $("#txtUsuarioDestinoLogin").val(entidade.login);
             }
         });
     }

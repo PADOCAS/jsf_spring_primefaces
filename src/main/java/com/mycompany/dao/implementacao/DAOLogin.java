@@ -27,15 +27,15 @@ public class DAOLogin extends CrudImpl<Object> implements RepositoryLogin {
                 && senha != null
                 && !senha.isEmpty()) {
             StringBuilder sqlLogin = new StringBuilder();
-            sqlLogin.append(" SELECT ent_senha  ");
+            sqlLogin.append(" SELECT senha  ");
             sqlLogin.append("   FROM entidade  ");
-            sqlLogin.append("  WHERE ent_login = ?  ");
+            sqlLogin.append("  WHERE login = ?  ");
 
             SqlRowSet sqlRowSetLogin = super.getJdbcTemplate().queryForRowSet(sqlLogin.toString(), new Object[]{login});
 
             if (sqlRowSetLogin.next()) {
                 //Pega a senha do Login do (hash gravado no banco de dados) e compara se o bCrypt é valido com a senha em texto que usuário informou!!
-                String hash_senha_banco = sqlRowSetLogin.getString("ent_senha");
+                String hash_senha_banco = sqlRowSetLogin.getString("senha");
 
                 if (BCrypt.checkpw(senha, hash_senha_banco)) {
                     return true;

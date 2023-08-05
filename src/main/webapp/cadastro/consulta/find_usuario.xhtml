@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<ui:decorate template="../../templates/templatePrincipal.xhtml"
+             xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:composite="http://java.sun.com/jsf/composite"
+             xmlns:sec="http://www.springframework.org/security/tags"
+             xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="corpo">
+        <!--Não vamos tratar geral para página, pois o ajaxStatus vai ativar para qualquer evento ajax a progressbar, isso fica ruim em autocomplete por exemplo-->
+        <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
+
+        <!--Importa o Pesquisa para Cidades:-->
+        <util:pesquisa id="compPesquisaUsuario"
+                       idCompositePesquisa="compPesquisaUsuario"
+                       managedBeanView="#{usuarioBeanView}"
+                       showBtnNovo="#{contextoBean.possuiAcesso('USUARIO_SALVAR', 'ADMIN')}"
+                       showBtnAlterar="#{contextoBean.possuiAcesso('USUARIO_EDITAR', 'ADMIN')}"
+                       showBtnExcluir="#{contextoBean.possuiAcesso('USUARIO_EXCLUIR', 'ADMIN')}"
+                       showMenuImpressao="#{true}"
+                       colunasGridDataTable="/resources/components/columnsDataTableUsuario.xhtml"           
+                       idDialogExclude="confDialogExclusaoUsuario"
+                       nomePesquisa="Consulta de Usuários"/>
+    </ui:define>
+</ui:decorate>

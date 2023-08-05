@@ -94,8 +94,8 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         try {
             if (contextoBean != null
                     && contextoBean.getEntidadeLogada() != null
-                    && contextoBean.getEntidadeLogada().getEnt_codigo() != null) {
-                return entidadeController.getListEntidadeEnvioMensagem(query, contextoBean.getEntidadeLogada().getEnt_codigo());
+                    && contextoBean.getEntidadeLogada().getCodigo() != null) {
+                return entidadeController.getListEntidadeEnvioMensagem(query, contextoBean.getEntidadeLogada().getCodigo());
             }
         } catch (Exception ex) {
             Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);

@@ -66,7 +66,7 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
             Entidade entidade = contextoBean.getEntidadeLogada();
 
             if (entidade != null) {
-                return entidade.getEnt_ultimoacesso();
+                return entidade.getUltimoacesso();
             }
         }
 
@@ -96,16 +96,16 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
 
                 //Atualizar senha:
                 //Gerar um salt aleatório (BCrypt.getsalt()):
-                contextoBean.getEntidadeLogada().setEnt_senha(BCrypt.hashpw(entidadeAlterarSenha.getSenhaNova(), BCrypt.gensalt()));
+                contextoBean.getEntidadeLogada().setSenha(BCrypt.hashpw(entidadeAlterarSenha.getSenhaNova(), BCrypt.gensalt()));
                 entidadeController.saveOrUpdate(contextoBean.getEntidadeLogada());
                 //Busca o objeto no banco para pegar atualizado:
-                Entidade entidadeLogadaCharged = entidadeController.findByPorId(Entidade.class, contextoBean.getEntidadeLogada().getEnt_codigo());
+                Entidade entidadeLogadaCharged = entidadeController.findByPorId(Entidade.class, contextoBean.getEntidadeLogada().getCodigo());
 
                 //Atualizar o usuário logado na sessão:
                 if (entidadeLogadaCharged != null
-                        && entidadeLogadaCharged.getEnt_codigo() != null
-                        && entidadeLogadaCharged.getEnt_senha() != null
-                        && entidadeLogadaCharged.getEnt_login() != null
+                        && entidadeLogadaCharged.getCodigo() != null
+                        && entidadeLogadaCharged.getSenha() != null
+                        && entidadeLogadaCharged.getLogin() != null
                         && FacesContext.getCurrentInstance() != null
                         && FacesContext.getCurrentInstance().getExternalContext() != null) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userLogadoSessao", entidadeLogadaCharged);
@@ -130,15 +130,15 @@ public class EntidadeBeanView extends BeanManagedViewAbstract {
                 && entidadeAlterarSenha.getSenhaNovaConfirmacao() != null
                 && contextoBean != null
                 && contextoBean.getEntidadeLogada() != null
-                && contextoBean.getEntidadeLogada().getEnt_login() != null
+                && contextoBean.getEntidadeLogada().getLogin() != null
                 && repositoryLogin != null) {
             //Senha atual válida:
-            if (!repositoryLogin.autenticaUsuario(contextoBean.getEntidadeLogada().getEnt_login(), entidadeAlterarSenha.getSenhaAtual())) {
+            if (!repositoryLogin.autenticaUsuario(contextoBean.getEntidadeLogada().getLogin(), entidadeAlterarSenha.getSenhaAtual())) {
                 throw new Exception("Senha atual não é válida!");
             }
 
             //Senha atual igual a senha nova:
-            if (repositoryLogin.autenticaUsuario(contextoBean.getEntidadeLogada().getEnt_login(), entidadeAlterarSenha.getSenhaNova())) {
+            if (repositoryLogin.autenticaUsuario(contextoBean.getEntidadeLogada().getLogin(), entidadeAlterarSenha.getSenhaNova())) {
                 throw new Exception("Senha nova não deve ser igual a senha atual!");
             }
 

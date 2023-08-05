@@ -50,15 +50,15 @@ public class Mensagem implements Serializable {
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @ForeignKey(name = "mensagem_fk1")
-    @JoinColumn(name = "usuario_orig", referencedColumnName = "ent_codigo")
-    @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioOrigem.ent_login", descricaoCampoEmTela = "Usuário Origem (Login)", ordemCampoEmTela = 2)
+    @JoinColumn(name = "usuario_orig", referencedColumnName = "codigo")
+    @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioOrigem.login", descricaoCampoEmTela = "Usuário Origem (Login)", ordemCampoEmTela = 2)
     private Entidade usuarioOrigem;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @ForeignKey(name = "mensagem_fk2")
-    @JoinColumn(name = "usuario_dest", referencedColumnName = "ent_codigo")
-    @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioDestino.ent_login", descricaoCampoEmTela = "Usuário Destino (Login)", ordemCampoEmTela = 3)
+    @JoinColumn(name = "usuario_dest", referencedColumnName = "codigo")
+    @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioDestino.login", descricaoCampoEmTela = "Usuário Destino (Login)", ordemCampoEmTela = 3)
     private Entidade usuarioDestino;
 
     @NotNull

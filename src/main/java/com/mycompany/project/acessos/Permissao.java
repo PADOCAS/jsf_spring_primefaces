@@ -36,6 +36,11 @@ public enum Permissao {
     PAIS_SALVAR("PAIS_SALVAR", "País - Salvar"),
     PAIS_EDITAR("PAIS_EDITAR", "País - Editar"),
     PAIS_EXCLUIR("PAIS_EXCLUIR", "País - Excluir"),
+    //Cad. Usuário:
+    USUARIO_ACESSAR("USUARIO_ACESSAR", "Usuário - Acessar"),
+    USUARIO_SALVAR("USUARIO_SALVAR", "Usuário - Salvar"),
+    USUARIO_EDITAR("USUARIO_EDITAR", "Usuário - Editar"),
+    USUARIO_EXCLUIR("USUARIO_EXCLUIR", "Usuário - Excluir"),
     //Mensagens:
     MENSAGEM_ACESSAR("MENSAGEM_ACESSAR", "Mensagem Recebida - Acessar"),
     MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),

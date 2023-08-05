@@ -61,8 +61,8 @@ public class ContextoBean implements Serializable {
 
             //Caso entidade estiver nula ou for diferente do atual:
             if (entidade == null
-                    || (entidade.getEnt_login() != null
-                    && !entidade.getEnt_login().equals(getUserPrincipal()))) {
+                    || (entidade.getLogin() != null
+                    && !entidade.getLogin().equals(getUserPrincipal()))) {
                 //Se o usuário foi autenticado:
                 if (getAuthentication().isAuthenticated()) {
                     entidadeController.updateUltimoAcessoUsuario(getAuthentication().getName());
@@ -70,7 +70,7 @@ public class ContextoBean implements Serializable {
                     //Adiciona o usuário logado no externalContext
                     getExternalContext().getSessionMap().put("userLogadoSessao", entidade);
                     //Adiciona Usuário na sessão
-                    sessionController.addSession(entidade.getEnt_login(), (HttpSession) getExternalContext().getSession(true));
+                    sessionController.addSession(entidade.getLogin(), (HttpSession) getExternalContext().getSession(true));
                 }
             }
         }
@@ -107,10 +107,11 @@ public class ContextoBean implements Serializable {
     }
 
     /**
-     * Verifica se o usuário possui acesso liberado para tal funcionalidade (através do Spring Security)
-     * 
+     * Verifica se o usuário possui acesso liberado para tal funcionalidade
+     * (através do Spring Security)
+     *
      * @param listAcessos
-     * @return 
+     * @return
      */
     public Boolean possuiAcesso(String... listAcessos) {
         if (listAcessos != null) {

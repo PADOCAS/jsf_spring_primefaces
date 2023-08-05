@@ -29,7 +29,7 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
     private ServiceEntidade serviceEntidade;
 
     public Entidade findUsuarioLogado(String name) throws Exception {
-        return super.findUniqueByProperty(Entidade.class, name, "ent_login", " and entity.ent_inativo is false");
+        return super.findUniqueByProperty(Entidade.class, name, "login", " and entity.inativo is false");
     }
 
     public Date getUltimoAcessoEntidadeLogada(String name) throws Exception {
@@ -47,22 +47,22 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
         sql.append(" FROM Entidade entity ");
 
         if (codigoLoginOrigem != null) {
-            sql.append(" WHERE entity.ent_codigo <> ").append(codigoLoginOrigem);
+            sql.append(" WHERE entity.codigo <> ").append(codigoLoginOrigem);
 
             if (query != null
                     && !query.isEmpty()) {
-                sql.append(" AND ((retira_acentos(upper(cast(entity.ent_codigo as text))) ");
+                sql.append(" AND ((retira_acentos(upper(cast(entity.codigo as text))) ");
                 sql.append(" = retira_acentos(upper('").append(query).append("'))) ");
                 sql.append("  OR ");
-                sql.append(" (retira_acentos(upper(entity.ent_login)) ");
+                sql.append(" (retira_acentos(upper(entity.login)) ");
                 sql.append(" LIKE retira_acentos(upper('%").append(query).append("%'))) ");
                 sql.append("  OR ");
-                sql.append(" (retira_acentos(upper(entity.ent_nome)) ");
+                sql.append(" (retira_acentos(upper(entity.nome)) ");
                 sql.append(" LIKE retira_acentos(upper('%").append(query).append("%')))) ");
             }
         }
 
-        sql.append(" ORDER BY entity.ent_login, entity.ent_codigo ");
+        sql.append(" ORDER BY entity.login, entity.codigo ");
 
         try {
             listEntidade = findListByQueryDinamica(sql.toString());

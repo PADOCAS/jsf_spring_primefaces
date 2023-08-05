@@ -36,7 +36,7 @@ public class CustomListener implements RevisionListener, ServletContextListener,
 
             if (codUser != null
                     && codUser != 0L) {
-                entidade.setEnt_codigo(codUser);
+                entidade.setCodigo(codUser);
                 revInfo.setEntidade(entidade);
             }
         }

@@ -56,9 +56,9 @@ public class EntidadeConverter implements Converter, Serializable {
         if (value != null) {
             Entidade entidade = (Entidade) value;
 
-            if (entidade.getEnt_codigo() != null
-                    && entidade.getEnt_codigo() > 0) {
-                return entidade.getEnt_codigo().toString();
+            if (entidade.getCodigo() != null
+                    && entidade.getCodigo() > 0) {
+                return entidade.getCodigo().toString();
             }
         }
         return null;
