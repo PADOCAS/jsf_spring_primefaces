@@ -31,6 +31,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.envers.Audited;
+import org.hibernate.validator.constraints.br.CPF;
 import org.primefaces.shaded.json.JSONObject;
 
 /**
@@ -95,6 +96,12 @@ public class Entidade implements Serializable {
     @Size(max = 100)
     @Column(name = "email")
     private String email;
+
+    @NotNull
+    @CPF(message = "CPF inválido")
+    @IdentificaCampoPesquisa(campoBancoDeDados = "cpf", descricaoCampoEmTela = "CPF", ordemCampoEmTela = 3)
+    @Column(name = "cpf", unique = true)
+    private String cpf;
 
     //Fazendo carregar o relacionamento com ACESSOS! -> Como não temos VO de entidadeacesso, criamos um mapeamento com STRING mesmo!
     //Ele vai carregar sempre os acessos do usuário, caso for deletar, vai deletar todos os acessos dele antes.
@@ -209,16 +216,24 @@ public class Entidade implements Serializable {
     public void setSenhaString(String senhaString) {
         this.senhaString = senhaString;
     }
-    
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     public String getTipoDescricao() {
-        if(getTipo() != null) {
-            if(getTipo().equals("A")) {
+        if (getTipo() != null) {
+            if (getTipo().equals("A")) {
                 return "ADMINISTRADOR";
-            } else if(getTipo().equals("U")) {
+            } else if (getTipo().equals("U")) {
                 return "USUÁRIO";
             }
         }
-        
+
         return null;
     }
 

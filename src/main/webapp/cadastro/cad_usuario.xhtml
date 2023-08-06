@@ -76,6 +76,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              required="true" 
                              maxlength="50" 
                              requiredMessage="Informe o Nome do Usuário."/> 
+                
+                <h:outputLabel id="lblCpf" class="styleOutputLabel" value="* CPF" for="txtCpf" />                
+                <p:inputMask id="txtCpf" 
+                             class="styleInputTextSenha"                              
+                             mask="999.999.999-99"
+                             value="#{usuarioBeanView.objetoSelecionado.cpf}" 
+                             required="true" 
+                             requiredMessage="Informe o CPF do Usuário."/> 
 
                 <h:outputLabel id="lblEmail" class="styleOutputLabel" value="Email" for="txtEmail" />
                 <p:inputText id="txtEmail"

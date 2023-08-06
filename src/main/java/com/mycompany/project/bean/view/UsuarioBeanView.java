@@ -10,6 +10,7 @@ import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.message.util.Mensagem;
 import com.mycompany.project.model.Entidade;
+import com.mycompany.project.util.all.RegexUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -207,6 +208,8 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 }
             }
 
+            //Retirando mascára do CPF para gravação:
+            getObjetoSelecionado().setCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()));
             setObjetoSelecionado(entidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
@@ -269,6 +272,8 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 }
             }
 
+            //Retirando mascára do CPF para gravação:
+            getObjetoSelecionado().setCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()));
             entidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
@@ -289,24 +294,55 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
     }
 
     private void validaSaveUsuario() throws ValidationException {
-        if (getObjetoSelecionado() != null
-                && getObjetoSelecionado().getLogin() != null
-                && getObjetoSelecionado().getSenhaString() != null
-                && getObjetoSelecionado().getConfirmaSenha() != null) {
-            //Senha e confirmação devem ser iguais:
-            if (!getObjetoSelecionado().getSenhaString().equals(getObjetoSelecionado().getConfirmaSenha())) {
-                throw new ValidationException("A senha e a confirmação não conferem!");
-            }
+        try {
+            if (getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getLogin() != null) {
+                //Senha e confirmação devem ser iguais:
+                if (getObjetoSelecionado().getSenhaString() != null
+                        && getObjetoSelecionado().getConfirmaSenha() != null) {
+                    if (!getObjetoSelecionado().getSenhaString().equals(getObjetoSelecionado().getConfirmaSenha())) {
+                        throw new ValidationException("A senha e a confirmação não conferem!");
+                    }
+                }
 
-            //Testar se o login já existe no sistema:
-            if (getAcao() != null) {
-                //Caso for inclusão, não pode existir ainda login igual:
-                if (acao.equals("0")) {
-                    if (entidadeController.getExistsEntidadeLogin(getObjetoSelecionado().getLogin())) {
-                        throw new ValidationException("Login já existente!<br>Defina um login diferente e tente novamente.");
+                //Testar se o login já existe no sistema:
+                if (getAcao() != null) {
+                    //Caso for inclusão, não pode existir ainda login igual:
+                    if (acao.equals("0")) {
+                        if (entidadeController.getExistsEntidadeLogin(getObjetoSelecionado().getLogin())) {
+                            throw new ValidationException("Login já existente!<br>Defina um login diferente e tente novamente.");
+                        }
+                    }
+
+                    //Valida CPF:
+                    //Caso for inclusão, não pode existir ainda login igual:
+                    if (acao.equals("0")) {
+                        if (getObjetoSelecionado().getCpf() != null
+                                && !getObjetoSelecionado().getCpf().isEmpty()) {
+                            if (entidadeController.getExistsCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()))) {
+                                throw new ValidationException("CPF já cadastrado!");
+                            }
+                        }
+                    } else if (acao.equals("1")
+                            && getObjetoSelecionado().getCpf() != null
+                            && !getObjetoSelecionado().getCpf().isEmpty()
+                            && getObjetoSelecionado().getCodigo() != null) {
+                        Entidade entidadeCharged = entidadeController.findByPorId(Entidade.class, getObjetoSelecionado().getCodigo());
+
+                        //Alteração não pode ter CPF igual diferente do usuário atual:
+                        if (entidadeCharged != null
+                                && entidadeCharged.getCodigo() != null
+                                && entidadeCharged.getCpf() != null
+                                && entidadeController.getExistsCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()))
+                                && !RegexUtil.manterApenasDigitosCpf(entidadeCharged.getCpf()).equals(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()))) {
+                            throw new ValidationException("CPF já cadastrado!");
+                        }
+
                     }
                 }
             }
+        } catch (Exception ex) {
+            throw new ValidationException(ex.getMessage());
         }
     }
 

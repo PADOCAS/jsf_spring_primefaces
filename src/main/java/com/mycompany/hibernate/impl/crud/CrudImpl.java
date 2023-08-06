@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
 import com.mycompany.project.listener.ContextLoaderListenerUtil;
 import javax.sql.DataSource;
+import org.hibernate.Hibernate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -310,6 +311,9 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
             validaSessionFactory();
 
             T obj = (T) getSessionFactory().getCurrentSession().load(entidade, id);
+
+            //Forçar carregamento da Entidade:
+            Hibernate.initialize(obj);
 
             clearSession();
             return obj;

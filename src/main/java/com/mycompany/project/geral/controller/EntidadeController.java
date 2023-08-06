@@ -40,24 +40,32 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
         serviceEntidade.updateUltimoAcessoUsuario(name);
     }
 
-    public Boolean getExistsEntidadeLogin(String login) {
-        try {
-            if (login != null
-                    && !login.isEmpty()) {
-                StringBuilder sql = new StringBuilder();
-                sql.append(" SELECT COUNT(1) FROM Entidade entity WHERE entity.login = :login");
+    public Boolean getExistsCpf(String cpf) throws Exception {
+        if (cpf != null
+                && !cpf.isEmpty()) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" FROM Entidade WHERE cpf = '").append(cpf).append("' ");
 
-                Long count = (Long) getSession()
-                        .createQuery(sql.toString())
-                        .setParameter("login", login)
-                        .getSingleResult();
+            return !findListByQueryDinamica(sql.toString()).isEmpty();
+        }
 
-                if (count > 0) {
-                    return true;
-                }
+        return false;
+    }
+
+    public Boolean getExistsEntidadeLogin(String login) throws Exception {
+        if (login != null
+                && !login.isEmpty()) {
+            StringBuilder sql = new StringBuilder();
+            sql.append(" SELECT COUNT(1) FROM Entidade entity WHERE entity.login = :login");
+
+            Long count = (Long) getSession()
+                    .createQuery(sql.toString())
+                    .setParameter("login", login)
+                    .getSingleResult();
+
+            if (count > 0) {
+                return true;
             }
-        } catch (Exception ex) {
-            Logger.getLogger(EntidadeController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return false;

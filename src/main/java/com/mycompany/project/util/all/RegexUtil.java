@@ -23,4 +23,14 @@ public class RegexUtil {
             return "";
         }
     }
+
+    /**
+     * Método para converter o CPF para apenas números (tirando a mascára)
+     * 
+     * @param cpf
+     * @return 
+     */
+    public static String manterApenasDigitosCpf(String cpf) {
+        return cpf.replaceAll("\\D", "");
+    }
 }
