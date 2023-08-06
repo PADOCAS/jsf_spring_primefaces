@@ -209,6 +209,18 @@ public class Entidade implements Serializable {
     public void setSenhaString(String senhaString) {
         this.senhaString = senhaString;
     }
+    
+    public String getTipoDescricao() {
+        if(getTipo() != null) {
+            if(getTipo().equals("A")) {
+                return "ADMINISTRADOR";
+            } else if(getTipo().equals("U")) {
+                return "USUÁRIO";
+            }
+        }
+        
+        return null;
+    }
 
     /**
      * Método para montar um JSON da classe Entidade e retornar

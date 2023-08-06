@@ -14,7 +14,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Login Projeto JSF + Spring + PrimeFaces</title>
-        
+
         <!--Declarando o javascript jquery > direto da biblioteca do próprio primefaces-->        
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
 
@@ -72,7 +72,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <span style="display: inline-block; width: 50px; text-align: right; font-weight: bold;">
                         Login
                     </span>
-                    <input type="text" name="j_username" class="inputTypeLogin" id="j_username"/>
+                    <input type="text" maxlength="20" name="j_username" class="inputTypeLogin ui-text-lowercase" id="j_username"/>
                 </span>
 
                 <span style="display: block; padding-top: 2px; text-align: right;">
@@ -96,6 +96,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <script type="text/javascript">
             //Evita conflito entre bibliotecas:
             jQuery.noConflict();
+            jQuery(document).ready(function () {
+                document.querySelectorAll(".ui-text-lowercase")
+                        .forEach((current) => {
+                            current.addEventListener("input", function (event) {
+                                event.target.value = event.target.value.toLocaleLowerCase();
+                            });
+                        });
+            });
 
             //Ao carregar a página ele joga o foco para o campo usuário pelo jquery:
             jQuery('#j_username').focus();

@@ -35,6 +35,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <h:outputLabel id="lblSenhaNova" class="styleOutputLabel" value="* Senha Nova" for="txtSenhaNova" />
                 <p:password id="txtSenhaNova" 
                             class="styleInputTextSenha"
+                            feedback="true"
+                            inline="true"  
+                            promptLabel="Informe a Senha"
+                            strongLabel="Forte"
+                            weakLabel="Fraca"
+                            goodLabel="Boa"
                             value="#{entidadeBeanView.entidadeAlterarSenha.senhaNova}" 
                             required="true" 
                             maxlength="20" 

@@ -40,6 +40,29 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
         serviceEntidade.updateUltimoAcessoUsuario(name);
     }
 
+    public Boolean getExistsEntidadeLogin(String login) {
+        try {
+            if (login != null
+                    && !login.isEmpty()) {
+                StringBuilder sql = new StringBuilder();
+                sql.append(" SELECT COUNT(1) FROM Entidade entity WHERE entity.login = :login");
+
+                Long count = (Long) getSession()
+                        .createQuery(sql.toString())
+                        .setParameter("login", login)
+                        .getSingleResult();
+
+                if (count > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(EntidadeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
     public List<Entidade> getListEntidadeEnvioMensagem(String query, Long codigoLoginOrigem) {
         List<Entidade> listEntidade = new ArrayList<>();
 
@@ -48,6 +71,7 @@ public class EntidadeController extends CrudImpl<Entidade> implements Serializab
 
         if (codigoLoginOrigem != null) {
             sql.append(" WHERE entity.codigo <> ").append(codigoLoginOrigem);
+            sql.append(" AND entity.inativo = FALSE ");
 
             if (query != null
                     && !query.isEmpty()) {

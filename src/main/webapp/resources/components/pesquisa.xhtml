@@ -42,8 +42,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <p:remoteCommand id="remComEditarOk"
                          name="remComEditarOk"
                          process="@this"                         
-                         immediate="true"
-                         action="#{cc.attrs.managedBeanView.editar()}" />
+                         immediate="true"                         
+                         action="#{cc.attrs.managedBeanView.editar()}" />        
 
         <!--Importa o xhmtm genérico menu relatórios-->
         <util:menuImpressao id="compMenuImpressaoCidade"
@@ -155,7 +155,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                      rowsPerPageTemplate="10,15,20"
                      emptyMessage="Nenhum registro encontrado.">
             <!--Duplo clique editar cadastro-->
-            <p:ajax event="rowDblselect" process="@this" oncomplete="remComEditarOk();" />
+            <p:ajax event="rowDblselect" process="@this" 
+                    update="@widgetVar(message)"
+                    onstart="PF('statusDialog').show();" 
+                    onsuccess="PF('statusDialog').hide();"
+                    listener="#{cc.attrs.managedBeanView.validEditar()}"
+                    oncomplete="if(args.validEditar) {remComEditarOk();};" />
+
             <!--Incluir as colunas de forma genérica-->
             <ui:include src="#{cc.attrs.colunasGridDataTable}" />
         </p:dataTable>

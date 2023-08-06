@@ -39,6 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <h:outputLabel id="lblLogin" class="styleOutputLabel" value="* Login" for="txtLogin" />
                 <p:inputText id="txtLogin" 
                              class="styleInputTextSenha ui-text-lowercase" 
+                             disabled="#{usuarioBeanView.acao eq '1'}"
                              value="#{usuarioBeanView.objetoSelecionado.login}" 
                              required="true" 
                              maxlength="20" 
@@ -93,9 +94,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                     <f:selectItem id="selItemAdmin" 
                                   itemLabel="ADMINISTRADOR"
                                   itemValue="A"/>
-                    <f:selectItem id="selItemFuncionario" 
-                                  itemLabel="FUNCIONÁRIO"
-                                  itemValue="F"/>
+                    <f:selectItem id="selItemUsuario" 
+                                  itemLabel="USUÁRIO"
+                                  itemValue="U"/>
                 </p:selectOneMenu>
 
                 <h:outputLabel id="lblInativo" class="styleOutputLabel" value="Inativo" for="selBooCheckBoxInativo" />

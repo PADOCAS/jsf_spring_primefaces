@@ -171,7 +171,7 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
-            validaSenha();
+            validaSaveUsuario();
             setEnableButtonsAcao(false);
             //Inclusão de novo usuário, gravar a senha:
             if (acao != null
@@ -181,6 +181,32 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 //Gerar um salt aleatório (BCrypt.getsalt()):
                 getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
             }
+
+            //Adiciona o acesso default para o novo usuário:
+            if (getObjetoSelecionado().getAcessos() != null
+                    && getObjetoSelecionado().getTipo() != null) {
+                if (getObjetoSelecionado().getAcessos() != null) {
+                    if (getObjetoSelecionado().getTipo().equals("A")) {
+                        if (!getObjetoSelecionado().getAcessos().contains("ADMIN")) {
+                            getObjetoSelecionado().getAcessos().add("ADMIN");
+                        }
+
+                        //ADMIN também deve ter acesso (USER):
+                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
+                            getObjetoSelecionado().getAcessos().add("USER");
+                        }
+                    } else if (getObjetoSelecionado().getTipo().equals("U")) {
+                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
+                            getObjetoSelecionado().getAcessos().add("USER");
+                        }
+                        //Se virou usuário, vamos apagar o registro ADMIN se tiver:
+                        if (getObjetoSelecionado().getAcessos().contains("ADMIN")) {
+                            getObjetoSelecionado().getAcessos().remove("ADMIN");
+                        }
+                    }
+                }
+            }
+
             setObjetoSelecionado(entidadeController.merge(getObjetoSelecionado()));
             Mensagem.msgSalvoComSucesso();
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
@@ -207,7 +233,7 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
 
         try {
-            validaSenha();
+            validaSaveUsuario();
             setEnableButtonsAcao(false);
             //Inclusão de novo usuário, gravar a senha:
             if (acao != null
@@ -217,6 +243,32 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 //Gerar um salt aleatório (BCrypt.getsalt()):
                 getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
             }
+
+            //Adiciona o acesso default para o novo usuário:
+            if (getObjetoSelecionado().getAcessos() != null
+                    && getObjetoSelecionado().getTipo() != null) {
+                if (getObjetoSelecionado().getAcessos() != null) {
+                    if (getObjetoSelecionado().getTipo().equals("A")) {
+                        if (!getObjetoSelecionado().getAcessos().contains("ADMIN")) {
+                            getObjetoSelecionado().getAcessos().add("ADMIN");
+                        }
+
+                        //ADMIN também deve ter acesso (USER):
+                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
+                            getObjetoSelecionado().getAcessos().add("USER");
+                        }
+                    } else if (getObjetoSelecionado().getTipo().equals("U")) {
+                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
+                            getObjetoSelecionado().getAcessos().add("USER");
+                        }
+                        //Se virou usuário, vamos apagar o registro ADMIN se tiver:
+                        if (getObjetoSelecionado().getAcessos().contains("ADMIN")) {
+                            getObjetoSelecionado().getAcessos().remove("ADMIN");
+                        }
+                    }
+                }
+            }
+
             entidadeController.merge(getObjetoSelecionado());
             Mensagem.msgSalvoComSucesso();
             setarVariaveisNulas();
@@ -236,13 +288,24 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         return "";
     }
 
-    private void validaSenha() throws ValidationException {
+    private void validaSaveUsuario() throws ValidationException {
         if (getObjetoSelecionado() != null
+                && getObjetoSelecionado().getLogin() != null
                 && getObjetoSelecionado().getSenhaString() != null
                 && getObjetoSelecionado().getConfirmaSenha() != null) {
             //Senha e confirmação devem ser iguais:
             if (!getObjetoSelecionado().getSenhaString().equals(getObjetoSelecionado().getConfirmaSenha())) {
                 throw new ValidationException("A senha e a confirmação não conferem!");
+            }
+
+            //Testar se o login já existe no sistema:
+            if (getAcao() != null) {
+                //Caso for inclusão, não pode existir ainda login igual:
+                if (acao.equals("0")) {
+                    if (entidadeController.getExistsEntidadeLogin(getObjetoSelecionado().getLogin())) {
+                        throw new ValidationException("Login já existente!<br>Defina um login diferente e tente novamente.");
+                    }
+                }
             }
         }
     }
@@ -254,6 +317,10 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         if (getObjetoSelecionado() == null
                 || getObjetoSelecionado().getCodigo() == null) {
             Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+        } else if (getObjetoSelecionado().getLogin() != null
+                && !getObjetoSelecionado().getLogin().isEmpty()
+                && getObjetoSelecionado().getLogin().equals("admin")) {
+            Mensagem.msgSeverityWarn("Usuário 'admin' não pode ser editado.", "Atenção");
         } else {
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
         }
@@ -282,6 +349,10 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         if (getObjetoSelecionado() == null
                 || getObjetoSelecionado().getCodigo() == null) {
             Mensagem.msgSeverityWarn("Selecione um registro para excluí-lo.", "Atenção");
+        } else if (getObjetoSelecionado().getLogin() != null
+                && !getObjetoSelecionado().getLogin().isEmpty()
+                && getObjetoSelecionado().getLogin().equals("admin")) {
+            Mensagem.msgSeverityWarn("Usuário 'admin' não pode ser excluído.", "Atenção");
         } else {
             PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
         }
@@ -292,16 +363,22 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", false);
         try {
             if (getObjetoSelecionado() != null
-                    && getObjetoSelecionado().getCodigo() != null) {
-                //Find no objeto atual, para evitar que está diferente no banco de dados por alguma alteração que aqui ainda está em cache!
-                Entidade entidadeDel = entidadeController.findByPorId(Entidade.class, getObjetoSelecionado().getCodigo());
+                    && getObjetoSelecionado().getCodigo() != null
+                    && getObjetoSelecionado().getLogin() != null) {
+                if (!getObjetoSelecionado().getLogin().isEmpty()
+                        && getObjetoSelecionado().getLogin().equals("admin")) {
+                    Mensagem.msgSeverityWarn("Usuário 'admin' não pode ser excluído.", "Atenção");
+                } else {
+                    //Find no objeto atual, para evitar que está diferente no banco de dados por alguma alteração que aqui ainda está em cache!
+                    Entidade entidadeDel = entidadeController.findByPorId(Entidade.class, getObjetoSelecionado().getCodigo());
 
-                if (entidadeDel != null) {
-                    entidadeController.delete(entidadeDel);
-                    setarVariaveisNulas();
-                    Mensagem.msgExcluidoComSucesso();
+                    if (entidadeDel != null) {
+                        entidadeController.delete(entidadeDel);
+                        setarVariaveisNulas();
+                        Mensagem.msgExcluidoComSucesso();
 
-                    PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
+                        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validExclusao", true);
+                    }
                 }
             } else {
                 Mensagem.msgSeverityWarn("Edite um registro para poder excluí-lo.", "Erro");
