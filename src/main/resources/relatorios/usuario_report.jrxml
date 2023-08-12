@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="REPORT_PARAMETERS_IMG" class="java.lang.String"/>
 	<parameter name="PRINT_EXCEL" class="java.lang.Boolean"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -19,6 +20,51 @@
 	<field name="tipo" class="java.lang.String">
 		<fieldDescription><![CDATA[tipo]]></fieldDescription>
 	</field>
+	<field name="entidadeAcessosPermissao" class="java.util.List">
+		<fieldDescription><![CDATA[entidadeAcessosPermissao]]></fieldDescription>
+	</field>
+	<group name="Grupo_Codigo_Usuario">
+		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="50" y="2" width="90" height="14" uuid="59e826aa-ba9b-4d56-b5a8-555a0e11e9f4"/>
+					<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="140" y="2" width="340" height="14" uuid="bb0ee7c9-7b4e-4515-91de-ba1792f707af"/>
+					<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="480" y="2" width="70" height="14" uuid="513e02e2-de96-415f-888c-0e4128f4d1de"/>
+					<textFieldExpression><![CDATA[($F{tipo} != null && $F{tipo}.equals("A") ? "Administrador" : "Usuário")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="2" width="50" height="14" uuid="ee5e32bb-8499-46a4-9a4e-cf683714e3e9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="50" y="16" width="270" height="14" forecolor="#2C48AB" backcolor="#000000" uuid="8dfdf84e-1580-4cfb-b4a3-e8dcc3cc545c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font size="10" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Acessos liberados para o Usuário:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="0" width="550" height="1" uuid="858aa024-e0a4-4507-b183-f4058bacd0e1">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -49,7 +95,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="17" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="50" height="15" uuid="3db123d2-0a9b-435d-ac9b-9da5be49b301"/>
 				<textElement>
@@ -71,9 +117,6 @@
 				</textElement>
 				<text><![CDATA[Login]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="15" width="550" height="1" uuid="858aa024-e0a4-4507-b183-f4058bacd0e1"/>
-			</line>
 			<staticText>
 				<reportElement x="480" y="0" width="70" height="15" uuid="f5c6ad8f-7f4b-425d-911e-2c800ed8d9f1"/>
 				<textElement textAlignment="Left">
@@ -84,25 +127,12 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="14" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="50" height="14" uuid="ee5e32bb-8499-46a4-9a4e-cf683714e3e9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="50" y="0" width="90" height="14" uuid="59e826aa-ba9b-4d56-b5a8-555a0e11e9f4"/>
-				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="140" y="0" width="340" height="14" uuid="bb0ee7c9-7b4e-4515-91de-ba1792f707af"/>
-				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="480" y="0" width="70" height="14" uuid="513e02e2-de96-415f-888c-0e4128f4d1de"/>
-				<textFieldExpression><![CDATA[($F{tipo} != null && $F{tipo}.equals("A") ? "Administrador" : "Usuário")]]></textFieldExpression>
-			</textField>
+		<band height="20" splitType="Stretch">
+			<subreport>
+				<reportElement x="50" y="0" width="500" height="20" uuid="fa675e35-e8ca-44f5-8857-b2ecb704dda2"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{entidadeAcessosPermissao})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "usuario_subreport.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<pageFooter>

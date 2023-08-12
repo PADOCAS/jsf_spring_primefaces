@@ -4,14 +4,19 @@
  */
 package com.mycompany.project.model;
 
+import com.mycompany.project.acessos.Permissao;
 import com.mycompany.project.annotation.IdentificaCampoPesquisa;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -235,6 +240,24 @@ public class Entidade implements Serializable {
         }
 
         return null;
+    }
+
+    public List<Permissao> getEntidadeAcessosPermissao() {
+        List<Permissao> permissoes = new ArrayList<>();
+
+        if (getAcessos() != null
+                && !getAcessos().isEmpty()) {
+            //Montando List de Permissao através da String acessos:
+            permissoes = getAcessos()
+                    .stream()
+                    .map(a -> Permissao.valueOf(a))
+                    .collect(Collectors.toList());
+
+            //Ordena Permissões por Descrição:
+            Collections.sort(permissoes, (Permissao perm1, Permissao perm2) -> perm1.getDescricao().compareTo(perm2.getDescricao()));
+        }
+
+        return permissoes;
     }
 
     /**
