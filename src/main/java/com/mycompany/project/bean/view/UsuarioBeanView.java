@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.validation.ValidationException;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -435,6 +436,16 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
     @Override
     public String condicaoAndParaPesquisa() throws Exception {
         return null;
+    }
+    
+    @Override
+    public StreamedContent getArquivoReport() throws Exception {
+        //Parâmetros para o Relatório:
+        setNomeRelatorioJasper("usuario_report");
+        setNomeRelatorioSaida("usuario_report");
+        setListDataBeanCollectionReport(entidadeController.findListByQueryDinamica(" FROM Entidade ORDER BY nome"));
+
+        return super.getArquivoReport();
     }
 
     public Entidade getObjetoSelecionado() {
