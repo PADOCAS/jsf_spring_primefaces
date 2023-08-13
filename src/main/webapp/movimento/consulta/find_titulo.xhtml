@@ -19,16 +19,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <!--Não vamos tratar geral para página, pois o ajaxStatus vai ativar para qualquer evento ajax a progressbar, isso fica ruim em autocomplete por exemplo-->
         <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
 
-        <!--Importa o Pesquisa para Usuários:-->
-        <util:pesquisa id="compPesquisaUsuario"
-                       idCompositePesquisa="compPesquisaUsuario"
-                       managedBeanView="#{usuarioBeanView}"
-                       showBtnNovo="#{contextoBean.possuiAcesso('USUARIO_SALVAR', 'ADMIN')}"
-                       showBtnAlterar="#{contextoBean.possuiAcesso('USUARIO_EDITAR', 'ADMIN')}"
-                       showBtnExcluir="#{contextoBean.possuiAcesso('USUARIO_EXCLUIR', 'ADMIN')}"
+        <!--Importa o Pesquisa para Títulos:-->
+        <util:pesquisa id="compPesquisaTitulo"
+                       idCompositePesquisa="compPesquisaTitulo"
+                       managedBeanView="#{tituloBeanView}"
+                       showBtnNovo="#{contextoBean.possuiAcesso('TITULO_SALVAR', 'ADMIN')}"
+                       showBtnAlterar="#{contextoBean.possuiAcesso('TITULO_EDITAR', 'ADMIN')}"
+                       showBtnExcluir="#{contextoBean.possuiAcesso('TITULO_EXCLUIR', 'ADMIN')}"
                        showMenuImpressao="#{true}"
-                       colunasGridDataTable="/resources/components/columnsDataTableUsuario.xhtml"           
-                       idDialogExclude="confDialogExclusaoUsuario"
-                       nomePesquisa="Consulta de Usuários"/>
+                       colunasGridDataTable="/resources/components/columnsDataTableTitulo.xhtml"           
+                       idDialogExclude="confDialogExclusaoTitulo"
+                       nomePesquisa="Consulta de Títulos"/>
     </ui:define>
 </ui:decorate>

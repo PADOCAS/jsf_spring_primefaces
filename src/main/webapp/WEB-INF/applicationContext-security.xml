@@ -29,6 +29,8 @@
         <intercept-url pattern="/templates/**" access="isAuthenticated() and hasAuthority('USER')"/>
         <!--Todas as páginas que tiver dentro de cadastro/ precisa estar autenticado e ser role 'USER'-->
         <intercept-url pattern="/cadastro/**" access="isAuthenticated() and hasAuthority('USER')"/>
+        <!--Todas as páginas que tiver dentro de movimento/ precisa estar autenticado e ser role 'USER'-->
+        <intercept-url pattern="/movimento/**" access="isAuthenticated() and hasAuthority('USER')"/>
         <!--Todas as páginas que tiver dentro de public/ permite geral-->
         <intercept-url pattern="/public/**" access="permitAll" /> 
         <!--Todas as páginas que tiver dentro de teste/ permite geral-->

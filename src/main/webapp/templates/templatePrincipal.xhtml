@@ -198,7 +198,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                     </sec:authorize>
                                 </p:submenu>
                             </sec:authorize>
-
+                            
+                            <sec:authorize access="isAuthenticated() 
+                                           and (hasAuthority('MOVIMENTO_ACESSAR') or hasAuthority('ADMIN'))">
+                                <p:submenu id="subMenuMovimento" 
+                                           label="Movimento" >                                  
+                                    <sec:authorize access="(hasAuthority('TITULO_ACESSAR') or hasAuthority('ADMIN'))">
+                                        <p:menuitem id="menuMovTitulo" 
+                                                    value="Título" 
+                                                    process="@this"
+                                                    onclick="redirecionarPagina('#{request.contextPath}', '/movimento/consulta/find_titulo');"
+                                                    onstart="PF('statusDialog').show();"
+                                                    onsuccess="PF('statusDialog').hide();"/>
+                                    </sec:authorize>
+                                </p:submenu>
+                            </sec:authorize>
+                            
                             <p:menuitem id="menuSair"
                                         value="Sair"
                                         process="@this"

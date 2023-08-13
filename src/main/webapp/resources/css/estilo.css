@@ -417,6 +417,14 @@ input[type=submit] {
     width: 500px;
 }
 
+.styleInputTextData {
+    width: 145px;
+}
+
+.styleInputTextValor {
+    width: 160px;
+}
+
 .styleInputTextSenha {
     width: 150px;
 }

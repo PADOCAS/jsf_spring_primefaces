@@ -20,6 +20,7 @@ public enum Permissao {
     USER("USER", "Usuário Padrão"),
     //Menus:
     CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
+    MOVIMENTO_ACESSAR("MOVIMENTO_ACESSAR", "Movimento - Acessar"),
     //Cadastros:
     //Cad. Bairro:
     BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
@@ -46,7 +47,13 @@ public enum Permissao {
     MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),
     MENSAGENS_ENVIAR_NOVO("MENSAGENS_ENVIAR_NOVO", "Enviar mensagem - Novo"),
     MENSAGENS_ENVIAR_EDITAR("MENSAGENS_ENVIAR_EDITAR", "Enviar mensagem - Editar"),
-    MENSAGENS_ENVIAR_EXCLUIR("MENSAGENS_ENVIAR_EXCLUIR", "Enviar mensagem - Excluir");
+    MENSAGENS_ENVIAR_EXCLUIR("MENSAGENS_ENVIAR_EXCLUIR", "Enviar mensagem - Excluir"),
+    //Movimentos:
+    //Título:
+    TITULO_ACESSAR("TITULO_ACESSAR", "Título - Acessar"),
+    TITULO_SALVAR("TITULO_SALVAR", "Título - Salvar"),
+    TITULO_EDITAR("TITULO_EDITAR", "Título - Editar"),
+    TITULO_EXCLUIR("TITULO_EXCLUIR", "Título - Excluir");
 
     private String valor;
     private String descricao;

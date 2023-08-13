@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<ui:decorate template="../templates/templatePrincipal.xhtml"
+             xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:p="http://primefaces.org/ui"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:composite="http://java.sun.com/jsf/composite"
+             xmlns:sec="http://www.springframework.org/security/tags"
+             xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="corpo">
+        <!--Não vamos tratar geral para página, pois o ajaxStatus vai ativar para qualquer evento ajax a progressbar, isso fica ruim em autocomplete por exemplo-->
+        <!--<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();" onsuccess="PF('statusDialog').hide();" />-->
+
+        <!--Variável para saber se está cadastrando, consultando, etc.. (usando jsp-jstl)-->
+        <c:set var="isCadastro" value="true" scope="view" />
+
+        <!--Importa o xhtml genérico criado (components:botoesCrud)-->
+        <util:botoesCrud id="compBotoesCrudCadTitulo"
+                         idCompositeBotoesCrud="compBotoesCrudCadTitulo"
+                         managedBeanView="#{tituloBeanView}"      
+                         disableBtnSalvar="#{!contextoBean.possuiAcesso('TITULO_SALVAR', 'ADMIN')}"                         
+                         disableBtnExcluir="#{!contextoBean.possuiAcesso('TITULO_EXCLUIR', 'ADMIN')}"
+                         isVisibleBtnExcluir="#{tituloBeanView.acao ne null and tituloBeanView.acao eq '1'}"
+                         idDialogExclude="confDialogExclusaoTitulo"/>
+
+        <p:panel id="pnlMovTitulo" header="Movimentação de Título" >
+            <h:panelGrid id="pnlGridMovTitulo" columns="2" >
+                <h:outputLabel id="lblCodigo" class="styleOutputLabel" value="* Número" for="txtCodigo" />
+                <p:inputText id="txtCodigo" class="estiloIdCadastro" disabled="true" value="#{tituloBeanView.objetoSelecionado.codigo}" />
+
+                <h:outputLabel id="lblDataEmissao" class="styleOutputLabel" value="* Data Emissão" for="txtDataEmissao" />
+                <p:calendar id        = "txtDataEmissao"
+                            value     = "#{tituloBeanView.objetoSelecionado.data}"
+                            class     = "styleInputTextData"
+                            navigator = "true"
+                            mask      = "true"
+                            pattern   = "dd/MM/yyyy"
+                            required  = "true"
+                            requiredMessage="Informe a Data do Título.">
+                    <p:ajax event      = "change"
+                            update     = "@widgetVar(message)"
+                            process    = "@this"/>
+                    <p:ajax event      = "dateSelect"
+                            update     = "@widgetVar(message)"
+                            process    = "@this"/>
+                </p:calendar>
+
+                <h:outputLabel id="lblTipo" class="styleOutputLabel" value="* Tipo Título" for="selOneMenuTipo" />
+                <p:selectOneMenu id="selOneMenuTipo" 
+                                 style="width: 200px;"
+                                 required="true"
+                                 requiredMessage="Informe o Tipo do Título."
+                                 value="#{tituloBeanView.objetoSelecionado.tipo}" >
+                    <f:selectItem id="selItemR" 
+                                  itemLabel="CONTAS A RECEBER"
+                                  itemValue="R"/>
+                    <f:selectItem id="selItemP" 
+                                  itemLabel="CONTAS A PAGAR"
+                                  itemValue="P"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel id="lblPessoa" class="styleOutputLabel" value="* Nome" for="txtPessoa" />
+                <p:inputText id="txtPessoa" 
+                             class="styleInputTextGrande ui-text-uppercase" 
+                             value="#{tituloBeanView.objetoSelecionado.pessoa}" 
+                             required="true" 
+                             maxlength="100" 
+                             requiredMessage="Informe a Pessoa do Título."/> 
+
+                <h:outputLabel id="lblValor" class="styleOutputLabel" value="* Valor" for="txtValor" />
+                <p:inputNumber id="txtValor"
+                               class="styleInputTextValor"
+                               value="#{tituloBeanView.objetoSelecionado.valor}"                               
+                               maxlength="15"
+                               decimalPlaces="2"
+                               thousandSeparator="."
+                               decimalSeparator="," >
+                    <p:ajax event="focus" onstart="selectAllValorOnFocus()" />
+                </p:inputNumber>                               
+            </h:panelGrid>               
+        </p:panel>
+
+        <script type="text/javascript" charset="UTF-8">
+            //Evita conflito entre bibliotecas:
+            jQuery.noConflict();
+
+            /**
+             * Função para selecionar todo o texto do input ao receber o foco
+             * 
+             * @param {type} input
+             * @returns {undefined}
+             */
+            function selectAllValorOnFocus() {
+                document.getElementById('form:txtValor_input').select();
+            }
+
+            //Foco no campo nome ao carregar a tela:
+//            jQuery('input[name="form:txtDataEmissao"]').focus();
+            addFocoAoCampo("txtDataEmissao");
+            tabInTeclaEnter();
+        </script>
+    </ui:define>
+</ui:decorate>

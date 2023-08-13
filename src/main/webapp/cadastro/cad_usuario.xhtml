@@ -93,7 +93,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              value="#{usuarioBeanView.objetoSelecionado.email}"
                              maxlength="100" />
 
-                <h:outputLabel id="lblTipo" class="styleOutputLabel" value="Tipo Usuário" for="selOneMenuTipo" />
+                <h:outputLabel id="lblTipo" class="styleOutputLabel" value="* Tipo Usuário" for="selOneMenuTipo" />
                 <p:selectOneMenu id="selOneMenuTipo" 
                                  style="width: 200px;"
                                  required="true"
@@ -120,7 +120,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             jQuery.noConflict();
 
             //Foco no campo nome ao carregar a tela:
-//            jQuery('input[name="form:txtNome"]').focus();
+//            jQuery('input[name="form:txtLogin"]').focus();
             addFocoAoCampo("txtLogin");
             tabInTeclaEnter();
         </script>
