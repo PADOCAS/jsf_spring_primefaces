@@ -275,10 +275,25 @@ function addMascaraPesquisa(elemento) {
     if (id !== undefined) {
         jQuery(function ($) {
             if (typeCampo === classTypeLong) {
+                jQuery(id).unmask();
+                $(id).unbind("keypress");
+                $(id).unbind("keyup");
+                $(id).unbind("focus");
+                $(id).val('');
                 $(id).keypress(permitNumber);
             } else if (typeCampo === classTypeBigDecimal) {
-                $(id).maskMoney({precision: 4, decimal: ",", thousands: "."});
+                jQuery(id).unmask();
+                $(id).unbind("keypress");
+                $(id).unbind("keyup");
+                $(id).unbind("focus");
+                $(id).val('');
+                $(id).maskMoney({precision: 2, decimal: ",", thousands: "."});
             } else if (typeCampo === classTypeDate) {
+                jQuery(id).unmask();
+                $(id).unbind("keypress");
+                $(id).unbind("keyup");
+                $(id).unbind("focus");
+                $(id).val('');
                 $(id).mask('99/99/9999');
             } else {
                 jQuery(id).unmask();

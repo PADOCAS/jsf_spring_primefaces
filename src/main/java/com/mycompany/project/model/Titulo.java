@@ -57,7 +57,7 @@ public class Titulo implements Serializable {
     private BigDecimal valor;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "data", updatable = false) //uppdatable = false -> Não vai atualizar esse campo em updates, apenas na inclusão!
     @IdentificaCampoPesquisa(campoBancoDeDados = "data", descricaoCampoEmTela = "Data Emissão", ordemCampoEmTela = 3)
     private Date data;
@@ -65,14 +65,14 @@ public class Titulo implements Serializable {
     @NotNull
     @Size(max = 1)
     @Column(name = "tipo")
-    @IdentificaCampoPesquisa(campoBancoDeDados = "tipo", descricaoCampoEmTela = "Tipo Título")
     private String tipo;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "usuario_abertura", updatable = false)
     @ForeignKey(name = "titulo_fk1")
-    @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioAbertura.nome", descricaoCampoEmTela = "Usuário Abertura", ordemCampoEmTela = 6)
+    //Nome campo banco de dados deve ser o mesmo do atributo para tabelas relacionadas (entidadeUsuarioAbertura)
+    @IdentificaCampoPesquisa(campoBancoDeDados = "entidadeUsuarioAbertura.nome", descricaoCampoEmTela = "Usuário Abertura", ordemCampoEmTela = 5)
     private Entidade entidadeUsuarioAbertura;
 
     //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)

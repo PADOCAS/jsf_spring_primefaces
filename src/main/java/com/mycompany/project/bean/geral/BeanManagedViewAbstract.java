@@ -10,8 +10,10 @@ import com.mycompany.project.enums.CondicaoPesquisa;
 import com.mycompany.project.report.util.BeanReportView;
 import com.mycompany.project.util.all.RegexUtil;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.faces.model.SelectItem;
 import org.hibernate.Query;
@@ -172,20 +174,79 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
 
         if (noCampoBancoCheck != null) {
             sql.append(" WHERE ");
-            sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
+
+            String valorFormatedBanco;
+            if (getObjetoCampoConsulta() != null
+                    && getObjetoCampoConsulta().getClasse() != null
+                    && getObjetoCampoConsulta().getClasse().equals("java.util.Date")
+                    && valorPesquisa != null
+                    && !valorPesquisa.trim().isEmpty()
+                    && valorPesquisa.length() == 10) {
+                //Valor Pesquisa exemplo: (java.lang.String) "13/08/2023"
+                //Banco de dados: 2023-08-13 (Converte para filtrar):
+                valorFormatedBanco = new StringBuilder(valorPesquisa.substring(6)).append("-")
+                        .append(valorPesquisa.substring(3, 5)).append("-")
+                        .append(valorPesquisa.substring(0, 2)).toString();
+
+                //Valida Data:
+                try {
+                    org.joda.time.LocalDate date = new org.joda.time.LocalDate(Integer.parseInt(valorPesquisa.substring(6)), Integer.parseInt(valorPesquisa.substring(3, 5)), Integer.parseInt(valorPesquisa.substring(0, 2)));
+                    System.out.println(date.toString("dd/MM/yyyy"));
+                } catch (org.joda.time.IllegalFieldValueException ex) {
+                    throw new Exception("Data inválida!");
+                }
+            } else if (getObjetoCampoConsulta() != null
+                    && getObjetoCampoConsulta().getClasse() != null
+                    && getObjetoCampoConsulta().getClasse().equals("java.math.BigDecimal")
+                    && valorPesquisa != null
+                    && !valorPesquisa.trim().isEmpty()) {
+                //Valor Pesquisa exemplo: (java.lang.String) 1.550.004.231,12
+                //Banco de dados: 1550005231.12
+                valorFormatedBanco = new StringBuilder(valorPesquisa.replaceAll("\\.", "").replaceAll(",", ".")).toString();
+            } else {
+                valorFormatedBanco = valorPesquisa;
+            }
 
             switch (getObjetoCondicaoConsulta() == null ? CondicaoPesquisa.CONTEM : getObjetoCondicaoConsulta()) {
                 case CONTEM:
-                    sql.append(" LIKE retira_acentos(upper('%").append(valorPesquisa).append("%')) ");
+                    sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
+                    sql.append(" LIKE retira_acentos(upper('%").append(valorFormatedBanco).append("%')) ");
                     break;
                 case IGUAL:
-                    sql.append(" = retira_acentos(upper('").append(valorPesquisa).append("')) ");
+                    sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
+                    sql.append(" = retira_acentos(upper('").append(valorFormatedBanco).append("')) ");
                     break;
                 case INICIA:
-                    sql.append(" LIKE retira_acentos(upper('").append(valorPesquisa).append("%')) ");
+                    if (getObjetoCampoConsulta() != null
+                            && getObjetoCampoConsulta().getClasse() != null
+                            && ((getObjetoCampoConsulta().getClasse().equals("java.util.Date"))
+                            || (getObjetoCampoConsulta().getClasse().equals("java.math.BigDecimal")))) {
+                        sql.append(" entity.").append(noCampoBancoCheck).append(" ");
+                        if (getObjetoCampoConsulta().getClasse().equals("java.util.Date")) {
+                            sql.append(" >= '").append(valorFormatedBanco).append("' ");
+                        } else {
+                            sql.append(" >= ").append(valorFormatedBanco).append(" ");
+                        }
+                    } else {
+                        sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
+                        sql.append(" LIKE retira_acentos(upper('").append(valorFormatedBanco).append("%')) ");
+                    }
                     break;
                 case TERMINA:
-                    sql.append(" LIKE retira_acentos(upper('%").append(valorPesquisa).append("')) ");
+                    if (getObjetoCampoConsulta() != null
+                            && getObjetoCampoConsulta().getClasse() != null
+                            && ((getObjetoCampoConsulta().getClasse().equals("java.util.Date"))
+                            || (getObjetoCampoConsulta().getClasse().equals("java.math.BigDecimal")))) {
+                        sql.append(" entity.").append(noCampoBancoCheck).append(" ");
+                        if (getObjetoCampoConsulta().getClasse().equals("java.util.Date")) {
+                            sql.append(" <= '").append(valorFormatedBanco).append("' ");
+                        } else {
+                            sql.append(" <= ").append(valorFormatedBanco).append(" ");
+                        }
+                    } else {
+                        sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
+                        sql.append(" LIKE retira_acentos(upper('%").append(valorFormatedBanco).append("')) ");
+                    }
                     break;
                 default:
                     break;
