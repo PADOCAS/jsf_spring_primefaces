@@ -340,7 +340,7 @@ public class TituloBeanView extends BeanManagedViewAbstract {
         //Parâmetros para o Relatório:
         setNomeRelatorioJasper("titulo_report");
         setNomeRelatorioSaida("titulo_report");
-        setListDataBeanCollectionReport(tituloController.findListByQueryDinamica(" FROM Titulo ORDER BY codigo"));
+        setListDataBeanCollectionReport(tituloController.findListByQueryDinamica(" FROM Titulo ORDER BY tipo, data, codigo"));
 
         return super.getArquivoReport();
     }
