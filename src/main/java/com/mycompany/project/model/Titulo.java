@@ -58,7 +58,7 @@ public class Titulo implements Serializable {
 
     @NotNull
     @Temporal(TemporalType.DATE)
-    @Column(name = "data", updatable = false) //uppdatable = false -> Não vai atualizar esse campo em updates, apenas na inclusão!
+    @Column(name = "data")
     @IdentificaCampoPesquisa(campoBancoDeDados = "data", descricaoCampoEmTela = "Data Emissão", ordemCampoEmTela = 3)
     private Date data;
 

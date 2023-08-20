@@ -267,7 +267,10 @@ function addMascaraPesquisa(elemento) {
     var campoBanco = vals[0];
     var typeCampo = vals[1];
 
+    //Retira a mascará padrão para não deixar bugado as mascáras quando troca de Classe para o componente:
     jQuery(id).unmask();
+    //retira a mascára também do money para não deixar bugado as mascáras quando troca de Classe para o componente:
+    jQuery(id).maskMoney('destroy');
     $(id).unbind("keypress");
     $(id).unbind("keyup");
     $(id).unbind("focus");
@@ -276,6 +279,7 @@ function addMascaraPesquisa(elemento) {
         jQuery(function ($) {
             if (typeCampo === classTypeLong) {
                 jQuery(id).unmask();
+                jQuery(id).maskMoney('destroy');
                 $(id).unbind("keypress");
                 $(id).unbind("keyup");
                 $(id).unbind("focus");
@@ -283,6 +287,7 @@ function addMascaraPesquisa(elemento) {
                 $(id).keypress(permitNumber);
             } else if (typeCampo === classTypeBigDecimal) {
                 jQuery(id).unmask();
+                jQuery(id).maskMoney('destroy');
                 $(id).unbind("keypress");
                 $(id).unbind("keyup");
                 $(id).unbind("focus");
@@ -290,6 +295,7 @@ function addMascaraPesquisa(elemento) {
                 $(id).maskMoney({precision: 2, decimal: ",", thousands: "."});
             } else if (typeCampo === classTypeDate) {
                 jQuery(id).unmask();
+                jQuery(id).maskMoney('destroy');
                 $(id).unbind("keypress");
                 $(id).unbind("keyup");
                 $(id).unbind("focus");
@@ -297,6 +303,7 @@ function addMascaraPesquisa(elemento) {
                 $(id).mask('99/99/9999');
             } else {
                 jQuery(id).unmask();
+                jQuery(id).maskMoney('destroy');
                 $(id).unbind("keypress");
                 $(id).unbind("keyup");
                 $(id).unbind("focus");

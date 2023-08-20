@@ -223,9 +223,9 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
                             || (getObjetoCampoConsulta().getClasse().equals("java.math.BigDecimal")))) {
                         sql.append(" entity.").append(noCampoBancoCheck).append(" ");
                         if (getObjetoCampoConsulta().getClasse().equals("java.util.Date")) {
-                            sql.append(" >= '").append(valorFormatedBanco).append("' ");
+                            sql.append(" >= '").append((valorFormatedBanco.isEmpty() ? "0001-01-01" : valorFormatedBanco)).append("' ");
                         } else {
-                            sql.append(" >= ").append(valorFormatedBanco).append(" ");
+                            sql.append(" >= ").append((valorFormatedBanco.isEmpty() ? "0.00" : valorFormatedBanco)).append(" ");
                         }
                     } else {
                         sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
@@ -239,9 +239,9 @@ public abstract class BeanManagedViewAbstract extends BeanReportView {
                             || (getObjetoCampoConsulta().getClasse().equals("java.math.BigDecimal")))) {
                         sql.append(" entity.").append(noCampoBancoCheck).append(" ");
                         if (getObjetoCampoConsulta().getClasse().equals("java.util.Date")) {
-                            sql.append(" <= '").append(valorFormatedBanco).append("' ");
+                            sql.append(" <= '").append((valorFormatedBanco.isEmpty() ? "9999-12-31" : valorFormatedBanco)).append("' ");
                         } else {
-                            sql.append(" <= ").append(valorFormatedBanco).append(" ");
+                            sql.append(" <= ").append((valorFormatedBanco.isEmpty() ? "999999999999999.99" : valorFormatedBanco)).append(" ");
                         }
                     } else {
                         sql.append(" retira_acentos(upper(cast(entity.").append(noCampoBancoCheck).append(" as text))) ");
