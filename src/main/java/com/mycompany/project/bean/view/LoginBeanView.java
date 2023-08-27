@@ -18,8 +18,7 @@ import org.springframework.stereotype.Controller;
 import com.mycompany.srv.interfaces.ServiceLogin;
 import com.mycompany.project.geral.controller.SessionController;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  *
@@ -52,7 +51,8 @@ public class LoginBeanView extends BeanManagedViewAbstract {
      * @param httpServletRequest
      * @throws Exception
      */
-    @RequestMapping(value = "**/invalidar_sessao", method = RequestMethod.POST)
+//    @RequestMapping(value = "**/invalidar_sessao", method = RequestMethod.POST)
+    @PostMapping("**/invalidar_sessao")
     public void invalidarSessaoUsuarioLogout(HttpServletRequest httpServletRequest) throws Exception {
         String userLogadoSessao = null;
 

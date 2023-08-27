@@ -232,6 +232,6 @@
     <!--Deve ser mapeado com o nome do nosso contextPath para sempre que acessar o caminho root encaminhar para o welcomeFile (pagina de login.jsp)-->
     <servlet-mapping>
         <servlet-name>spring-servlet</servlet-name>
-        <url-pattern>/jsf_spring_primefaces/*</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>

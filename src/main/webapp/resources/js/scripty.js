@@ -117,11 +117,15 @@ function logout(contextPath) {
     //Executar essa ação com um post usando spring para invalidar sessão do usuário ao fazer logout:
     var urlPost = 'invalidar_sessao';
 
+    //Caso quiser debugar o JavaScript vai parar aqui ao rodar:
+    //MUITO BOM!!!!!!!
+//    debugger;
+
     $.ajax({
         type: 'POST',
         url: urlPost
     }).always(function resposta() {
-        //Executar isso sempre depois que a função ajax post for executada!!! 
+        //Executar isso sempre depois que a função ajax post for executada, independente se deu sucesso ou não!!! 
         //Chamando o Spring Security para encerrar a sessão de controle do usuário e voltar para tela de login:
         document.location = contextPath + '/j_spring_security_logout';
     });
@@ -351,7 +355,7 @@ function pesquisaUserDestinoPerderFocoDialog(codUser) {
             && codUser.trim() !== '') {
         $("#txtUsuarioDestinoCodigo").val('');
         $("#txtUsuarioDestinoLogin").val('');
-        
+
         $.get("buscarUsuarioDestinoMsg?codEntidade=" + codUser, function (resposta) {
             if (resposta !== null
                     && resposta.trim() !== '') {

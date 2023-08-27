@@ -198,7 +198,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                     </sec:authorize>
                                 </p:submenu>
                             </sec:authorize>
-                            
+
                             <sec:authorize access="isAuthenticated() 
                                            and (hasAuthority('MOVIMENTO_ACESSAR') or hasAuthority('ADMIN'))">
                                 <p:submenu id="subMenuMovimento" 
@@ -213,7 +213,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                     </sec:authorize>
                                 </p:submenu>
                             </sec:authorize>
-                            
+
                             <p:menuitem id="menuSair"
                                         value="Sair"
                                         process="@this"

@@ -12,17 +12,141 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:sec="http://www.springframework.org/security/tags"
              xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:define name="corpo">
-        <div>Tela Principal do Sistema..</div>
 
+    <ui:define name="head" >
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </ui:define>
+    <ui:define name="corpo">
         <!--Tags do Spring Security seguir esse padrão como no arquivo (applicationContext-security.xml)-->
-        <sec:authorize access="isAuthenticated() and hasAuthority('ADMIN')">
-            <p:commandButton id="cmdExecute" 
-                             ajax="true" 
-                             onstart="PF('statusDialog').show();" 
-                             onsuccess="PF('statusDialog').hide();"
-                             update="@form, @(message)"
-                             value="Teste Ajax Progress Bar (F2)" />
+        <sec:authorize access="isAuthenticated() 
+                       and ((hasAuthority('MOVIMENTO_ACESSAR') and hasAuthority('TITULO_ACESSAR')) or (hasAuthority('ADMIN')))">
+            <!--Gráfico de resumo dos títulos montado com Google Charts-->
+            <p:panel>
+                <script type="text/javascript">
+                    google.charts.load('current', {'packages': ['bar'], 'language': 'pt-BR'});
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    var data;
+                    var chart;
+
+                    var options = {
+                        titleTextStyle: {
+                            fontSize: 18, // Definir o tamanho da fonte do título
+                            bold: true    // Definir como negrito
+                        },
+                        subtitleTextStyle: {
+                            fontSize: 14, // Definir o tamanho da fonte do subtítulo
+                            bold: false   // Deixar o subtítulo sem negrito
+                        },
+                        legend: {
+                            position: 'top',
+                            textStyle: {
+                                fontSize: 14 // Definir o tamanho da fonte
+                            }
+                        },
+                        chart: {
+                            title: "Resumo dos Títulos",
+                            subtitle: 'Resumo geral de títulos em aberto: Contas a Pagar e Contas a Receber'
+                        },
+                        hAxis: {
+                            title: 'Tipo do Título',
+                            minValue: 0
+                        },
+                        vAxis: {
+                            title: 'Qtde em Aberto x Valor Total Títulos (R$)',
+                            minValue: 0, // Defina um valor mínimo para o eixo vertical
+                            gridlines: {count: 0}
+                        },
+                        colors: ['#1E90FF', '#B22222'], // Cores das séries
+                        series: {
+                            0: {targetAxisIndex: 0,
+                                titleTextStyle: {
+                                    fontSize: 16, // Definir o tamanho da fonte do título da série
+                                    bold: true    // Definir como negrito
+                                },
+                                legend: {
+                                    textStyle: {
+                                        fontSize: 14, // Definir o tamanho da fonte da legenda da série
+                                        bold: true    // Definir como negrito
+                                    }
+                                }
+                            },
+                            1: {targetAxisIndex: 1,
+                                titleTextStyle: {
+                                    fontSize: 16, // Definir o tamanho da fonte do título da série
+                                    bold: true    // Definir como negrito
+                                },
+                                legend: {
+                                    textStyle: {
+                                        fontSize: 14, // Definir o tamanho da fonte da legenda da série
+                                        bold: true    // Definir como negrito
+                                    }
+                                }
+                            }
+                        },
+                        vAxes: {
+                            // Define as configurações para cada eixo vertical
+                            0: {title: 'Quantidade de títulos',
+                                format: '0'
+                            },
+                            1: {title: 'Valor Total (R$)',
+                                format: 'currency',
+                                prefix: 'R$',
+                                groupSymbol: '.',
+                                decimalSymbol: ',',
+                                fractionDigits: 2}
+                        },
+                        bars: "vertical"
+                    };
+
+                    function drawChart() {
+                        jQuery.ajax({
+                            type: 'POST',
+                            //URL está no TituloController(Spring) -> RequestMapping(..):
+                            url: "gerarGraficoTitulo"
+                                    //Caso quiser fazer algo antes de chamar a requisição (beforeSend):
+                                    //beforeSend: () => console.log("Chamada POST!")
+                        }).then((response) => {
+                            //then: São chamadas em cascada, conforme for passando em done vai passando de um then para o outro de cima para baixo, sempre fazendo em sequência:
+                            //Converte nosso MAP de títulos em JSON:
+                            return JSON.parse(response);
+                        }).then((resposta) => {
+                            data = google.visualization.arrayToDataTable(resposta);
+
+                            chart = new google.charts.Bar(document.getElementById('chart_titulo'));
+                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        }).fail((error) => {
+                            console.log("Erro na requisição: \n" + error);
+                        });
+                    }
+
+                    /**
+                     * Função para redesenhar o gráfico ao mudar o tamanho da tela (resize):
+                     * @returns {undefined}
+                     */
+                    function redrawChart() {
+                        if (data !== null) {
+                            if (data !== undefined) {
+                                if (options !== null) {
+                                    if (options !== undefined) {
+                                        chart.draw(data, google.charts.Bar.convertOptions(options));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Chama redrawChart sempre que houver uma mudança no tamanho da tela
+                    window.addEventListener('resize', redrawChart);
+
+                    // Desenha o gráfico inicialmente
+                    redrawChart();
+                </script>
+
+                <div id="chart_titulo" style="width: 100%; height: calc(100vh - 125px);">
+
+                </div>           
+            </p:panel>
         </sec:authorize>
     </ui:define>
 </ui:decorate>
