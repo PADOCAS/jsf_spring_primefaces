@@ -634,6 +634,23 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
     border: 1px solid white !important;
 }
 
+/*Notificações:*/
+.ui-badge-danger {
+    background: #d32f2f !important;
+    color: #FFFFFF !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    padding: 0px 5px 0px 5px !important;
+}
+
+.ui-badge-info {
+    background: #0288d1 !important;
+    color: #FFFFFF !important;
+    font-size: 15px !important;
+    font-weight: bold;
+    padding: 0px 5px 0px 5px !important;
+}
+
 @media (max-width: 720px) {
     #formlogin {
         right: 10px !important;

@@ -22,32 +22,16 @@ public enum Permissao {
     CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
     MOVIMENTO_ACESSAR("MOVIMENTO_ACESSAR", "Movimento - Acessar"),
     //Cadastros:
-    //Cad. Bairro:
-    BAIRRO_ACESSAR("BAIRRO_ACESSAR", "Bairro - Acessar"),
-    BAIRRO_SALVAR("BAIRRO_SALVAR", "Bairro - Salvar"),
-    BAIRRO_EDITAR("BAIRRO_EDITAR", "Bairro - Editar"),
-    BAIRRO_EXCLUIR("BAIRRO_EXCLUIR", "Bairro - Excluir"),
     //Cad. Cidade:
     CIDADE_ACESSAR("CIDADE_ACESSAR", "Cidade - Acessar"),
     CIDADE_SALVAR("CIDADE_SALVAR", "Cidade - Salvar"),
     CIDADE_EDITAR("CIDADE_EDITAR", "Bairro - Editar"),
-    CIDADE_EXCLUIR("CIDADE_EXCLUIR", "Bairro - Excluir"),
-    //Cad. País:
-    PAIS_ACESSAR("PAIS_ACESSAR", "País - Acessar"),
-    PAIS_SALVAR("PAIS_SALVAR", "País - Salvar"),
-    PAIS_EDITAR("PAIS_EDITAR", "País - Editar"),
-    PAIS_EXCLUIR("PAIS_EXCLUIR", "País - Excluir"),
+    CIDADE_EXCLUIR("CIDADE_EXCLUIR", "Bairro - Excluir"),   
     //Cad. Usuário:
     USUARIO_ACESSAR("USUARIO_ACESSAR", "Usuário - Acessar"),
     USUARIO_SALVAR("USUARIO_SALVAR", "Usuário - Salvar"),
     USUARIO_EDITAR("USUARIO_EDITAR", "Usuário - Editar"),
     USUARIO_EXCLUIR("USUARIO_EXCLUIR", "Usuário - Excluir"),
-    //Mensagens:
-    MENSAGEM_ACESSAR("MENSAGEM_ACESSAR", "Mensagem Recebida - Acessar"),
-    MENSAGENS_ENVIAR_ACESSAR("MENSAGENS_ENVIAR_ACESSAR", "Enviar mensagem - Acessar"),
-    MENSAGENS_ENVIAR_NOVO("MENSAGENS_ENVIAR_NOVO", "Enviar mensagem - Novo"),
-    MENSAGENS_ENVIAR_EDITAR("MENSAGENS_ENVIAR_EDITAR", "Enviar mensagem - Editar"),
-    MENSAGENS_ENVIAR_EXCLUIR("MENSAGENS_ENVIAR_EXCLUIR", "Enviar mensagem - Excluir"),
     //Movimentos:
     //Título:
     TITULO_ACESSAR("TITULO_ACESSAR", "Título - Acessar"),

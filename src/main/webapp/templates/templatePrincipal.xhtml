@@ -99,6 +99,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 <h:graphicImage library="img" name="spring-boot-logo.png" width="187px" height="75px;" id="logoImg" styleClass="bordaImagem" />
                             </span>
 
+                            <a id="linkNotification" href="#" style="display: flex;
+                               flex-direction: row;
+                               justify-content: center;
+                               margin-top: 15px;
+                               margin-left: 947px;">  
+                                <p:badge value="4" severity="danger" visible="true">
+                                    <i class="pi pi-envelope ml-4" style="font-size: 2rem; color: #6db33f"/>
+                                </p:badge>
+                            </a>
+
                             <span id="dadoslogin"> 
                                 Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
                                 <br/> 
@@ -139,8 +149,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                     <!--MenuPop ao utilizar o logout e sair do sistema:-->
                     <div id="menupop">
-                        <sec:authorize access="isAuthenticated() 
-                                       and (hasAuthority('MENSAGENS_ENVIAR_ACESSAR') or hasAuthority('ADMIN'))">
+                        <sec:authorize access="isAuthenticated()">
                             <p:commandLink id="cmdEnviarMensagem"
                                            actionListener="#{mensagemBeanView.initComponentes()}"
                                            value="Enviar Mensagem"
@@ -173,13 +182,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             <sec:authorize access="isAuthenticated() 
                                            and (hasAuthority('CADASTRO_ACESSAR') or hasAuthority('ADMIN'))">
                                 <p:submenu id="subMenuCadastros" 
-                                           label="Cadastros" >
-                                    <sec:authorize access="(hasAuthority('PAIS_ACESSAR') or hasAuthority('ADMIN'))">
-                                        <p:menuitem id="menuCadPais" value="País"/>
-                                    </sec:authorize>
-                                    <sec:authorize access="(hasAuthority('ESTADO_ACESSAR') or hasAuthority('ADMIN'))">
-                                        <p:menuitem id="menuCadEstado" value="Estado" />
-                                    </sec:authorize>                                   
+                                           label="Cadastros" >                         
                                     <sec:authorize access="(hasAuthority('CIDADE_ACESSAR') or hasAuthority('ADMIN'))">
                                         <p:menuitem id="menuCadCidade" 
                                                     value="Cidade" 
