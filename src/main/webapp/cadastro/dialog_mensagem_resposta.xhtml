@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:sec="http://www.springframework.org/security/tags"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:form id="formResponderMensagem" >   
+        <p:panel id="pnlResponderMensagem">
+            <h:panelGrid id="pnlGridResponderMensagem" columns="2" >
+                
+            </h:panelGrid>
+
+            <p:separator id="sepResponderMensagem" style="margin-top: 3px;" />
+
+            <div id="pnlGridBotoesResponderMensagem" style="margin-top: 3px; display: flex; flex-direction: row; justify-content: center;" >                
+                <p:commandButton id="btnEnviarMensagem" 
+                                 value="Enviar (F2)" 
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
+                                 update="formResponderMensagem, @widgetVar(message)"
+                                 process="@this, @form" />  
+
+                <p:commandButton id="btnCancelarEnviarMensagem" 
+                                 style="margin-left: 3px;"
+                                 value="Cancelar (ESC)"                                  
+                                 onstart="PF('statusDialog').show();" 
+                                 onsuccess="PF('statusDialog').hide();"
+                                 update="form, @widgetVar(message)"
+                                 oncomplete="PF('mensagemRespostaDialog').hide();"
+                                 process="@this" />
+            </div>            
+        </p:panel>
+    </h:form>
+</html>
