@@ -99,36 +99,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 <h:graphicImage library="img" name="spring-boot-logo.png" width="187px" height="75px;" id="logoImg" styleClass="bordaImagem" />
                             </span>
 
-                            <a id="linkNotification" href="#" style="display: flex;
-                               flex-direction: row;
-                               justify-content: center;
-                               margin-top: 15px;
-                               margin-left: 947px;">  
-                                <p:badge value="4" severity="danger" visible="true">
-                                    <i class="pi pi-envelope ml-4" style="font-size: 2rem; color: #6db33f"/>
-                                </p:badge>
-                            </a>
-
-                            <span id="dadoslogin"> 
-                                Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
-                                <br/> 
-                                Último login: 
-                                <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" id="saidaUltimoAcesso">
-                                    <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
-                                                       dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
-                                </h:outputLabel>
-                                <br/> 
-                                <a href="#" id="logoutSuperior" style="color: ghostwhite !important;" onclick="javascript:logout('#{request.contextPath}');">Sair</a>
-                            </span>
-
-                            <span id="menuSistema" style="position: absolute; right: 25px; top: 45px; width: 20px">
-                                <a href="#" onclick="abrirMenupop()">
-                                    <h:graphicImage library="img" name="seta_baixo.png"
-                                                    height="14px"
-                                                    width="19px"
-                                                    styleClass="bordaImagem" id="imaSetaBaixo"/>
+                            <div id="divCabecalhoRight">
+                                <a id="linkNotification" href="#">  
+                                    <p:badge value="4" severity="danger" visible="true">
+                                        <i class="pi pi-envelope ml-4" style="font-size: 2rem; color: #6db33f"/>
+                                    </p:badge>
                                 </a>
-                            </span> 
+
+                                <span id="dadoslogin"> 
+                                    Usuário: #{entidadeBeanView.usuarioLogadoSecurity}
+                                    <br/> 
+                                    Último login: 
+                                    <h:outputLabel value="#{entidadeBeanView.ultimoAcesso}" id="saidaUltimoAcesso">
+                                        <f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+                                                           dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
+                                    </h:outputLabel>
+                                    <br/> 
+                                    <a href="#" id="logoutSuperior" style="color: ghostwhite !important;" onclick="javascript:logout('#{request.contextPath}');">Sair</a>
+                                </span>
+
+                                <span id="menuSistema" style="position: absolute; right: 4px; top: 32px; width: 20px">
+                                    <a href="#" onclick="abrirMenupop()">
+                                        <h:graphicImage library="img" name="seta_baixo.png"
+                                                        height="14px"
+                                                        width="19px"
+                                                        styleClass="bordaImagem" id="imaSetaBaixo"/>
+                                    </a>
+                                </span> 
+                            </div>
                         </div>
                     </div>
 
