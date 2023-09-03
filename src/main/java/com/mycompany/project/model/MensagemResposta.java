@@ -27,27 +27,27 @@ import org.hibernate.envers.Audited;
  */
 @Audited
 @Entity
-@Table(name = "mensagem_resp")
-@SequenceGenerator(name = "mensagem_resp_seq", initialValue = 1, allocationSize = 1)
+@Table(name = "mensagem_resposta")
+@SequenceGenerator(name = "mensagem_resposta_seq", initialValue = 1, allocationSize = 1)
 public class MensagemResposta implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mensagem_resp_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mensagem_resposta_seq")
     private Long codigo;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @ForeignKey(name = "mensagem_resp_fk1")
-    @JoinColumn(name = "mensagem_pai", referencedColumnName = "codigo")
+    @ForeignKey(name = "mensagem_resposta_fk1")
+    @JoinColumn(name = "cod_mensagem_pai", referencedColumnName = "codigo")
     private Mensagem mensagemPai;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @ForeignKey(name = "mensagem_resp_fk2")
-    @JoinColumn(name = "mensagem_resposta", referencedColumnName = "codigo")
+    @ForeignKey(name = "mensagem_resposta_fk2")
+    @JoinColumn(name = "cod_mensagem_resposta", referencedColumnName = "codigo")
     private Mensagem mensagemResposta;
 
     //Tratamento para registrar a sequencia de interações que foram feita (inclusão, alteração, etc.)
