@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -152,8 +153,10 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
     }
 
     /**
-     * Retorna o tipo de layaout de mensagens em tela (icone) para o usuário de acordo com as mensagens pendentes de serem lidas
-     * @return 
+     * Retorna o tipo de layaout de mensagens em tela (icone) para o usuário de
+     * acordo com as mensagens pendentes de serem lidas
+     *
+     * @return
      */
     public String getLayoutNotificacoesUser() {
         try {
@@ -172,6 +175,28 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         }
 
         return "info";
+    }
+
+    public void verifyMensagensPendentes() {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("existsMensagemPendente", false);
+
+        try {
+            if (contextoBean != null
+                    && contextoBean.getEntidadeLogada() != null
+                    && contextoBean.getEntidadeLogada().getCodigo() != null) {
+                Long totalNotificacoes = mensagemController.getTotalNotificacoesUser(contextoBean.getEntidadeLogada().getCodigo());
+
+                if (totalNotificacoes != null
+                        && totalNotificacoes > 0) {
+                    PrimeRequestContext.getCurrentInstance().getCallbackParams().put("existsMensagemPendente", true);
+                } else {
+                    com.mycompany.project.message.util.Mensagem.msgSeverityWarn("Você não tem nenhuma mensagem pendente!", "Atenção");
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            com.mycompany.project.message.util.Mensagem.msgSeverityError("Erro ao verificar mensagens!<br><br>" + ex.getMessage(), "Erro");
+        }
     }
 
     @Override
