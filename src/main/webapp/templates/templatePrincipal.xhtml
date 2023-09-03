@@ -101,7 +101,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                             <div id="divCabecalhoRight">
                                 <a id="linkNotification" href="#">  
-                                    <p:badge value="4" severity="danger" visible="true">
+                                    <p:badge value="#{mensagemBeanView.getTotalNotificacoesUser()}" severity="#{mensagemBeanView.getLayoutNotificacoesUser()}" visible="true">
                                         <i class="pi pi-envelope ml-4" style="font-size: 2rem; color: #6db33f"/>
                                     </p:badge>
                                 </a>

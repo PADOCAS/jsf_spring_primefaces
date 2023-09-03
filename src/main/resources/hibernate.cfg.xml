@@ -39,6 +39,7 @@
         <mapping class="com.mycompany.project.model.Estado" />
         <mapping class="com.mycompany.project.model.Cidade" />
         <mapping class="com.mycompany.project.model.Mensagem" />
+        <mapping class="com.mycompany.project.model.MensagemResposta" />
         <mapping class="com.mycompany.project.model.Titulo" />
 <!--        <mapping class="br.com.project.model.classes.Pais" />
         <mapping class="br.com.project.model.classes.Estado" />

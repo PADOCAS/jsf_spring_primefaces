@@ -8,6 +8,7 @@ import com.mycompany.project.annotation.IdentificaCampoPesquisa;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -18,14 +19,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Length;
 import org.primefaces.shaded.json.JSONObject;
 
@@ -91,6 +96,18 @@ public class Mensagem implements Serializable {
     @Version
     @Column(name = "versionnum")
     private Integer versionnum;
+
+    //Relacionamento de volta, não auditado:
+    @NotAudited
+    @OneToMany(mappedBy = "mensagemPai", orphanRemoval = false)
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<MensagemResposta> listMensagemRespostaPai;
+
+    //Relacionamento de volta, não auditado:
+    @NotAudited
+    @OneToMany(mappedBy = "mensagemResposta", orphanRemoval = false)
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<MensagemResposta> listMensagemRespostaResp;
 
     public Mensagem() {
         this.exigirResposta = false;
@@ -167,6 +184,22 @@ public class Mensagem implements Serializable {
 
     public void setVersionnum(Integer versionnum) {
         this.versionnum = versionnum;
+    }
+
+    public List<MensagemResposta> getListMensagemRespostaPai() {
+        return listMensagemRespostaPai;
+    }
+
+    public void setListMensagemRespostaPai(List<MensagemResposta> listMensagemRespostaPai) {
+        this.listMensagemRespostaPai = listMensagemRespostaPai;
+    }
+
+    public List<MensagemResposta> getListMensagemRespostaResp() {
+        return listMensagemRespostaResp;
+    }
+
+    public void setListMensagemRespostaResp(List<MensagemResposta> listMensagemRespostaResp) {
+        this.listMensagemRespostaResp = listMensagemRespostaResp;
     }
 
     /**

@@ -126,6 +126,54 @@ public class MensagemBeanView extends BeanManagedViewAbstract {
         com.mycompany.project.message.util.Mensagem.msgSeverityInfo("Mensagem enviada com sucesso!", "OK");
     }
 
+    //Métodos para tratamento mensagens recebidas (notificações aos usuários):
+    /**
+     * Retorna o número de mensagens pendentes de serem lidas para o usuário
+     * logado
+     *
+     * @return
+     */
+    public String getTotalNotificacoesUser() {
+        try {
+            if (contextoBean != null
+                    && contextoBean.getEntidadeLogada() != null
+                    && contextoBean.getEntidadeLogada().getCodigo() != null) {
+                Long totalNotificacoes = mensagemController.getTotalNotificacoesUser(contextoBean.getEntidadeLogada().getCodigo());
+
+                if (totalNotificacoes != null) {
+                    return totalNotificacoes.toString();
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "0";
+    }
+
+    /**
+     * Retorna o tipo de layaout de mensagens em tela (icone) para o usuário de acordo com as mensagens pendentes de serem lidas
+     * @return 
+     */
+    public String getLayoutNotificacoesUser() {
+        try {
+            if (contextoBean != null
+                    && contextoBean.getEntidadeLogada() != null
+                    && contextoBean.getEntidadeLogada().getCodigo() != null) {
+                Long totalNotificacoes = mensagemController.getTotalNotificacoesUser(contextoBean.getEntidadeLogada().getCodigo());
+
+                if (totalNotificacoes != null
+                        && totalNotificacoes > 0L) {
+                    return "danger";
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemBeanView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "info";
+    }
+
     @Override
     protected Class<?> getClassImplement() {
         return Mensagem.class;
