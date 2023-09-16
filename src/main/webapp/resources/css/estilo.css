@@ -460,6 +460,20 @@ input[type=submit] {
     justify-content: end;
 }
 
+.ui-carousel-prev-icon {
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: cornsilk;
+}
+
+.ui-carousel-next-icon {
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: cornsilk;
+}
+
 a.ui-menuitem-link.ui-corner-all.ui-state-hover {
     color: ghostwhite;
     background: none repeat scroll 0% 0% #6db33f;

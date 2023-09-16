@@ -51,13 +51,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  update="form:alterarSenhaDialog, @widgetVar(message)"
                                  oncomplete="PF('alterarSenhaDialog').show();"
                                  process="@this" />
-                
+
                 <p:remoteCommand id="remComOpenMensagemResposta"
                                  name="remComOpenMensagemResposta"
-                                 actionListener="#{mensagemBeanView.verifyMensagensPendentes()}"
-                                 update="form:mensagemRespostaDialog, @widgetVar(message)"
-                                 oncomplete="if(args.existsMensagemPendente) {PF('mensagemRespostaDialog').show();};"
+                                 actionListener="#{mensagemRespostaBeanView.verifyMensagensPendentes()}"
+                                 update="@widgetVar(message)"
+                                 oncomplete="if(args.existsMensagemPendente) {remComConfirmOpenMensagemResposta();};"
                                  process="@this" />
+
+                <p:remoteCommand id="remComConfirmOpenMensagemResposta"
+                                 name="remComConfirmOpenMensagemResposta"
+                                 actionListener="#{mensagemRespostaBeanView.initComponentes()}"
+                                 update="form:mensagemRespostaDialog, @widgetVar(message)"
+                                 process="@this"
+                                 onstart="PF('statusDialog').show();"
+                                 onsuccess="PF('statusDialog').hide();"
+                                 oncomplete="PF('mensagemRespostaDialog').show();"/>
 
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
@@ -108,7 +117,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                             <div id="divCabecalhoRight">
                                 <a id="linkNotification" href="#" onclick="remComOpenMensagemResposta();">  
-                                    <p:badge value="#{mensagemBeanView.getTotalNotificacoesUser()}" severity="#{mensagemBeanView.getLayoutNotificacoesUser()}" visible="true">
+                                    <p:badge value="#{mensagemRespostaBeanView.getTotalNotificacoesUser()}" severity="#{mensagemRespostaBeanView.getLayoutNotificacoesUser()}" visible="true">
                                         <i class="pi pi-envelope ml-4" style="font-size: 2rem; color: #6db33f"/>
                                     </p:badge>
                                 </a>
@@ -252,14 +261,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                               dynamic="true">
                         <ui:include src="/cadastro/dialog_enviar_mensagem.xhtml" />
                     </p:dialog>
-                    
+
                     <p:dialog id="mensagemRespostaDialog"
                               widgetVar="mensagemRespostaDialog"
                               modal="true" 
                               class="ui-dialog-ative-atalho"
                               closable="false"
                               resizable="false" 
-                              header="Mensagens" 
+                              header="Mensagem Pendente" 
                               dynamic="true">
                         <ui:include src="/cadastro/dialog_mensagem_resposta.xhtml" />
                     </p:dialog>

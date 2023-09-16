@@ -16,23 +16,134 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
     <h:form id="formResponderMensagem" >   
         <p:panel id="pnlResponderMensagem">
+            <!--Histórico de mensagens anteriores: (inicia com o histórico fechado se o usuário quiser ele abre)-->
+            <!--collapsed=true abre fechado-->
+            <p:fieldset id="fieldSetHistoricoMensagensAnteriores" 
+                        legend="Histórico Mensagens Anteriores" 
+                        toggleable="true" 
+                        collapsed="#{true}" 
+                        toggleSpeed="500" 
+                        title="Histórico Mensagens Anteriores" 
+                        rendered="#{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto ne null 
+                                    and not empty mensagemRespostaBeanView.objetoSelecionado.exigirResposta}"
+                        style="background: cornsilk; width: 450px;">
+                <p:ajax event="toggle" update="carouselHistorico"/>
+
+                <p:carousel id="carouselHistorico" 
+                            value="#{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto}" 
+                            var="mensAnteriores" 
+                            orientation="horizontal" 
+                            numVisible="1"
+                            paginator="true"
+                            style="max-width: 450px;"
+                            numScroll="1">
+                    <h:panelGrid id="pnlGridMensagemHistorico" columns="2">
+                        <h:outputLabel id="lblCodigoHistorico" class="styleOutputLabel" value="Código" for="txtCodigoHistorico" />
+                        <p:inputText id="txtCodigoHistorico" 
+                                     class="estiloIdCadastro"
+                                     value="#{mensAnteriores.codigo}" 
+                                     disabled="#{true}" />
+
+                        <h:outputLabel id="lblDataHistorico" class="styleOutputLabel" value="Data" for="txtDataHistorico" />
+                        <p:inputText id="txtDataHistorico"
+                                     class="estiloIdCadastro"
+                                     value="#{mensAnteriores.dataMensagem}"
+                                     disabled="#{true}" >
+                            <f:convertDateTime locale="pt_BR"
+                                               pattern="dd/MM/yyyy HH:mm:ss"
+                                               dateStyle="long"
+                                               timeStyle="full"
+                                               timeZone="GMT-03:00" />
+                        </p:inputText> 
+
+                        <h:outputLabel id="lblAssuntoHistorico" class="styleOutputLabel" value="Assunto" for="txtAssuntoHistorico" />
+                        <p:inputText id="txtAssuntoHistorico"
+                                     value="#{mensAnteriores.assunto}"
+                                     class="styleInputCampoGrandeDialog"
+                                     disabled="#{true}"/>
+
+                        <p:outputLabel id="lblMensagemHistorico" class="styleOutputLabel" value="Mensagem" for="txtMensagemHistorico" />
+                        <p:inputTextarea id="txtMensagemHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensAnteriores.mensagem}" />
+
+                        <p:outputLabel id="lblRespostaHistorico" class="styleOutputLabel" value="Resposta" for="txtRespostaHistorico" />
+                        <p:inputTextarea id="txtRespostaHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensAnteriores.resposta}" />
+                    </h:panelGrid>
+                </p:carousel>
+            </p:fieldset>
+
+            <!--Mensagem Atual:-->
             <h:panelGrid id="pnlGridResponderMensagem" columns="2" >
-                
+                <h:outputLabel id="lblDataMensagemAtual" class="styleOutputLabel" value="Data" for="txtDataMensagemAtual" />
+                <p:inputText id="txtDataMensagemAtual"
+                             class="estiloIdCadastro"
+                             value="#{mensagemRespostaBeanView.objetoSelecionado.dataMensagemASerRespondida}"
+                             disabled="#{true}" >
+                    <f:convertDateTime locale="pt_BR"
+                                       pattern="dd/MM/yyyy HH:mm:ss"
+                                       dateStyle="long"
+                                       timeStyle="full"
+                                       timeZone="GMT-03:00" />
+                </p:inputText> 
+
+                <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="Usuário" for="autoCompUsuarioOrigem" />
+                <p:autoComplete id="autoCompUsuarioOrigem" 
+                                value="#{mensagemRespostaBeanView.objetoSelecionado.usuarioDestino}"
+                                dropdown="true"
+                                disabled="#{true}"
+                                required="true"
+                                queryDelay="600"
+                                effect="fade"
+                                requiredMessage="Informe o usuário."
+                                class="styleAutoComplete"
+                                var="usuario" 
+                                itemLabel="#{usuario.codigo eq null ? '' : '('.concat(usuario.codigo).concat('-').concat(usuario.login).concat(') ').concat(usuario.nome)}" 
+                                itemValue="#{usuario}"
+                                converter="#{entidadeConverter}" 
+                                forceSelection="true" 
+                                scrollHeight="250"/>
+
+                <h:outputLabel id="lblExigirResposta" class="styleOutputLabel" value="Exige Resposta" for="selBooCheckBoxExigirResposta" />
+                <p:selectBooleanCheckbox id="selBooCheckBoxExigirResposta"
+                                         style="display: flex; flex-direction: column; justify-content: center;"
+                                         disabled="#{true}"
+                                         value="#{mensagemRespostaBeanView.objetoSelecionado.exigirRespostaASerRepondida}" />
+
+                <h:outputLabel id="lblAssunto" class="styleOutputLabel" value="Assunto" for="txtAssunto" />
+                <p:inputText id="txtAssunto"
+                             value="#{mensagemRespostaBeanView.objetoSelecionado.assuntoASerRespondido}"
+                             class="styleInputCampoGrandeDialog"
+                             disabled="#{true}"/>
+
+                <p:outputLabel id="lblPergunta" class="styleOutputLabel" value="Mensagem" for="txtPergunta" />
+                <p:inputTextarea id="txtPergunta" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensagemRespostaBeanView.objetoSelecionado.mensagemASerRespondida}" />
+
+                <p:outputLabel id="lblResposta" class="styleOutputLabel" value="Resposta" for="txtResposta" />
+                <h:panelGroup>
+                    <p:inputTextarea id="txtResposta"
+                                     class="styleInputCampoGrandeDialog textAreaResposta"
+                                     value="#{mensagemRespostaBeanView.objetoSelecionado.descricao}"
+                                     maxlength="1000"
+                                     counter="counterTxtAreaResposta"
+                                     counterTemplate="{0} caracteres restantes."
+                                     rows="4"
+                                     autoResize="false"/>
+
+                    <h:outputText id    = "counterTxtAreaResposta"
+                                  style = "display: block;"/>
+                </h:panelGroup>
             </h:panelGrid>
 
-            <p:separator id="sepResponderMensagem" style="margin-top: 3px;" />
-
             <div id="pnlGridBotoesResponderMensagem" style="margin-top: 3px; display: flex; flex-direction: row; justify-content: center;" >                
-                <p:commandButton id="btnEnviarMensagem" 
-                                 value="Enviar (F2)" 
+                <p:commandButton id="btnConfirmarMensagem" 
+                                 value="Confirmar/Responder (F2)" 
                                  onstart="PF('statusDialog').show();" 
                                  onsuccess="PF('statusDialog').hide();"
                                  update="formResponderMensagem, @widgetVar(message)"
-                                 process="@this, @form" />  
+                                 process="@this, @form" />               
 
                 <p:commandButton id="btnCancelarEnviarMensagem" 
                                  style="margin-left: 3px;"
-                                 value="Cancelar (ESC)"                                  
+                                 value="Sair (ESC)"                                  
                                  onstart="PF('statusDialog').show();" 
                                  onsuccess="PF('statusDialog').hide();"
                                  update="form, @widgetVar(message)"

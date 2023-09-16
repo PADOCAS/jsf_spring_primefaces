@@ -162,5 +162,7 @@ public interface IInterfaceCrud<T> extends Serializable {
 
     public T findUniqueByQueryDinamica(String query) throws Exception ;
     
+    public T getUniqueObjectByQueryDinamica(String query, Class<T> entidade) throws Exception ;
+    
     public T findUniqueByProperty(Class<T> classe, Object value, String atributo, String condicao) throws Exception;
 }

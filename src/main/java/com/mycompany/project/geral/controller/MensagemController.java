@@ -41,6 +41,35 @@ public class MensagemController extends CrudImpl<Mensagem> implements Serializab
         }
 
         return 0L;
-    }   
+    }
+
+    /**
+     * Retorna uma mensagem pendente para o usuário (priorizando sempre as mais
+     * antigas)
+     *
+     * @param codigoUser
+     * @return
+     */
+    public Mensagem getMensagemPendenteForUser(Long codigoUser) {
+        Mensagem mensagem = null;
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" FROM Mensagem entity ");
+
+        if (codigoUser != null) {
+            sql.append(" WHERE entity.usuarioDestino.codigo = ").append(codigoUser);
+            sql.append("   AND entity.lida = FALSE ");
+        }
+
+        sql.append(" ORDER BY entity.dataMensagem ");
+
+        try {            
+            mensagem = getUniqueObjectByQueryDinamica(sql.toString(), Mensagem.class);
+        } catch (Exception ex) {
+            Logger.getLogger(MensagemController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return mensagem;
+    }
 
 }

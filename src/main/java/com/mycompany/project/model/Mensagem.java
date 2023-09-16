@@ -24,6 +24,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
@@ -99,15 +100,31 @@ public class Mensagem implements Serializable {
 
     //Relacionamento de volta, não auditado:
     @NotAudited
-    @OneToMany(mappedBy = "mensagemPai", orphanRemoval = false)
+    @OneToMany(mappedBy = "mensagemPai", orphanRemoval = false, fetch = FetchType.EAGER)
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<MensagemResposta> listMensagemRespostaPai;
 
     //Relacionamento de volta, não auditado:
     @NotAudited
-    @OneToMany(mappedBy = "mensagemResposta", orphanRemoval = false)
+    @OneToMany(mappedBy = "mensagemResposta", orphanRemoval = false, fetch = FetchType.EAGER)
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<MensagemResposta> listMensagemRespostaResp;
+
+    @Transient
+    private String mensagemASerRespondida;
+
+    @Transient
+    private String assuntoASerRespondido;
+
+    @Transient
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataMensagemASerRespondida;
+
+    @Transient
+    private Boolean exigirRespostaASerRepondida;
+
+    @Transient
+    private List<MensagemDTO> listMensagemDto;
 
     public Mensagem() {
         this.exigirResposta = false;
@@ -200,6 +217,46 @@ public class Mensagem implements Serializable {
 
     public void setListMensagemRespostaResp(List<MensagemResposta> listMensagemRespostaResp) {
         this.listMensagemRespostaResp = listMensagemRespostaResp;
+    }
+
+    public String getMensagemASerRespondida() {
+        return mensagemASerRespondida;
+    }
+
+    public void setMensagemASerRespondida(String mensagemASerRespondida) {
+        this.mensagemASerRespondida = mensagemASerRespondida;
+    }
+
+    public Date getDataMensagemASerRespondida() {
+        return dataMensagemASerRespondida;
+    }
+
+    public void setDataMensagemASerRespondida(Date dataMensagemASerRespondida) {
+        this.dataMensagemASerRespondida = dataMensagemASerRespondida;
+    }
+
+    public Boolean getExigirRespostaASerRepondida() {
+        return exigirRespostaASerRepondida;
+    }
+
+    public void setExigirRespostaASerRepondida(Boolean exigirRespostaASerRepondida) {
+        this.exigirRespostaASerRepondida = exigirRespostaASerRepondida;
+    }
+
+    public String getAssuntoASerRespondido() {
+        return assuntoASerRespondido;
+    }
+
+    public void setAssuntoASerRespondido(String assuntoASerRespondido) {
+        this.assuntoASerRespondido = assuntoASerRespondido;
+    }
+
+    public List<MensagemDTO> getListMensagemDto() {
+        return listMensagemDto;
+    }
+
+    public void setListMensagemDto(List<MensagemDTO> listMensagemDto) {
+        this.listMensagemDto = listMensagemDto;
     }
 
     /**

@@ -520,6 +520,28 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
     }
 
     @Override
+    public T getUniqueObjectByQueryDinamica(String query, Class<T> entidade) throws Exception {
+        if (getSessionFactory() != null
+                && getSessionFactory().getCurrentSession() != null
+                && query != null
+                && entidade != null) {
+            validaSessionFactory();
+
+            T object = getSessionFactory().getCurrentSession().createQuery(query, entidade)
+                    .setMaxResults(1)
+                    .getSingleResult();
+
+            //Forçar carregamento da Entidade:
+            Hibernate.initialize(object);
+
+            clearSession();
+            return object;
+        }
+
+        return null;
+    }
+
+    @Override
     public T findUniqueByQueryDinamica(String query) throws Exception {
         if (getSessionFactory() != null
                 && getSessionFactory().getCurrentSession() != null
