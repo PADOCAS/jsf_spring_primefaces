@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,6 +68,11 @@ public class Mensagem implements Serializable {
     @IdentificaCampoPesquisa(campoBancoDeDados = "usuarioDestino.login", descricaoCampoEmTela = "Usuário Destino (Login)", ordemCampoEmTela = 3)
     private Entidade usuarioDestino;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ForeignKey(name = "mensagem_fk3")
+    @JoinColumn(name = "cod_mensagem_origem", referencedColumnName = "codigo")
+    private Mensagem mensagemOrigem;
+
     @NotNull
     @Column(name = "lida")
     private Boolean lida;
@@ -100,15 +106,22 @@ public class Mensagem implements Serializable {
 
     //Relacionamento de volta, não auditado:
     @NotAudited
-    @OneToMany(mappedBy = "mensagemPai", orphanRemoval = false, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "mensagemPai", orphanRemoval = false)
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<MensagemResposta> listMensagemRespostaPai;
 
     //Relacionamento de volta, não auditado:
+    //Set não permite duplicações
     @NotAudited
     @OneToMany(mappedBy = "mensagemResposta", orphanRemoval = false, fetch = FetchType.EAGER)
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private List<MensagemResposta> listMensagemRespostaResp;
+    private Set<MensagemResposta> setListMensagemRespostaResp;
+
+    //Relacionamento de volta para mensagem Origem (não precisa carregar no find (pode ser lazy por padrão)
+    @NotAudited
+    @OneToMany(mappedBy = "mensagemOrigem", orphanRemoval = false)
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<Mensagem> listMensagemOrigem;
 
     @Transient
     private String mensagemASerRespondida;
@@ -211,12 +224,12 @@ public class Mensagem implements Serializable {
         this.listMensagemRespostaPai = listMensagemRespostaPai;
     }
 
-    public List<MensagemResposta> getListMensagemRespostaResp() {
-        return listMensagemRespostaResp;
+    public Set<MensagemResposta> getSetListMensagemRespostaResp() {
+        return setListMensagemRespostaResp;
     }
 
-    public void setListMensagemRespostaResp(List<MensagemResposta> listMensagemRespostaResp) {
-        this.listMensagemRespostaResp = listMensagemRespostaResp;
+    public void setSetListMensagemRespostaResp(Set<MensagemResposta> setListMensagemRespostaResp) {
+        this.setListMensagemRespostaResp = setListMensagemRespostaResp;
     }
 
     public String getMensagemASerRespondida() {
@@ -257,6 +270,22 @@ public class Mensagem implements Serializable {
 
     public void setListMensagemDto(List<MensagemDTO> listMensagemDto) {
         this.listMensagemDto = listMensagemDto;
+    }
+
+    public Mensagem getMensagemOrigem() {
+        return mensagemOrigem;
+    }
+
+    public void setMensagemOrigem(Mensagem mensagemOrigem) {
+        this.mensagemOrigem = mensagemOrigem;
+    }
+
+    public List<Mensagem> getListMensagemOrigem() {
+        return listMensagemOrigem;
+    }
+
+    public void setListMensagemOrigem(List<Mensagem> listMensagemOrigem) {
+        this.listMensagemOrigem = listMensagemOrigem;
     }
 
     /**

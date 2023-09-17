@@ -25,7 +25,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         toggleSpeed="500" 
                         title="Histórico Mensagens Anteriores" 
                         rendered="#{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto ne null 
-                                    and not empty mensagemRespostaBeanView.objetoSelecionado.exigirResposta}"
+                                    and not empty mensagemRespostaBeanView.objetoSelecionado.listMensagemDto}"
                         style="background: cornsilk; width: 450px;">
                 <p:ajax event="toggle" update="carouselHistorico"/>
 
@@ -37,7 +37,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             paginator="true"
                             style="max-width: 450px;"
                             numScroll="1">
-                    <h:panelGrid id="pnlGridMensagemHistorico" columns="2">
+                    <h:panelGrid id="pnlGridMensagemHistorico" columns="2"
+                                 style="margin-left: 7px; padding: 2px; margin-top: 3px; margin-bottom: 3px; background: papayawhip; box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);" >
                         <h:outputLabel id="lblCodigoHistorico" class="styleOutputLabel" value="Código" for="txtCodigoHistorico" />
                         <p:inputText id="txtCodigoHistorico" 
                                      class="estiloIdCadastro"
@@ -45,16 +46,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                      disabled="#{true}" />
 
                         <h:outputLabel id="lblDataHistorico" class="styleOutputLabel" value="Data" for="txtDataHistorico" />
-                        <p:inputText id="txtDataHistorico"
-                                     class="estiloIdCadastro"
-                                     value="#{mensAnteriores.dataMensagem}"
-                                     disabled="#{true}" >
-                            <f:convertDateTime locale="pt_BR"
-                                               pattern="dd/MM/yyyy HH:mm:ss"
-                                               dateStyle="long"
-                                               timeStyle="full"
-                                               timeZone="GMT-03:00" />
-                        </p:inputText> 
+                        <h:panelGroup>
+                            <p:inputText id="txtDataHistorico"
+                                         class="estiloIdCadastro"
+                                         value="#{mensAnteriores.dataMensagem}"
+                                         disabled="#{true}" >
+                                <f:convertDateTime locale="pt_BR"
+                                                   pattern="dd/MM/yyyy HH:mm:ss"
+                                                   dateStyle="long"
+                                                   timeStyle="full"
+                                                   timeZone="GMT-03:00" />
+                            </p:inputText> 
+
+                            <h:outputLabel id="lblExigirRespostaHistorico" style="margin-left: 2px;" value="Exige Resposta" for="selBooCheckBoxExigirRespostaHistorico" />
+                            <p:selectBooleanCheckbox id="selBooCheckBoxExigirRespostaHistorico"
+                                                     style="margin-left: 2px;"
+                                                     disabled="#{true}"
+                                                     value="#{mensAnteriores.exigirResposta}" />
+                        </h:panelGroup>
 
                         <h:outputLabel id="lblAssuntoHistorico" class="styleOutputLabel" value="Assunto" for="txtAssuntoHistorico" />
                         <p:inputText id="txtAssuntoHistorico"
@@ -73,17 +82,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
             <!--Mensagem Atual:-->
             <h:panelGrid id="pnlGridResponderMensagem" columns="2" >
-                <h:outputLabel id="lblDataMensagemAtual" class="styleOutputLabel" value="Data" for="txtDataMensagemAtual" />
-                <p:inputText id="txtDataMensagemAtual"
+                <h:outputLabel id="lblCodigoAtual" class="styleOutputLabel" value="Código" for="txtCodigoAtual" />
+                <p:inputText id="txtCodigoAtual" 
                              class="estiloIdCadastro"
-                             value="#{mensagemRespostaBeanView.objetoSelecionado.dataMensagemASerRespondida}"
-                             disabled="#{true}" >
-                    <f:convertDateTime locale="pt_BR"
-                                       pattern="dd/MM/yyyy HH:mm:ss"
-                                       dateStyle="long"
-                                       timeStyle="full"
-                                       timeZone="GMT-03:00" />
-                </p:inputText> 
+                             value="#{mensagemRespostaBeanView.objetoSelecionado.mensagemOrigem.codigo}" 
+                             disabled="#{true}" />
+
+                <h:outputLabel id="lblDataMensagemAtual" class="styleOutputLabel" value="Data" for="txtDataMensagemAtual" />
+                <h:panelGroup>
+                    <p:inputText id="txtDataMensagemAtual"
+                                 class="estiloIdCadastro"
+                                 value="#{mensagemRespostaBeanView.objetoSelecionado.dataMensagemASerRespondida}"
+                                 disabled="#{true}" >
+                        <f:convertDateTime locale="pt_BR"
+                                           pattern="dd/MM/yyyy HH:mm:ss"
+                                           dateStyle="long"
+                                           timeStyle="full"
+                                           timeZone="GMT-03:00" />
+                    </p:inputText> 
+
+                    <h:outputLabel id="lblExigirResposta" style="margin-left: 2px;" value="Exige Resposta" for="selBooCheckBoxExigirResposta" />
+                    <p:selectBooleanCheckbox id="selBooCheckBoxExigirResposta"
+                                             style="margin-left: 2px;"
+                                             disabled="#{true}"
+                                             value="#{mensagemRespostaBeanView.objetoSelecionado.exigirRespostaASerRepondida}" />
+                </h:panelGroup>
 
                 <h:outputLabel id="lblUsuarioOrigem" class="styleOutputLabel" value="Usuário" for="autoCompUsuarioOrigem" />
                 <p:autoComplete id="autoCompUsuarioOrigem" 
@@ -102,12 +125,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                 forceSelection="true" 
                                 scrollHeight="250"/>
 
-                <h:outputLabel id="lblExigirResposta" class="styleOutputLabel" value="Exige Resposta" for="selBooCheckBoxExigirResposta" />
-                <p:selectBooleanCheckbox id="selBooCheckBoxExigirResposta"
-                                         style="display: flex; flex-direction: column; justify-content: center;"
-                                         disabled="#{true}"
-                                         value="#{mensagemRespostaBeanView.objetoSelecionado.exigirRespostaASerRepondida}" />
-
                 <h:outputLabel id="lblAssunto" class="styleOutputLabel" value="Assunto" for="txtAssunto" />
                 <p:inputText id="txtAssunto"
                              value="#{mensagemRespostaBeanView.objetoSelecionado.assuntoASerRespondido}"
@@ -117,6 +134,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:outputLabel id="lblPergunta" class="styleOutputLabel" value="Mensagem" for="txtPergunta" />
                 <p:inputTextarea id="txtPergunta" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensagemRespostaBeanView.objetoSelecionado.mensagemASerRespondida}" />
 
+                <h:outputLabel id="lblExigirFeedback" class="styleOutputLabel" value="Exigir Retorno" for="selBooCheckBoxExigirFeedback" />
+                <p:selectBooleanCheckbox id="selBooCheckBoxExigirFeedback"
+                                         style="display: flex; flex-direction: column; justify-content: center;"
+                                         required="true"
+                                         requiredMessage="Informe se deve exigir retorno."
+                                         value="#{mensagemRespostaBeanView.objetoSelecionado.exigirResposta}" />
+                
                 <p:outputLabel id="lblResposta" class="styleOutputLabel" value="Resposta" for="txtResposta" />
                 <h:panelGroup>
                     <p:inputTextarea id="txtResposta"
@@ -139,6 +163,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  onstart="PF('statusDialog').show();" 
                                  onsuccess="PF('statusDialog').hide();"
                                  update="formResponderMensagem, @widgetVar(message)"
+                                 actionListener="#{mensagemRespostaBeanView.saveNotReturn()}"
                                  process="@this, @form" />               
 
                 <p:commandButton id="btnCancelarEnviarMensagem" 

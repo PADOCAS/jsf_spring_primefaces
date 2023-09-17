@@ -21,6 +21,33 @@ public class MensagemController extends CrudImpl<Mensagem> implements Serializab
 
     private static final long serialVersionUID = 1L;
 
+    public void saveMensagensResposta(Mensagem mensagem, Mensagem mensagemOrigem) throws Exception {
+        try {
+            if (getSessionFactory() != null
+                    && getSessionFactory().getCurrentSession() != null) {
+                validaTransaction();
+
+                //Caso houve resposta:
+                if (mensagem != null) {
+                    merge(mensagem);
+                }
+
+                //Salva mensagem Origem como Lida = true:
+                if (mensagemOrigem != null) {
+                    merge(mensagemOrigem);
+                }
+
+                executeFlushSession();
+            }
+        } catch (javax.persistence.OptimisticLockException ex) {
+            executeRollbackTransactionInError();
+            throw new javax.persistence.OptimisticLockException(ex.getMessage());
+        } catch (Exception ex) {
+            executeRollbackTransactionInError();
+            throw new Exception(ex.getMessage());
+        }
+    }
+
     public Long getTotalNotificacoesUser(Long codigoUser) {
         try {
             if (getJdbcTemplate() != null) {
@@ -63,7 +90,7 @@ public class MensagemController extends CrudImpl<Mensagem> implements Serializab
 
         sql.append(" ORDER BY entity.dataMensagem ");
 
-        try {            
+        try {
             mensagem = getUniqueObjectByQueryDinamica(sql.toString(), Mensagem.class);
         } catch (Exception ex) {
             Logger.getLogger(MensagemController.class.getName()).log(Level.SEVERE, null, ex);

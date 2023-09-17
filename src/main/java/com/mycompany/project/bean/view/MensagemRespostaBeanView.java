@@ -9,9 +9,13 @@ import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.geral.controller.MensagemController;
 import com.mycompany.project.model.Mensagem;
 import com.mycompany.project.model.MensagemDTO;
+import com.mycompany.project.model.MensagemResposta;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -89,25 +93,15 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
                     getObjetoSelecionado().setAssunto(mensOrigem.getAssunto());
                     getObjetoSelecionado().setAssuntoASerRespondido(mensOrigem.getAssunto());
                     getObjetoSelecionado().setMensagemASerRespondida(mensOrigem.getDescricao());
-                    
-                    //teste de mensagens histórico:
+                    getObjetoSelecionado().setMensagemOrigem(mensOrigem);
+
+                    //Carrega Lista de Histórico de Mensagens:
                     List<MensagemDTO> listMensagemDto = new ArrayList<>();
-                    MensagemDTO mens1 = new MensagemDTO();
-                    mens1.setAssunto("Gol do Corinthians");
-                    mens1.setCodigo(2L);
-                    mens1.setDataMensagem(new Date());
-                    mens1.setMensagem("Golaço do Gil!");
-                    mens1.setResposta("Foi bom mesmo! Belo gol!");
-                    listMensagemDto.add(mens1);
-                    
-                    MensagemDTO mens2 = new MensagemDTO();
-                    mens2.setAssunto("Gol do Palmeiras");
-                    mens2.setCodigo(3L);
-                    mens2.setDataMensagem(new Date());
-                    mens2.setMensagem("Gol robado!");
-                    mens2.setResposta("VAR não viu a mão, pego 3 vez na mão antes de entra.");
-                    listMensagemDto.add(mens2);
-                    
+                    chargedListHistoricosMensagensAnteriores(mensOrigem, listMensagemDto);
+                    Collections.sort(listMensagemDto, (MensagemDTO mens1, MensagemDTO mens2) -> {
+                        return mens1.getCodigo().compareTo(mens2.getCodigo());
+                    });
+
                     getObjetoSelecionado().setListMensagemDto(listMensagemDto);
                 } else {
                     com.mycompany.project.message.util.Mensagem.msgSeverityWarn("Você não tem nenhuma mensagem pendente!", "Atenção");
@@ -119,15 +113,89 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
         }
     }
 
+    /**
+     * Método recursivo para alimentar nossa lista de histórico de mensagens
+     *
+     * @param mensagem
+     * @param listMensagemDto
+     */
+    private void chargedListHistoricosMensagensAnteriores(Mensagem mensagem, List<MensagemDTO> listMensagemDto) {
+        if (mensagem != null
+                && listMensagemDto != null) {
+            //Verifica Lista Mensagem Resp:
+            if (mensagem.getSetListMensagemRespostaResp() != null
+                    && !mensagem.getSetListMensagemRespostaResp().isEmpty()) {
+                for (MensagemResposta resp : mensagem.getSetListMensagemRespostaResp()) {
+                    if (resp.getMensagemPai() != null
+                            && resp.getMensagemPai().getCodigo() != null
+                            && resp.getMensagemPai().getAssunto() != null
+                            && resp.getMensagemPai().getDataMensagem() != null
+                            && resp.getMensagemPai().getDescricao() != null
+                            && resp.getMensagemResposta() != null
+                            && resp.getMensagemResposta().getCodigo() != null
+                            && resp.getMensagemResposta().getDescricao() != null) {
+                        MensagemDTO mensagemHistoricoDto = new MensagemDTO();
+                        mensagemHistoricoDto.setCodigo(resp.getMensagemPai().getCodigo());
+                        mensagemHistoricoDto.setAssunto(resp.getMensagemPai().getAssunto());
+                        mensagemHistoricoDto.setDataMensagem(resp.getMensagemPai().getDataMensagem());
+                        mensagemHistoricoDto.setExigirResposta(resp.getMensagemPai().getExigirResposta());
+                        mensagemHistoricoDto.setMensagem(resp.getMensagemPai().getDescricao());
+                        mensagemHistoricoDto.setCodigoResposta(resp.getMensagemResposta().getCodigo());
+                        mensagemHistoricoDto.setResposta(resp.getMensagemResposta().getDescricao());
+                        listMensagemDto.add(mensagemHistoricoDto);
+
+                    }
+                }
+            }
+
+            //Verifica Mensagem Origem:
+            if (mensagem.getMensagemOrigem() != null) {
+                chargedListHistoricosMensagensAnteriores(mensagem.getMensagemOrigem(), listMensagemDto);
+            }
+        }
+    }
+
+    private void validaSaveMensagemResposta() throws Exception {
+        if (getObjetoSelecionado() != null
+                && getObjetoSelecionado().getExigirRespostaASerRepondida() != null
+                && getObjetoSelecionado().getExigirRespostaASerRepondida()
+                && (getObjetoSelecionado().getDescricao() == null
+                || getObjetoSelecionado().getDescricao().trim().isEmpty())) {
+            throw new Exception("Mensagem Exige Resposta!<br>Responda a mensagem para prosseguir.");
+        }
+    }
+
     @Override
     public void saveNotReturn() throws Exception {
         try {
-            mensagemController.merge(getObjetoSelecionado());
+            validaSaveMensagemResposta();
+
+            //Seta mensagem como lida:
+            getObjetoSelecionado().getMensagemOrigem().setLida(true);
+
+            if (getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getDescricao() != null
+                    && !getObjetoSelecionado().getDescricao().trim().isEmpty()) {
+                getObjetoSelecionado().setDataMensagem(new Date());
+
+                //Preencher a lista de mensagemResposta:            
+                Set<MensagemResposta> setListMensRespResposta = new HashSet<>();
+                MensagemResposta mensResp = new MensagemResposta();
+                mensResp.setMensagemPai(getObjetoSelecionado().getMensagemOrigem());
+                mensResp.setMensagemResposta(getObjetoSelecionado());
+                setListMensRespResposta.add(mensResp);
+                getObjetoSelecionado().setSetListMensagemRespostaResp(setListMensRespResposta);
+
+                mensagemController.saveMensagensResposta(getObjetoSelecionado(), getObjetoSelecionado().getMensagemOrigem());
+            } else {
+                mensagemController.saveMensagensResposta(null, getObjetoSelecionado().getMensagemOrigem());
+            }
+
             novo();
             msgEnvioMensagemFeitoComSucesso();
         } catch (Exception ex) {
             Logger.getLogger(MensagemRespostaBeanView.class.getName()).log(Level.SEVERE, null, ex);
-            throw new Exception(ex);
+            com.mycompany.project.message.util.Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>" + ex.getMessage(), "Atenção");
         }
     }
 

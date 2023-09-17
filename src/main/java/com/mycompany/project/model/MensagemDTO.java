@@ -27,7 +27,11 @@ public class MensagemDTO implements Serializable {
 
     private String mensagem;
 
+    private Long codigoResposta;
+
     private String resposta;
+
+    private Boolean exigirResposta;
 
     public MensagemDTO() {
     }
@@ -72,6 +76,22 @@ public class MensagemDTO implements Serializable {
         this.resposta = resposta;
     }
 
+    public Boolean getExigirResposta() {
+        return exigirResposta;
+    }
+
+    public void setExigirResposta(Boolean exigirResposta) {
+        this.exigirResposta = exigirResposta;
+    }
+
+    public Long getCodigoResposta() {
+        return codigoResposta;
+    }
+
+    public void setCodigoResposta(Long codigoResposta) {
+        this.codigoResposta = codigoResposta;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -96,7 +116,7 @@ public class MensagemDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "MensagemDTO{" + "codigo=" + codigo + ", dataMensagem=" + dataMensagem + ", assunto=" + assunto + ", mensagem=" + mensagem + ", resposta=" + resposta + '}';
+        return "MensagemDTO{" + "codigo=" + codigo + ", dataMensagem=" + dataMensagem + ", assunto=" + assunto + ", mensagem=" + mensagem + ", codigoResposta=" + codigoResposta + ", resposta=" + resposta + ", exigirResposta=" + exigirResposta + '}';
     }
 
 }

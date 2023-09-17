@@ -75,7 +75,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
     /**
      * Valida transação, caso não tiver ativa, inicia uma transação
      */
-    private void validaTransaction() {
+    public void validaTransaction() {
         if (getSessionFactory() != null
                 && getSessionFactory().getCurrentSession() != null
                 && getSessionFactory().getCurrentSession().getTransaction() != null
@@ -111,7 +111,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
      * depois Telefones da Pessoa Ele salva a pessoa executa o flush depois
      * insere os telefones..
      */
-    private void executeFlushSession() {
+    public void executeFlushSession() {
         if (getSessionFactory() != null
                 && getSessionFactory().getCurrentSession() != null) {
             getSessionFactory().getCurrentSession().flush();
@@ -127,7 +127,7 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
      * quebrar a sessão do usuário!
      *
      */
-    private void executeRollbackTransactionInError() {
+    public void executeRollbackTransactionInError() {
         DataSource springBasicDataSource = (DataSource) ContextLoaderListenerUtil.getBean("springDataSource");  //Usando DataSource direto, glassfish/payara
         DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
         PlatformTransactionManager transactionManager = new DataSourceTransactionManager(springBasicDataSource);
@@ -249,6 +249,8 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
                     && getSessionFactory().getCurrentSession() != null
                     && objeto != null) {
                 validaSessionFactory();
+                //Vamos destacar o objeto na sessão para não deixar outras instâncias atrapalharem o merge:
+                getSessionFactory().getCurrentSession().evict(objeto);
                 objeto = (T) getSessionFactory().getCurrentSession().merge(objeto);
                 executeFlushSession();
 
@@ -530,9 +532,6 @@ public class CrudImpl<T> implements IInterfaceCrud<T> {
             T object = getSessionFactory().getCurrentSession().createQuery(query, entidade)
                     .setMaxResults(1)
                     .getSingleResult();
-
-            //Forçar carregamento da Entidade:
-            Hibernate.initialize(object);
 
             clearSession();
             return object;
