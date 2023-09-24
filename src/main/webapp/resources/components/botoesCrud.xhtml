@@ -19,6 +19,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <composite:attribute name="idCompositeBotoesCrud" required="true" />
         <composite:attribute name="managedBeanView" required="true" />
         <composite:attribute name="disableBtnSalvar" required="false" default="false" />
+        <composite:attribute name="disableBtnSalvarENovo" required="false" default="false" />
         <composite:attribute name="disableBtnExcluir" required="false" default="false" />
         <composite:attribute name="isVisibleBtnExcluir" required="true" default="false" />
         <composite:attribute name="idDialogExclude" required="true" />
@@ -65,7 +66,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <p:commandButton id="btnSalvarNovo" 
                              value="Salvar/Novo (F3)" 
                              update="form:#{cc.attrs.idCompositeBotoesCrud}:pnlGridButtons, @widgetVar(message)"
-                             disabled="#{cc.attrs.disableBtnSalvar
+                             disabled="#{cc.attrs.disableBtnSalvarENovo
                                          or !cc.attrs.managedBeanView.enableButtonsAcao}"
                              actionListener="#{cc.attrs.managedBeanView.saveNew()}"
                              oncomplete="if(args.saveOk) {remComSaveNew();};" />

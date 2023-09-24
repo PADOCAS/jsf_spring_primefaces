@@ -5,6 +5,7 @@
 package com.mycompany.project.bean.view;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
+import com.mycompany.project.acessos.Permissao;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.geral.controller.CidadeController;
@@ -50,6 +51,9 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
 
     @Autowired
     private CidadeController cidadeController;
+
+    @Autowired
+    private ContextoBean contextoBean;
 
     @Override
     protected Class<Cidade> getClassImplement() {
@@ -203,11 +207,17 @@ public class CidadeBeanView extends BeanManagedViewAbstract {
     public void validEditar() throws Exception {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", false);
 
-        if (getObjetoSelecionado() == null
-                || getObjetoSelecionado().getCodigo() == null) {
-            Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+        //Verifica se o usuário tem permissão para alteração:
+        if (contextoBean.possuiAcesso(Permissao.ADMIN.getValor(),
+                Permissao.CIDADE_EDITAR.getValor())) {
+            if (getObjetoSelecionado() == null
+                    || getObjetoSelecionado().getCodigo() == null) {
+                Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+            } else {
+                PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            }
         } else {
-            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            Mensagem.msgSeverityWarn("Você não tem permissão para editar Cidades!", "Atenção");
         }
     }
 

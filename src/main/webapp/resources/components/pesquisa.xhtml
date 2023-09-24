@@ -191,17 +191,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             let idCampo = getValorElementPorIdJQuery('selOneCampo');
             let idCampoCondicao = getValorElementPorIdJQuery('selOneCondicao');
             let idPesquisa = getValorElementPorIdJQuery('txtValorPesquisa');
-
             $(idPesquisa).keypress(permitNumber);
-
             $(idCampo + ' :nth-child(1)').prop('selected', true);
             $(idCampoCondicao + ' :nth-child(1)').prop('selected', true);
             $(idPesquisa).val('');
-
             addMascaraPesquisa($(idCampo).val());
-
             addFocoAoCampo('txtValorPesquisa');
-
             function exclusaoOk() {
                 setTimeout(() => {
                     PF('statusDialog').hide();
@@ -213,7 +208,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 if (event.keyCode === 13) {
                     event.preventDefault();
                     addFocoAoCampo('btnPesquisar');
-
                     var buttonPesquisar = getValorElementPorIdJQuery('btnPesquisar');
                     $(buttonPesquisar).click();
                 }

@@ -5,6 +5,7 @@
 package com.mycompany.project.bean.view;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
+import com.mycompany.project.acessos.Permissao;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.geral.controller.TituloController;
@@ -262,11 +263,16 @@ public class TituloBeanView extends BeanManagedViewAbstract {
     public void validEditar() throws Exception {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", false);
 
-        if (getObjetoSelecionado() == null
-                || getObjetoSelecionado().getCodigo() == null) {
-            Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+        if (contextoBean.possuiAcesso(Permissao.ADMIN.getValor(),
+                Permissao.TITULO_EDITAR.getValor())) {
+            if (getObjetoSelecionado() == null
+                    || getObjetoSelecionado().getCodigo() == null) {
+                Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+            } else {
+                PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            }
         } else {
-            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            Mensagem.msgSeverityWarn("Você não tem permissão para editar Títulos!", "Atenção");
         }
     }
 

@@ -5,18 +5,24 @@
 package com.mycompany.project.bean.view;
 
 import com.mycompany.hibernate.interfaces.crud.IInterfaceCrud;
+import com.mycompany.project.acessos.Permissao;
 import com.mycompany.project.bean.geral.BeanManagedViewAbstract;
 import com.mycompany.project.carregamento.lazy.CarregamentoLazyListForObject;
 import com.mycompany.project.geral.controller.EntidadeController;
 import com.mycompany.project.message.util.Mensagem;
 import com.mycompany.project.model.Entidade;
 import com.mycompany.project.util.all.RegexUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.validation.ValidationException;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -49,8 +55,13 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
 
     private CarregamentoLazyListForObject<Entidade> list = new CarregamentoLazyListForObject<>();
 
+    private DualListModel<Permissao> listPickAcessos;
+
     @Autowired
     private EntidadeController entidadeController;
+
+    @Autowired
+    private ContextoBean contextoBean;
 
     @Override
     protected Class<?> getClassImplement() {
@@ -99,6 +110,8 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
             } else {
                 setarVariaveisNulas();
             }
+
+            chargedPickList();
         } catch (Exception ex) {
             Logger.getLogger(UsuarioBeanView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,6 +134,43 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 && FacesContext.getCurrentInstance().getExternalContext().getFlash().get("objetoAlteracao") != null) {
             FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("acao");
             FacesContext.getCurrentInstance().getExternalContext().getFlash().remove("objetoAlteracao");
+        }
+    }
+
+    private void chargedPickList() {
+        if (getObjetoSelecionado() != null) {
+            List<Permissao> acessosSelecionados = new ArrayList<>();
+            // Lista formada através de um Arrays.asList fica uma lista imutável, não podendo alterar elementos, para resolver vamos criar uma lista mutavél através da imutável            
+            List<Permissao> acessosDisponiveis = new ArrayList<>(Arrays.asList(Permissao.values()));
+            acessosDisponiveis.remove(Permissao.ADMIN);
+            acessosDisponiveis.remove(Permissao.USER);
+            acessosDisponiveis.remove(Permissao.CADASTRO_ACESSAR);
+            acessosDisponiveis.remove(Permissao.MOVIMENTO_ACESSAR);
+            acessosDisponiveis.remove(Permissao.CIDADE_ACESSAR);
+            acessosDisponiveis.remove(Permissao.USUARIO_ACESSAR);
+            acessosDisponiveis.remove(Permissao.TITULO_ACESSAR);
+
+            if (getObjetoSelecionado().getEntidadeAcessosPermissao() != null
+                    && !getObjetoSelecionado().getEntidadeAcessosPermissao().isEmpty()) {
+                getObjetoSelecionado().getEntidadeAcessosPermissao().stream()
+                        .forEach(permissao -> {
+                            acessosSelecionados.add(permissao);
+                            acessosDisponiveis.remove(permissao);
+                        });
+            }
+
+            acessosSelecionados.remove(Permissao.ADMIN);
+            acessosSelecionados.remove(Permissao.USER);
+            acessosSelecionados.remove(Permissao.CADASTRO_ACESSAR);
+            acessosSelecionados.remove(Permissao.MOVIMENTO_ACESSAR);
+            acessosSelecionados.remove(Permissao.CIDADE_ACESSAR);
+            acessosSelecionados.remove(Permissao.USUARIO_ACESSAR);
+            acessosSelecionados.remove(Permissao.TITULO_ACESSAR);
+
+//               Lembrar de completar com esses acessos depois ao salvar!        
+//               CADASTRO_ACESSAR("CADASTRO_ACESSAR", "Cadastro - Acessar"),
+//               MOVIMENTO_ACESSAR("MOVIMENTO_ACESSAR", "Movimento - Acessar"),            
+            setListPickAcessos(new DualListModel<>(acessosDisponiveis, acessosSelecionados));
         }
     }
 
@@ -168,22 +218,75 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
         return "";
     }
 
-    @Override
-    public String save() throws Exception {
-        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
+    private void chargedAcessosToSave() throws Exception {
+        //Tratamento para Acesso:
+        if (contextoBean.getEntidadeLogada() != null
+                && contextoBean.getEntidadeLogada().getTipo() != null
+                && contextoBean.getEntidadeLogada().getTipo().equals("A")) {
+            // Se é um usuário administrador que está logado ele pode dar manutenção nos acessos:
+            getObjetoSelecionado().setAcessos(new HashSet<>());
 
-        try {
-            validaSaveUsuario();
-            setEnableButtonsAcao(false);
-            //Inclusão de novo usuário, gravar a senha:
-            if (acao != null
-                    && acao.equals("0")
-                    && getObjetoSelecionado() != null
-                    && getObjetoSelecionado().getSenhaString() != null) {
-                //Gerar um salt aleatório (BCrypt.getsalt()):
-                getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
+            if (getObjetoSelecionado().getTipo() != null) {
+                if (getObjetoSelecionado().getTipo().equals("A")) {
+                    getObjetoSelecionado().getAcessos().add("ADMIN");
+                    getObjetoSelecionado().getAcessos().add("USER");
+                } else if (getObjetoSelecionado().getTipo().equals("U")) {
+                    getObjetoSelecionado().getAcessos().add("USER");
+                }
             }
 
+            if (getListPickAcessos() != null
+                    && getListPickAcessos().getTarget() != null
+                    && !getListPickAcessos().getTarget().isEmpty()) {
+                getListPickAcessos().getTarget().stream().forEach(permissao -> {
+                    getObjetoSelecionado().getAcessos().add(permissao.getValor());
+
+                    //Cadastro Acessar / Cidade Acessar / Usuario Acessar:
+                    if (Arrays.asList(Permissao.CIDADE_SALVAR,
+                            Permissao.CIDADE_EDITAR,
+                            Permissao.CIDADE_EXCLUIR,
+                            Permissao.USUARIO_SALVAR,
+                            Permissao.USUARIO_EDITAR,
+                            Permissao.USUARIO_EXCLUIR).contains(permissao)) {
+                        if (!getObjetoSelecionado().getAcessos().contains(Permissao.CADASTRO_ACESSAR.getValor())) {
+                            getObjetoSelecionado().getAcessos().add(Permissao.CADASTRO_ACESSAR.getValor());
+                        }
+
+                        //Cidade Acessar:
+                        if (Arrays.asList(Permissao.CIDADE_SALVAR,
+                                Permissao.CIDADE_EDITAR,
+                                Permissao.CIDADE_EXCLUIR).contains(permissao)) {
+                            if (!getObjetoSelecionado().getAcessos().contains(Permissao.CIDADE_ACESSAR.getValor())) {
+                                getObjetoSelecionado().getAcessos().add(Permissao.CIDADE_ACESSAR.getValor());
+                            }
+                        }
+
+                        //Usuario Acessar:
+                        if (Arrays.asList(Permissao.USUARIO_SALVAR,
+                                Permissao.USUARIO_EDITAR,
+                                Permissao.USUARIO_EXCLUIR).contains(permissao)) {
+                            if (!getObjetoSelecionado().getAcessos().contains(Permissao.USUARIO_ACESSAR.getValor())) {
+                                getObjetoSelecionado().getAcessos().add(Permissao.USUARIO_ACESSAR.getValor());
+                            }
+                        }
+                    }
+
+                    //Título Acessar / Movimento Acessar
+                    if (Arrays.asList(Permissao.TITULO_SALVAR,
+                            Permissao.TITULO_EDITAR,
+                            Permissao.TITULO_EXCLUIR).contains(permissao)) {
+                        if (!getObjetoSelecionado().getAcessos().contains(Permissao.MOVIMENTO_ACESSAR.getValor())) {
+                            getObjetoSelecionado().getAcessos().add(Permissao.MOVIMENTO_ACESSAR.getValor());
+                        }
+
+                        //Titulo Acessar:
+                        if (!getObjetoSelecionado().getAcessos().contains(Permissao.TITULO_ACESSAR.getValor())) {
+                            getObjetoSelecionado().getAcessos().add(Permissao.TITULO_ACESSAR.getValor());
+                        }
+                    }
+                });
+            }
+        } else {
             //Adiciona o acesso default para o novo usuário:
             if (getObjetoSelecionado().getAcessos() != null
                     && getObjetoSelecionado().getTipo() != null) {
@@ -208,6 +311,27 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public String save() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
+
+        try {
+            validaSaveUsuario();
+            setEnableButtonsAcao(false);
+            //Inclusão de novo usuário, gravar a senha:
+            if (acao != null
+                    && acao.equals("0")
+                    && getObjetoSelecionado() != null
+                    && getObjetoSelecionado().getSenhaString() != null) {
+                //Gerar um salt aleatório (BCrypt.getsalt()):
+                getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
+            }
+
+            //Tratamento para Acesso:
+            chargedAcessosToSave();
 
             //Retirando mascára do CPF para gravação:
             getObjetoSelecionado().setCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()));
@@ -248,30 +372,8 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
                 getObjetoSelecionado().setSenha(BCrypt.hashpw(getObjetoSelecionado().getSenhaString(), BCrypt.gensalt()));
             }
 
-            //Adiciona o acesso default para o novo usuário:
-            if (getObjetoSelecionado().getAcessos() != null
-                    && getObjetoSelecionado().getTipo() != null) {
-                if (getObjetoSelecionado().getAcessos() != null) {
-                    if (getObjetoSelecionado().getTipo().equals("A")) {
-                        if (!getObjetoSelecionado().getAcessos().contains("ADMIN")) {
-                            getObjetoSelecionado().getAcessos().add("ADMIN");
-                        }
-
-                        //ADMIN também deve ter acesso (USER):
-                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
-                            getObjetoSelecionado().getAcessos().add("USER");
-                        }
-                    } else if (getObjetoSelecionado().getTipo().equals("U")) {
-                        if (!getObjetoSelecionado().getAcessos().contains("USER")) {
-                            getObjetoSelecionado().getAcessos().add("USER");
-                        }
-                        //Se virou usuário, vamos apagar o registro ADMIN se tiver:
-                        if (getObjetoSelecionado().getAcessos().contains("ADMIN")) {
-                            getObjetoSelecionado().getAcessos().remove("ADMIN");
-                        }
-                    }
-                }
-            }
+            //Tratamento para Acesso:
+            chargedAcessosToSave();
 
             //Retirando mascára do CPF para gravação:
             getObjetoSelecionado().setCpf(RegexUtil.manterApenasDigitosCpf(getObjetoSelecionado().getCpf()));
@@ -351,15 +453,20 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
     public void validEditar() throws Exception {
         PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", false);
 
-        if (getObjetoSelecionado() == null
-                || getObjetoSelecionado().getCodigo() == null) {
-            Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
-        } else if (getObjetoSelecionado().getLogin() != null
-                && !getObjetoSelecionado().getLogin().isEmpty()
-                && getObjetoSelecionado().getLogin().equals("admin")) {
-            Mensagem.msgSeverityWarn("Usuário 'admin' não pode ser editado.", "Atenção");
+        if (contextoBean.possuiAcesso(Permissao.ADMIN.getValor(),
+                Permissao.USUARIO_EDITAR.getValor())) {
+            if (getObjetoSelecionado() == null
+                    || getObjetoSelecionado().getCodigo() == null) {
+                Mensagem.msgSeverityWarn("Selecione um registro para altera-lo.", "Atenção");
+            } else if (getObjetoSelecionado().getLogin() != null
+                    && !getObjetoSelecionado().getLogin().isEmpty()
+                    && getObjetoSelecionado().getLogin().equals("admin")) {
+                Mensagem.msgSeverityWarn("Usuário 'admin' não pode ser editado.", "Atenção");
+            } else {
+                PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            }
         } else {
-            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("validEditar", true);
+            Mensagem.msgSeverityWarn("Você não tem permissão para editar Usuários!", "Atenção");
         }
     }
 
@@ -437,7 +544,7 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
     public String condicaoAndParaPesquisa() throws Exception {
         return null;
     }
-    
+
     @Override
     public StreamedContent getArquivoReport() throws Exception {
         //Parâmetros para o Relatório:
@@ -486,6 +593,14 @@ public class UsuarioBeanView extends BeanManagedViewAbstract {
 
     public void setList(CarregamentoLazyListForObject<Entidade> list) {
         this.list = list;
+    }
+
+    public DualListModel<Permissao> getListPickAcessos() {
+        return listPickAcessos;
+    }
+
+    public void setListPickAcessos(DualListModel<Permissao> listPickAcessos) {
+        this.listPickAcessos = listPickAcessos;
     }
 
 }

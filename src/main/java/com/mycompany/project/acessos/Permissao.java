@@ -25,8 +25,8 @@ public enum Permissao {
     //Cad. Cidade:
     CIDADE_ACESSAR("CIDADE_ACESSAR", "Cidade - Acessar"),
     CIDADE_SALVAR("CIDADE_SALVAR", "Cidade - Salvar"),
-    CIDADE_EDITAR("CIDADE_EDITAR", "Bairro - Editar"),
-    CIDADE_EXCLUIR("CIDADE_EXCLUIR", "Bairro - Excluir"),   
+    CIDADE_EDITAR("CIDADE_EDITAR", "Cidade - Editar"),
+    CIDADE_EXCLUIR("CIDADE_EXCLUIR", "Cidade - Excluir"),   
     //Cad. Usuário:
     USUARIO_ACESSAR("USUARIO_ACESSAR", "Usuário - Acessar"),
     USUARIO_SALVAR("USUARIO_SALVAR", "Usuário - Salvar"),

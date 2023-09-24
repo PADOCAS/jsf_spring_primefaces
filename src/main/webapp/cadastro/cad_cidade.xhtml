@@ -26,7 +26,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <util:botoesCrud id="compBotoesCrudCadCidade"
                          idCompositeBotoesCrud="compBotoesCrudCadCidade"
                          managedBeanView="#{cidadeBeanView}"      
-                         disableBtnSalvar="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"                         
+                         disableBtnSalvar="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'CIDADE_EDITAR', 'ADMIN')}"         
+                         disableBtnSalvarENovo="#{!contextoBean.possuiAcesso('CIDADE_SALVAR', 'ADMIN')}"   
                          disableBtnExcluir="#{!contextoBean.possuiAcesso('CIDADE_EXCLUIR', 'ADMIN')}"
                          isVisibleBtnExcluir="#{cidadeBeanView.acao ne null and cidadeBeanView.acao eq '1'}"
                          idDialogExclude="confDialogExclusaoCidade"/>

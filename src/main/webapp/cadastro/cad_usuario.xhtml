@@ -26,7 +26,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         <util:botoesCrud id="compBotoesCrudCadUsuario"
                          idCompositeBotoesCrud="compBotoesCrudCadUsuario"
                          managedBeanView="#{usuarioBeanView}"      
-                         disableBtnSalvar="#{!contextoBean.possuiAcesso('USUARIO_SALVAR', 'ADMIN')}"                         
+                         disableBtnSalvar="#{!contextoBean.possuiAcesso('USUARIO_SALVAR', 'USUARIO_EDITAR', 'ADMIN')}"        
+                         disableBtnSalvarENovo="#{!contextoBean.possuiAcesso('USUARIO_SALVAR', 'ADMIN')}"   
                          disableBtnExcluir="#{!contextoBean.possuiAcesso('USUARIO_EXCLUIR', 'ADMIN')}"
                          isVisibleBtnExcluir="#{usuarioBeanView.acao ne null and usuarioBeanView.acao eq '1'}"
                          idDialogExclude="confDialogExclusaoUsuario"/>
@@ -76,7 +77,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                              required="true" 
                              maxlength="50" 
                              requiredMessage="Informe o Nome do Usuário."/> 
-                
+
                 <h:outputLabel id="lblCpf" class="styleOutputLabel" value="* CPF" for="txtCpf" />                
                 <p:inputMask id="txtCpf" 
                              class="styleInputTextSenha"                              
@@ -112,7 +113,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                          style="display: flex; flex-direction: column; justify-content: center;"
                                          required="true"
                                          value="#{usuarioBeanView.objetoSelecionado.inativo}" />
-            </h:panelGrid>               
+            </h:panelGrid> 
+
+            <p:fieldset id="fieldSetControleAcessos" 
+                        legend="Controle de Acessos" 
+                        toggleable="true" 
+                        toggleSpeed="500"
+                        collapsed="false"
+                        title="Controle de Acessos"                         
+                        rendered="#{contextoBean.possuiAcesso('ADMIN')}"   
+                        style="background: cornsilk; margin-top: 5px;">
+                <!--Apenas Adminstradores daram permissão:-->
+                <p:pickList id="pickListAcessos" value="#{usuarioBeanView.listPickAcessos}"   
+                            showSourceFilter="true" showTargetFilter="true" transferOnDblclick="true"
+                            filterDelay="100"
+                            filterMatchMode="contains"
+                            converter="permissaoEnumConverter"
+                            var="permissao" itemLabel="#{permissao.descricao}" itemValue="#{permissao}" >
+                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                    <f:facet name="targetCaption">Adicionados</f:facet>
+                </p:pickList>
+            </p:fieldset>
         </p:panel>
 
         <script type="text/javascript" charset="UTF-8">
