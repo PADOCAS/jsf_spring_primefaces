@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import org.apache.commons.beanutils.BeanComparator;
 import org.primefaces.context.PrimeRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -98,9 +99,15 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
                     //Carrega Lista de Histórico de Mensagens:
                     List<MensagemDTO> listMensagemDto = new ArrayList<>();
                     chargedListHistoricosMensagensAnteriores(mensOrigem, listMensagemDto);
-                    Collections.sort(listMensagemDto, (MensagemDTO mens1, MensagemDTO mens2) -> {
-                        return mens1.getCodigo().compareTo(mens2.getCodigo());
-                    });
+                    // Ordenar usando comparator:
+//                    Collections.sort(listMensagemDto, (MensagemDTO mens1, MensagemDTO mens2) -> {
+//                        return mens1.getCodigo().compareTo(mens2.getCodigo());
+//                    });
+
+                    // Ordenar a lista direto pelo código desejado!! em uma única linha!
+                    Collections.sort(listMensagemDto, new BeanComparator("codigo"));
+                    //Pode usar ordem reversa também:
+                    //Collections.sort(listMensagemDto, new BeanComparator("codigo").reversed());
 
                     getObjetoSelecionado().setListMensagemDto(listMensagemDto);
                 } else {
@@ -131,19 +138,15 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
                             && resp.getMensagemPai().getAssunto() != null
                             && resp.getMensagemPai().getDataMensagem() != null
                             && resp.getMensagemPai().getDescricao() != null
-                            && resp.getMensagemResposta() != null
-                            && resp.getMensagemResposta().getCodigo() != null
-                            && resp.getMensagemResposta().getDescricao() != null) {
+                            && resp.getMensagemPai().getUsuarioOrigem() != null) {
                         MensagemDTO mensagemHistoricoDto = new MensagemDTO();
                         mensagemHistoricoDto.setCodigo(resp.getMensagemPai().getCodigo());
                         mensagemHistoricoDto.setAssunto(resp.getMensagemPai().getAssunto());
                         mensagemHistoricoDto.setDataMensagem(resp.getMensagemPai().getDataMensagem());
                         mensagemHistoricoDto.setExigirResposta(resp.getMensagemPai().getExigirResposta());
                         mensagemHistoricoDto.setMensagem(resp.getMensagemPai().getDescricao());
-                        mensagemHistoricoDto.setCodigoResposta(resp.getMensagemResposta().getCodigo());
-                        mensagemHistoricoDto.setResposta(resp.getMensagemResposta().getDescricao());
+                        mensagemHistoricoDto.setUsuarioOrigem(resp.getMensagemPai().getUsuarioOrigem());
                         listMensagemDto.add(mensagemHistoricoDto);
-
                     }
                 }
             }

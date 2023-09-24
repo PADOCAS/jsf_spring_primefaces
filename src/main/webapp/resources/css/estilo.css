@@ -678,6 +678,13 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
     padding: 0px 5px 0px 5px !important;
 }
 
+.ui-carousel-footer {
+    margin-left: 20px;
+    font-weight: bold;
+    color: blue;
+}
+
+/*Responsividade:*/
 @media (max-width: 720px) {
     #formlogin {
         right: 10px !important;

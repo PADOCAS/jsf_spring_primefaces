@@ -23,13 +23,11 @@ public class MensagemDTO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataMensagem;
 
+    private Entidade usuarioOrigem;
+
     private String assunto;
 
     private String mensagem;
-
-    private Long codigoResposta;
-
-    private String resposta;
 
     private Boolean exigirResposta;
 
@@ -68,14 +66,6 @@ public class MensagemDTO implements Serializable {
         this.mensagem = mensagem;
     }
 
-    public String getResposta() {
-        return resposta;
-    }
-
-    public void setResposta(String resposta) {
-        this.resposta = resposta;
-    }
-
     public Boolean getExigirResposta() {
         return exigirResposta;
     }
@@ -84,12 +74,12 @@ public class MensagemDTO implements Serializable {
         this.exigirResposta = exigirResposta;
     }
 
-    public Long getCodigoResposta() {
-        return codigoResposta;
+    public Entidade getUsuarioOrigem() {
+        return usuarioOrigem;
     }
 
-    public void setCodigoResposta(Long codigoResposta) {
-        this.codigoResposta = codigoResposta;
+    public void setUsuarioOrigem(Entidade usuarioOrigem) {
+        this.usuarioOrigem = usuarioOrigem;
     }
 
     @Override
@@ -116,7 +106,7 @@ public class MensagemDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "MensagemDTO{" + "codigo=" + codigo + ", dataMensagem=" + dataMensagem + ", assunto=" + assunto + ", mensagem=" + mensagem + ", codigoResposta=" + codigoResposta + ", resposta=" + resposta + ", exigirResposta=" + exigirResposta + '}';
+        return "MensagemDTO{" + "codigo=" + codigo + ", dataMensagem=" + dataMensagem + ", usuarioOrigem=" + usuarioOrigem + ", assunto=" + assunto + ", mensagem=" + mensagem + ", exigirResposta=" + exigirResposta + '}';
     }
 
 }

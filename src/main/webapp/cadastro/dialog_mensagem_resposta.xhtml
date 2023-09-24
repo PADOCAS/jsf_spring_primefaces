@@ -32,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:carousel id="carouselHistorico" 
                             value="#{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto}" 
                             var="mensAnteriores" 
-                            orientation="horizontal" 
+                            orientation="horizontal"                             
                             numVisible="1"
                             paginator="true"
                             style="max-width: 450px;"
@@ -65,6 +65,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                                      value="#{mensAnteriores.exigirResposta}" />
                         </h:panelGroup>
 
+                        <h:outputLabel id="lblUsuarioHistorico" class="styleOutputLabel" value="Usuário" for="autoCompUsuarioHistorico" />
+                        <p:autoComplete id="autoCompUsuarioHistorico" 
+                                        value="#{mensAnteriores.usuarioOrigem}"
+                                        dropdown="true"
+                                        disabled="#{true}"
+                                        queryDelay="600"
+                                        effect="fade"
+                                        class="styleAutoComplete"
+                                        var="usuario" 
+                                        itemLabel="#{usuario.codigo eq null ? '' : '('.concat(usuario.codigo).concat('-').concat(usuario.login).concat(') ').concat(usuario.nome)}" 
+                                        itemValue="#{usuario}"
+                                        converter="#{entidadeConverter}" 
+                                        forceSelection="true" 
+                                        scrollHeight="250"/>
+
                         <h:outputLabel id="lblAssuntoHistorico" class="styleOutputLabel" value="Assunto" for="txtAssuntoHistorico" />
                         <p:inputText id="txtAssuntoHistorico"
                                      value="#{mensAnteriores.assunto}"
@@ -73,10 +88,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <p:outputLabel id="lblMensagemHistorico" class="styleOutputLabel" value="Mensagem" for="txtMensagemHistorico" />
                         <p:inputTextarea id="txtMensagemHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensAnteriores.mensagem}" />
-
-                        <p:outputLabel id="lblRespostaHistorico" class="styleOutputLabel" value="Resposta" for="txtRespostaHistorico" />
-                        <p:inputTextarea id="txtRespostaHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensAnteriores.resposta}" />
                     </h:panelGrid>
+
+                    <f:facet name="footer">
+                        Total de #{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto.size()} mensagens anteriores.
+                    </f:facet>
                 </p:carousel>
             </p:fieldset>
 
@@ -140,7 +156,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                          required="true"
                                          requiredMessage="Informe se deve exigir retorno."
                                          value="#{mensagemRespostaBeanView.objetoSelecionado.exigirResposta}" />
-                
+
                 <p:outputLabel id="lblResposta" class="styleOutputLabel" value="Resposta" for="txtResposta" />
                 <h:panelGroup>
                     <p:inputTextarea id="txtResposta"
