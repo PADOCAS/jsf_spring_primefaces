@@ -49,9 +49,19 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
         try {
             super.initComponentes();
             setarVariaveisNulas();
-            chargedMensagemPendente();
+            if (contextoBean != null
+                    && contextoBean.getEntidadeLogada() != null
+                    && contextoBean.getEntidadeLogada().getCodigo() != null) {
+                Long totalNotificacoes = mensagemController.getTotalNotificacoesUser(contextoBean.getEntidadeLogada().getCodigo());
+
+                if (totalNotificacoes != null
+                        && totalNotificacoes > 0) {
+                    chargedMensagemPendente();
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(MensagemRespostaBeanView.class.getName()).log(Level.SEVERE, null, ex);
+            com.mycompany.project.message.util.Mensagem.msgSeverityError("Erro ao verificar mensagens!<br><br>" + ex.getMessage(), "Erro");
         }
     }
 
@@ -170,6 +180,7 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
 
     @Override
     public void saveNotReturn() throws Exception {
+        PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", false);
         try {
             validaSaveMensagemResposta();
 
@@ -194,8 +205,8 @@ public class MensagemRespostaBeanView extends BeanManagedViewAbstract {
                 mensagemController.saveMensagensResposta(null, getObjetoSelecionado().getMensagemOrigem());
             }
 
-            novo();
             msgEnvioMensagemFeitoComSucesso();
+            PrimeRequestContext.getCurrentInstance().getCallbackParams().put("saveOk", true);
         } catch (Exception ex) {
             Logger.getLogger(MensagemRespostaBeanView.class.getName()).log(Level.SEVERE, null, ex);
             com.mycompany.project.message.util.Mensagem.msgSeverityWarn("Erro ao salvar!<br><br>" + ex.getMessage(), "Atenção");

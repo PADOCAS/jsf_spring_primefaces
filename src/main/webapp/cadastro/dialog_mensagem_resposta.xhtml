@@ -177,9 +177,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 <p:commandButton id="btnConfirmarMensagem" 
                                  value="Confirmar/Responder (F2)" 
                                  onstart="PF('statusDialog').show();" 
-                                 onsuccess="PF('statusDialog').hide();"
                                  update="formResponderMensagem, @widgetVar(message)"
                                  actionListener="#{mensagemRespostaBeanView.saveNotReturn()}"
+                                 oncomplete="if(args.saveOk) {remComSaveMensagemResposta();} else {PF('statusDialog').hide();};"
                                  process="@this, @form" />               
 
                 <p:commandButton id="btnCancelarEnviarMensagem" 

@@ -68,6 +68,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                  onsuccess="PF('statusDialog').hide();"
                                  oncomplete="PF('mensagemRespostaDialog').show();"/>
 
+                <p:remoteCommand id="remComSaveMensagemResposta"
+                                 name="remComSaveMensagemResposta"
+                                 process="@this"
+                                 oncomplete="afterSaveResposta();"/>
+                
+                <p:remoteCommand id="remComSaveMensagemRespostaCheckNovasMensagens"
+                                 name="remComSaveMensagemRespostaCheckNovasMensagens"
+                                 actionListener="#{mensagemRespostaBeanView.verifyMensagensPendentes()}"
+                                 update="form, @widgetVar(message)"
+                                 oncomplete="if(args.existsMensagemPendente) {remComConfirmOpenMensagemResposta();};"
+                                 process="@this" />
+
                 <h:form id="form" class="form" enctype="#{enctype ne null and not empty enctype ? enctype : 'application/x-www-form-urlencoded'}">
                     <script type="text/javascript" charset="UTF-8">
                         jQuery.noConflict();
@@ -76,6 +88,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         ocultarMenu();
                         setUppercaseInputTextJs();
                         setLowercaseInputTextJs();
+
+                        function afterSaveResposta() {
+                            setTimeout(() => {
+                                PF('mensagemRespostaDialog').hide();
+                                remComSaveMensagemRespostaCheckNovasMensagens();
+                                PF('statusDialog').hide();
+                            }, 1300);
+                        }
+
+
 
                         //Caso quiser bloquear a tecla F5 para todas as páginas.. não vou fazer isso!
 //                        $(document).keydown(function (e) {
