@@ -414,50 +414,87 @@ input[type=submit] {
     width: 100%;
 }
 
+.fieldSetDialogCarousel {
+    width: 450px;
+}
+
+.carouselPanel {
+    max-width: 450px;
+}
+
 .botaoPesquisa {
-    height: 23px;
+    height: 23px !important;
 }
 
 .valorPesquisa {
-    width: 400px;
+    width: 400px !important;
 }
 
 .estiloIdCadastro {
-    width: 145px;
+    width: 145px !important;
 }
 
 .styleInputTextGrande {
-    width: 500px;
+    width: 500px !important;
+}
+
+.selOneMenuGrande {
+    width: 220px !important;
 }
 
 .styleInputTextData {
-    width: 145px;
+    width: 145px !important;
 }
 
 .styleInputTextValor {
-    width: 160px;
+    width: 160px !important;
 }
 
 .styleInputTextSenha {
-    width: 150px;
+    width: 150px !important;
 }
 
 .styleInputTextLogin {
-    width: 200px;
+    width: 200px !important;
 }
 
 .styleAutoComplete .ui-autocomplete-input {
-    width: 300px;
+    width: 300px !important;
+}
+
+.styleAutoCompleteCaroulsel .ui-autocomplete-input {
+    width: 300px !important;
 }
 
 .styleInputCampoGrandeDialog {
-    width: 325px;
+    width: 325px !important;
+}
+
+.styleInputCampoGrandeDialogCarousel {
+    width: 325px !important;
 }
 
 .styleOutputLabel {
     display: flex;
     flex-direction: row;
     justify-content: end;
+}
+
+.styleOutputLabelCarousel {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    font-size: 12px !important;
+}
+
+.styleOutputLabelBooleanDialogCarousel {
+    font-size: 12px !important;
+    margin-left: 2px;
+}
+
+.styleOutputLabelBooleanDialog {
+    font-size: 12px !important;
+    margin-left: 2px;
 }
 
 .ui-carousel-prev-icon {
@@ -686,6 +723,7 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
 
 /*Responsividade:*/
 @media (max-width: 720px) {
+    /*Login:*/
     #formlogin {
         right: 10px !important;
     }
@@ -707,7 +745,263 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
     }
 
     .estiloSpan {
-        font-size: 12px;
+        font-size: 12px !important;
         margin-left: 4px;
+    }
+}
+
+@media(max-width: 610px) {
+    .styleInputTextGrande {
+        width: 250px !important;
+    }
+
+    .selOneMenuGrande {
+        width: 200px !important;
+    }
+}
+
+@media(max-width:510px) {
+    .styleAutoComplete .ui-autocomplete-input {
+        width: 225px !important;
+    }
+
+    .styleInputCampoGrandeDialog {
+        width: 250px !important;
+    }
+
+    .fieldSetDialogCarousel {
+        width: 376px !important;
+    }
+
+    .carouselPanel {
+        max-width: 376px;
+    }
+
+    .styleOutputLabelCarousel {
+        font-size: 10px !important;
+    }
+
+    .styleOutputLabelBooleanDialogCarousel {
+        font-size: 10px !important;
+    }
+
+    .styleAutoCompleteCaroulsel .ui-autocomplete-input {
+        width: 240px !important;
+    }
+
+    .styleInputCampoGrandeDialogCarousel {
+        width: 265px !important;
+    }
+}
+
+@media(max-width:440px) {
+    .fieldSetDialogCarousel {
+        width: 336px !important;
+    }
+
+    .carouselPanel {
+        max-width: 336px;
+    }
+
+    .styleOutputLabelCarousel {
+        font-size: 9px !important;
+    }
+
+    .styleOutputLabelBooleanDialogCarousel {
+        font-size: 9px !important;
+    }
+
+    .styleAutoCompleteCaroulsel .ui-autocomplete-input {
+        width: 200px !important;
+    }
+
+    .styleInputCampoGrandeDialogCarousel {
+        width: 225px !important;
+    }
+
+    .styleInputTextGrande {
+        width: 220px !important;
+    }
+
+    .selOneMenuGrande {
+        width: 170px !important;
+    }
+}
+
+@media(max-width: 471px) {
+    /*Template Principal:*/
+    .logoSpringMenu {
+        width: 85px !important;
+    }
+
+    /*Principal (Gráfico)*/
+    #chart_titulo g text {
+        font-size: 11px !important;
+    }
+
+    .ui-datatable table th, .ui-datatable table th span, .ui-datatable table td, .ui-datatable table td span {
+        font-size: 11px !important;
+    }
+
+    .ui-button-text {
+        font-size: 10px !important;
+    }
+}
+
+@media(max-width:385px) {
+    .styleAutoComplete .ui-autocomplete-input {
+        width: 188px !important;
+    }
+
+    .styleInputCampoGrandeDialog {
+        width: 208px !important;
+    }
+
+    .styleOutputLabel {
+        font-size: 11px !important;
+    }
+
+    .styleOutputLabelBooleanDialog {
+        font-size: 11px !important;
+    }
+
+    input {
+        font-size: 10px !important;
+    }
+
+    .ui-selectonemenu label {
+        font-size: 10px !important;
+    }
+
+    .ui-selectonemenu-items-wrapper ul li {
+        font-size: 10px !important;
+    }
+
+    .estiloIdCadastro {
+        width: 110px !important;
+    }
+
+    .fieldSetDialogCarousel {
+        width: 303px !important;
+    }
+
+    .carouselPanel {
+        max-width: 303px;
+    }
+
+    .styleAutoCompleteCaroulsel .ui-autocomplete-input {
+        width: 177px !important;
+    }
+
+    .styleInputCampoGrandeDialogCarousel {
+        width: 197px !important;
+    }
+
+    .styleInputTextGrande {
+        width: 200px !important;
+    }
+
+    .selOneMenuGrande {
+        width: 150px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    /*Login:*/
+    #keyslogin {
+        right: 160px !important;
+    }
+
+    .ImgLogin {
+        width: 130px !important;
+    }
+
+    /*Template Principal:*/
+    .logoSpringMenu {
+        display: none;
+    }
+
+    /*Gerais:*/
+    .ui-button-text {
+        font-size: 8px !important;
+    }
+
+    .ui-datatable table th, .ui-datatable table th span, .ui-datatable table td, .ui-datatable table td span {
+        font-size: 10px !important;
+    }
+
+    .styleInputTextLogin {
+        width: 146px !important;
+    }
+
+    .styleInputTextSenha {
+        width: 100px !important;
+    }
+
+    .styleInputTextGrande {
+        width: 180px !important;
+    }
+
+    .selOneMenuGrande {
+        width: 130px !important;
+    }
+}
+
+@media (max-width: 330px) {
+    /*Gerais:*/
+    .styleOutputLabel {
+        font-size: 9px !important;
+    }
+
+    .styleOutputLabelBooleanDialog {
+        font-size: 9px !important;
+    }
+
+    input {
+        font-size: 9px !important;
+    }
+
+    .ui-selectonemenu label {
+        font-size: 9px !important;
+    }
+
+    .ui-selectonemenu-items-wrapper ul li {
+        font-size: 9px !important;
+    }
+
+    .estiloIdCadastro {
+        width: 95px !important;
+    }
+
+    .styleAutoComplete .ui-autocomplete-input {
+        width: 160px !important;
+    }
+
+    .styleInputCampoGrandeDialog {
+        width: 178px !important;
+    }
+
+    .fieldSetDialogCarousel {
+        width: 288px !important;
+    }
+
+    .carouselPanel {
+        max-width: 288px;
+    }
+
+    .styleAutoCompleteCaroulsel .ui-autocomplete-input {
+        width: 164px !important;
+    }
+
+    .styleInputCampoGrandeDialogCarousel {
+        width: 182px !important;
+    }
+
+    .styleInputTextGrande {
+        width: 150px !important;
+    }
+
+    .selOneMenuGrande {
+        width: 110px !important;
     }
 }

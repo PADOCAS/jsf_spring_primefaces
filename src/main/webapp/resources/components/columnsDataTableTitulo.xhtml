@@ -15,12 +15,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-    <p:column style="width: 7%; text-align: left;">
+    <p:column style="width: 11%; text-align: left;">
         <f:facet name="header" >Número</f:facet>
         <h:outputText value="#{objeto.codigo}" style = "text-align: left; display: block;" />
     </p:column>
 
-    <p:column style="width: 10%; text-align: center;">
+    <p:column style="width: 17%; text-align: center;">
         <f:facet name="header" >Dt Emissão</f:facet>
         <h:outputText value="#{objeto.data}" style="text-align: center; display: block;" >
             <f:convertDateTime locale="pt_BR"
@@ -31,17 +31,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </h:outputText>
     </p:column>
 
-    <p:column style="width: 52%; text-align: left;">
+    <p:column style="width: 34%; text-align: left;">
         <f:facet name="header" >Pessoa</f:facet>
         <h:outputText value="#{objeto.pessoa}" style = "text-align: left; display: block;"/>
     </p:column>
 
-    <p:column style="width: 16%; text-align: left;">
+    <p:column style="width: 20%; text-align: left;">
         <f:facet name="header" >Tipo</f:facet>
         <h:outputText value="#{objeto.tipoTituloStr}" style = "text-align: left; display: block;" />
     </p:column>
 
-    <p:column style="width: 16%; text-align: right;">
+    <p:column style="width: 18%; text-align: right;">
         <f:facet name="header" >Valor</f:facet>
         <h:outputText value="#{objeto.valor}" style = "text-align: right; display: block;">
             <f:attribute name  = "allowZero"

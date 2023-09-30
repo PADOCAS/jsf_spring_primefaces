@@ -15,17 +15,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
       xmlns:sec="http://www.springframework.org/security/tags"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-    <p:column style="width: 10%;">
+    <p:column style="width: 20%;">
         <f:facet name="header" >Código</f:facet>
         <h:outputText value="#{objeto.codigo}" />
     </p:column>
 
-    <p:column style="width: 80%;">
+    <p:column style="width: 60%;">
         <f:facet name="header" >Nome</f:facet>
         <h:outputText value="#{objeto.nome}" />
     </p:column>
 
-    <p:column style="text-align: center; width: 10%;">
+    <p:column style="text-align: center; width: 20%;">
         <f:facet name="header" >UF</f:facet>
         <h:outputText value="#{objeto.estado.siglauf}" />
     </p:column>

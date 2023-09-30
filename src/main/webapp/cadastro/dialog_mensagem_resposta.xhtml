@@ -23,10 +23,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         toggleable="true" 
                         collapsed="#{true}" 
                         toggleSpeed="500" 
+                        class="fieldSetDialogCarousel"
                         title="Histórico Mensagens Anteriores" 
                         rendered="#{mensagemRespostaBeanView.objetoSelecionado.listMensagemDto ne null 
                                     and not empty mensagemRespostaBeanView.objetoSelecionado.listMensagemDto}"
-                        style="background: cornsilk; width: 450px;">
+                        style="background: cornsilk;">
                 <p:ajax event="toggle" update="carouselHistorico"/>
 
                 <p:carousel id="carouselHistorico" 
@@ -35,17 +36,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             orientation="horizontal"                             
                             numVisible="1"
                             paginator="true"
-                            style="max-width: 450px;"
+                            class="carouselPanel"
                             numScroll="1">
                     <h:panelGrid id="pnlGridMensagemHistorico" columns="2"
                                  style="margin-left: 7px; padding: 2px; margin-top: 3px; margin-bottom: 3px; background: papayawhip; box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);" >
-                        <h:outputLabel id="lblCodigoHistorico" class="styleOutputLabel" value="Código" for="txtCodigoHistorico" />
+                        <h:outputLabel id="lblCodigoHistorico" class="styleOutputLabelCarousel" value="Código" for="txtCodigoHistorico" />
                         <p:inputText id="txtCodigoHistorico" 
                                      class="estiloIdCadastro"
                                      value="#{mensAnteriores.codigo}" 
                                      disabled="#{true}" />
 
-                        <h:outputLabel id="lblDataHistorico" class="styleOutputLabel" value="Data" for="txtDataHistorico" />
+                        <h:outputLabel id="lblDataHistorico" class="styleOutputLabelCarousel" value="Data" for="txtDataHistorico" />
                         <h:panelGroup>
                             <p:inputText id="txtDataHistorico"
                                          class="estiloIdCadastro"
@@ -58,21 +59,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                                    timeZone="GMT-03:00" />
                             </p:inputText> 
 
-                            <h:outputLabel id="lblExigirRespostaHistorico" style="margin-left: 2px;" value="Exige Resposta" for="selBooCheckBoxExigirRespostaHistorico" />
+                            <h:outputLabel id="lblExigirRespostaHistorico" class="styleOutputLabelBooleanDialogCarousel" value="Exige Resposta" for="selBooCheckBoxExigirRespostaHistorico" />
                             <p:selectBooleanCheckbox id="selBooCheckBoxExigirRespostaHistorico"
                                                      style="margin-left: 2px;"
                                                      disabled="#{true}"
                                                      value="#{mensAnteriores.exigirResposta}" />
                         </h:panelGroup>
 
-                        <h:outputLabel id="lblUsuarioHistorico" class="styleOutputLabel" value="Usuário" for="autoCompUsuarioHistorico" />
+                        <h:outputLabel id="lblUsuarioHistorico" class="styleOutputLabelCarousel" value="Usuário" for="autoCompUsuarioHistorico" />
                         <p:autoComplete id="autoCompUsuarioHistorico" 
                                         value="#{mensAnteriores.usuarioOrigem}"
                                         dropdown="true"
                                         disabled="#{true}"
                                         queryDelay="600"
                                         effect="fade"
-                                        class="styleAutoComplete"
+                                        class="styleAutoCompleteCaroulsel"
                                         var="usuario" 
                                         itemLabel="#{usuario.codigo eq null ? '' : '('.concat(usuario.codigo).concat('-').concat(usuario.login).concat(') ').concat(usuario.nome)}" 
                                         itemValue="#{usuario}"
@@ -80,14 +81,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                         forceSelection="true" 
                                         scrollHeight="250"/>
 
-                        <h:outputLabel id="lblAssuntoHistorico" class="styleOutputLabel" value="Assunto" for="txtAssuntoHistorico" />
+                        <h:outputLabel id="lblAssuntoHistorico" class="styleOutputLabelCarousel" value="Assunto" for="txtAssuntoHistorico" />
                         <p:inputText id="txtAssuntoHistorico"
                                      value="#{mensAnteriores.assunto}"
-                                     class="styleInputCampoGrandeDialog"
+                                     class="styleInputCampoGrandeDialogCarousel"
                                      disabled="#{true}"/>
 
-                        <p:outputLabel id="lblMensagemHistorico" class="styleOutputLabel" value="Mensagem" for="txtMensagemHistorico" />
-                        <p:inputTextarea id="txtMensagemHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialog" value="#{mensAnteriores.mensagem}" />
+                        <p:outputLabel id="lblMensagemHistorico" class="styleOutputLabelCarousel" value="Mensagem" for="txtMensagemHistorico" />
+                        <p:inputTextarea id="txtMensagemHistorico" rows="4" autoResize="false" readonly="#{true}" class="styleInputCampoGrandeDialogCarousel" value="#{mensAnteriores.mensagem}" />
                     </h:panelGrid>
 
                     <f:facet name="footer">
@@ -117,7 +118,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                                            timeZone="GMT-03:00" />
                     </p:inputText> 
 
-                    <h:outputLabel id="lblExigirResposta" style="margin-left: 2px;" value="Exige Resposta" for="selBooCheckBoxExigirResposta" />
+                    <h:outputLabel id="lblExigirResposta" class="styleOutputLabelBooleanDialog" value="Exige Resposta" for="selBooCheckBoxExigirResposta" />
                     <p:selectBooleanCheckbox id="selBooCheckBoxExigirResposta"
                                              style="margin-left: 2px;"
                                              disabled="#{true}"
