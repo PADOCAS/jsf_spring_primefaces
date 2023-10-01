@@ -437,10 +437,40 @@ ALTER TABLE ONLY public.titulo
     ADD CONSTRAINT titulo_fk1 FOREIGN KEY (usuario_abertura) REFERENCES public.entidade(codigo);
 
 -- Dados:
+-- País:
 INSERT INTO public.pais (codigo, nome, sigla, versionnum) VALUES (1, 'BRASIL', 'BR', 1);
+-- Usuário admin:
 INSERT INTO public.entidade VALUES (1, false, 'admin', '$2a$10$B0Ugn8Q/r6LL8TcB5Do3DuOaAlXPSWDCfSkjXa79djUL57uWfrqbS', '2023-10-01 11:25:50.445339', 21, 'ADMINISTRADOR', 'A', '', '99289329050');
 INSERT INTO public.entidadeacesso VALUES (1, 'ADMIN');
 INSERT INTO public.entidadeacesso VALUES (1, 'USER');
 INSERT INTO public.entidadeacesso VALUES (1, 'CIDADE_EDITAR');
 INSERT INTO public.entidadeacesso VALUES (1, 'CIDADE_EXCLUIR');
-INSERT INTO public.entidadeacesso VALUES (1, 'CADASTRO_ACESSAR');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+INSERT INTO public.entidadeacesso VALUES (1, 'CADASTRO_ACESSAR');    
+-- Estado:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+INSERT INTO public.estado VALUES (1, 'ACRE', 'AC', 1, 1);
+INSERT INTO public.estado VALUES (2, 'ALAGOAS', 'AL', 1, 1);
+INSERT INTO public.estado VALUES (3, 'AMAPÁ', 'AP', 1, 1);
+INSERT INTO public.estado VALUES (4, 'AMAZONAS', 'AM', 1, 1);
+INSERT INTO public.estado VALUES (5, 'BAHIA', 'BA', 1, 1);
+INSERT INTO public.estado VALUES (6, 'CEARÁ', 'CE', 1, 1);
+INSERT INTO public.estado VALUES (7, 'DISTRITO FEDERAL', 'DF', 1, 1);
+INSERT INTO public.estado VALUES (8, 'ESPÍRITO SANTO', 'ES', 1, 1);
+INSERT INTO public.estado VALUES (9, 'GOIÁS', 'GO', 1, 1);
+INSERT INTO public.estado VALUES (10, 'MARANHÃO', 'MA', 1, 1);
+INSERT INTO public.estado VALUES (11, 'MATO GROSSO', 'MT', 1, 1);
+INSERT INTO public.estado VALUES (12, 'MATO GROSSO DO SUL', 'MS', 1, 1);
+INSERT INTO public.estado VALUES (13, 'MINAS GERAIS', 'MG', 1, 1);
+INSERT INTO public.estado VALUES (14, 'PARÁ', 'PA', 1, 1);
+INSERT INTO public.estado VALUES (15, 'PARAÍBA', 'PB', 1, 1);
+INSERT INTO public.estado VALUES (16, 'PARANÁ', 'PR', 1, 1);
+INSERT INTO public.estado VALUES (17, 'PERNAMBUCO', 'PE', 1, 1);
+INSERT INTO public.estado VALUES (18, 'PIAUÍ', 'PI', 1, 1);
+INSERT INTO public.estado VALUES (19, 'RIO DE JANEIRO', 'RJ', 1, 1);
+INSERT INTO public.estado VALUES (20, 'RIO GRANDE DO NORTE', 'RN', 1, 1);
+INSERT INTO public.estado VALUES (21, 'RIO GRANDE DO SUL', 'RS', 1, 1);
+INSERT INTO public.estado VALUES (22, 'RONDÔNIA', 'RO', 1, 1);
+INSERT INTO public.estado VALUES (23, 'RORAIMA', 'RR', 1, 1);
+INSERT INTO public.estado VALUES (24, 'SANTA CATARINA', 'SC', 1, 1);
+INSERT INTO public.estado VALUES (25, 'SÃO PAULO', 'SP', 1, 1);
+INSERT INTO public.estado VALUES (26, 'SERGIPE', 'SE', 1, 1);
+INSERT INTO public.estado VALUES (27, 'TOCANTINS', 'TO', 1, 1);
