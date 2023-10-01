@@ -44,5 +44,5 @@
 
 <h3 align="left">Servidor para testes:</h3>
 <p align="left">
-<a href="https://www.ldsystems.com.br/jsf_spring_primefaces/public/login.jsf" target="blank">Projeto JSF/SPRING/PRIMEFACES</a>
+<a href="https://www.ldsystems.com.br/jsf_spring_primefaces/public/login.jsf" target="_blank">Projeto JSF/SPRING/PRIMEFACES</a>
 </p>
