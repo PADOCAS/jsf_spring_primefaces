@@ -338,6 +338,24 @@ a:focus {
     font-size: 14px;
 }
 
+.rodape {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}
+
+.rodape a {
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 input[type=button] {
     margin: 1px 2px 1px 2px;
     padding-right: 5px;
@@ -903,6 +921,10 @@ DESTE PONTO PARA BAIXO CSS QUE ALTERA GERAL O PRIMEFACES
 
     .selOneMenuGrande {
         width: 150px !important;
+    }
+
+    .rodape label, .rodape a {
+        font-size: 10px;
     }
 }
 
